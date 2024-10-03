@@ -13,7 +13,7 @@ public interface DriverMapper {
 
     DriverResponseDto toDto(Driver driver);
 
-    void updateCarFromDto(DriverRequestDto driverRequestDto, @MappingTarget Driver
+    void updateDriverFromDto(DriverRequestDto driverRequestDto, @MappingTarget Driver
             driver);
 
     List<DriverResponseDto> toDtoList(List<Driver> drivers);

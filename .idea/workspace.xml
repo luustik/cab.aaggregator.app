@@ -4,18 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="added entyties, dto's, mappers, repositories, docker-compose">
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="fixed bugs, added liquibase">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/CarRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/CarRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/DriverRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/DriverRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +23,7 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
+        <option value="Record" />
         <option value="Class" />
       </list>
     </option>
@@ -84,7 +81,7 @@
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;22&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/УЧЕБА/java projects/Modsen/cab.aggregator.app/driver-service/src/main/resources/db.changelog/v1/driver&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/УЧЕБА/java projects/practice&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -250,7 +247,93 @@
       <workItem from="1727954528934" duration="645000" />
       <workItem from="1727956546326" duration="4000" />
       <workItem from="1727956604161" duration="30000" />
-      <workItem from="1727958817990" duration="2850000" />
+      <workItem from="1727958817990" duration="3094000" />
+      <workItem from="1727961940610" duration="100000" />
+      <workItem from="1727962079528" duration="398000" />
+      <workItem from="1727962617973" duration="7000" />
+      <workItem from="1727963483143" duration="136000" />
+      <workItem from="1727963692993" duration="362000" />
+      <workItem from="1727964122103" duration="126000" />
+      <workItem from="1727964268701" duration="43000" />
+      <workItem from="1727964350288" duration="31000" />
+      <workItem from="1727964389271" duration="211000" />
+      <workItem from="1727964651708" duration="66000" />
+      <workItem from="1727964748986" duration="184000" />
+      <workItem from="1727964950826" duration="35000" />
+      <workItem from="1727965001675" duration="26000" />
+      <workItem from="1727965035550" duration="1000" />
+      <workItem from="1727965046786" duration="21000" />
+      <workItem from="1727965077189" duration="59000" />
+      <workItem from="1727965182742" duration="18000" />
+      <workItem from="1727965208678" duration="81000" />
+      <workItem from="1727965326679" duration="60000" />
+      <workItem from="1727965500778" duration="51000" />
+      <workItem from="1727965572097" duration="150000" />
+      <workItem from="1727965749060" duration="799000" />
+      <workItem from="1727966659775" duration="155000" />
+      <workItem from="1727966867433" duration="34000" />
+      <workItem from="1727966961043" duration="22000" />
+      <workItem from="1727966998205" duration="26000" />
+      <workItem from="1727967145960" duration="15000" />
+      <workItem from="1727967189152" duration="171000" />
+      <workItem from="1727967380385" duration="79000" />
+      <workItem from="1727967500541" duration="19000" />
+      <workItem from="1727967606549" duration="31000" />
+      <workItem from="1727967652685" duration="22000" />
+      <workItem from="1727967680824" duration="14000" />
+      <workItem from="1727967702133" duration="91000" />
+      <workItem from="1727967829164" duration="72000" />
+      <workItem from="1727967939775" duration="19000" />
+      <workItem from="1727967970171" duration="57000" />
+      <workItem from="1727968042727" duration="144000" />
+      <workItem from="1727968423801" duration="42000" />
+      <workItem from="1727968483151" duration="88000" />
+      <workItem from="1727968635576" duration="103000" />
+      <workItem from="1727968785967" duration="72000" />
+      <workItem from="1727968921138" duration="48000" />
+      <workItem from="1727968994545" duration="83000" />
+      <workItem from="1727970848945" duration="7000" />
+      <workItem from="1727976494548" duration="1235000" />
+      <workItem from="1727979132578" duration="299000" />
+      <workItem from="1727979547580" duration="294000" />
+      <workItem from="1727979897128" duration="58000" />
+      <workItem from="1727979998310" duration="67000" />
+      <workItem from="1727980077251" duration="26000" />
+      <workItem from="1727980122478" duration="55000" />
+      <workItem from="1727980182982" duration="194000" />
+      <workItem from="1727980400450" duration="34000" />
+      <workItem from="1727980446211" duration="71000" />
+      <workItem from="1727980611949" duration="158000" />
+      <workItem from="1727980831017" duration="28000" />
+      <workItem from="1727980972923" duration="15000" />
+      <workItem from="1727980997968" duration="40000" />
+      <workItem from="1727981061642" duration="85000" />
+      <workItem from="1727981156637" duration="72000" />
+      <workItem from="1727981286567" duration="10000" />
+      <workItem from="1727981332824" duration="65000" />
+      <workItem from="1727981461970" duration="36000" />
+      <workItem from="1727981899077" duration="23000" />
+      <workItem from="1727981933896" duration="83000" />
+      <workItem from="1727982034269" duration="25000" />
+      <workItem from="1727982071006" duration="33000" />
+      <workItem from="1727982203400" duration="145000" />
+      <workItem from="1727982370674" duration="59000" />
+      <workItem from="1727982442944" duration="78000" />
+      <workItem from="1727982536581" duration="24000" />
+      <workItem from="1727982612737" duration="36000" />
+      <workItem from="1727982675503" duration="48000" />
+      <workItem from="1727982745633" duration="67000" />
+      <workItem from="1727982822247" duration="52000" />
+      <workItem from="1727982889737" duration="536000" />
+      <workItem from="1727983452013" duration="37000" />
+      <workItem from="1727983498138" duration="66000" />
+      <workItem from="1727983581107" duration="63000" />
+      <workItem from="1727983673584" duration="274000" />
+      <workItem from="1727984040338" duration="120000" />
+      <workItem from="1727984249675" duration="269000" />
+      <workItem from="1727984737574" duration="432000" />
+      <workItem from="1727987669661" duration="47000" />
+      <workItem from="1727987724585" duration="19000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -268,7 +351,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727902996782</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fixed bugs, added liquibase">
+      <option name="closed" value="true" />
+      <created>1727961871357</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1727961871357</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,7 +379,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Empty project" />
     <MESSAGE value="added entyties, dto's, mappers, repositories, docker-compose" />
-    <option name="LAST_COMMIT_MESSAGE" value="added entyties, dto's, mappers, repositories, docker-compose" />
+    <MESSAGE value="fixed bugs, added liquibase" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs, added liquibase" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
