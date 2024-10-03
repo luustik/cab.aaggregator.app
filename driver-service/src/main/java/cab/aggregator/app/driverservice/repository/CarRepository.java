@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Integer> {
 
-    Optional<Car> findByModel(Integer integer);
+    Optional<Car> findByModel(String model);
 
-    Optional<Car> findByCarNumder(String carNumder);
+    Optional<Car> findByCarNumber(String carNumber);
 }

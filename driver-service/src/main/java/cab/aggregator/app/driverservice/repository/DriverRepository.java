@@ -9,15 +9,15 @@ import java.util.Optional;
 @Repository
 public interface DriverRepository extends JpaRepository<Driver, Integer> {
 
-    Optional<Driver> findByDriverId(int driverId);
+    Optional<Driver> findById(int driverId);
 
-    Optional<Driver> findByDriverName(String driverName);
+    Optional<Driver> findByName(String driverName);
 
-    Optional<Driver> findByDriverPhoneNumber(String driverPhoneNumber);
+    Optional<Driver> findByPhoneNumber(String driverPhoneNumber);
 
-    boolean existsByDriverId(int driverId);
+    boolean existsById(int driverId);
 
-    boolean existsByDriverName(String driverName);
+    boolean existsByName(String driverName);
 
-    boolean existsByDriverPhoneNumber(String driverPhoneNumber);
+    boolean existsByPhoneNumber(String driverPhoneNumber);
 }

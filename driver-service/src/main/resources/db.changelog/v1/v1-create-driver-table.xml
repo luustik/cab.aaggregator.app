@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="v1-2" author="lustikkkkk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="driver"/>
+            </not>
+        </preConditions>
+        <createTable tableName="driver">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="name" type="varchar" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="email" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="phone_number" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="gender" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="v1-2-load-data" author="lustikkkkk">
+        <loadData tableName="driver" file="db.changelog/data/driver-data.csv"/>
+    </changeSet>
+
+</databaseChangeLog>

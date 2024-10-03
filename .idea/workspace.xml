@@ -4,10 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="Empty project">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="added entyties, dto's, mappers, repositories, docker-compose">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/CarRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/CarRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/DriverRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/DriverRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +26,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -76,6 +84,7 @@
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;22&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/УЧЕБА/java projects/Modsen/cab.aggregator.app/driver-service/src/main/resources/db.changelog/v1/driver&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -90,6 +99,17 @@
     ]
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db.changelog\v1\driver" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db\" />
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db\data" />
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources" />
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db" />
+    </key>
+  </component>
   <component name="RunManager" selected="Spring Boot.DriverServiceApplication">
     <configuration name="DriverServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="driver-service" />
@@ -199,7 +219,38 @@
       <workItem from="1727901262259" duration="96000" />
       <workItem from="1727901381680" duration="13000" />
       <workItem from="1727901431784" duration="86000" />
-      <workItem from="1727901557861" duration="1091000" />
+      <workItem from="1727901557861" duration="1485000" />
+      <workItem from="1727903083442" duration="26000" />
+      <workItem from="1727903123599" duration="22000" />
+      <workItem from="1727903226918" duration="135000" />
+      <workItem from="1727903435508" duration="35000" />
+      <workItem from="1727903507212" duration="10000" />
+      <workItem from="1727903527413" duration="6000" />
+      <workItem from="1727903547445" duration="173000" />
+      <workItem from="1727903740869" duration="401000" />
+      <workItem from="1727904370201" duration="87000" />
+      <workItem from="1727904659802" duration="162000" />
+      <workItem from="1727904962551" duration="59000" />
+      <workItem from="1727938909785" duration="1224000" />
+      <workItem from="1727940170988" duration="212000" />
+      <workItem from="1727940416916" duration="336000" />
+      <workItem from="1727940951002" duration="473000" />
+      <workItem from="1727941501004" duration="12000" />
+      <workItem from="1727941550829" duration="1217000" />
+      <workItem from="1727946220911" duration="2011000" />
+      <workItem from="1727948323426" duration="629000" />
+      <workItem from="1727948978912" duration="181000" />
+      <workItem from="1727949194627" duration="299000" />
+      <workItem from="1727949513175" duration="14000" />
+      <workItem from="1727949537469" duration="8000" />
+      <workItem from="1727949550804" duration="197000" />
+      <workItem from="1727949789869" duration="1959000" />
+      <workItem from="1727951774121" duration="1570000" />
+      <workItem from="1727953359682" duration="641000" />
+      <workItem from="1727954528934" duration="645000" />
+      <workItem from="1727956546326" duration="4000" />
+      <workItem from="1727956604161" duration="30000" />
+      <workItem from="1727958817990" duration="2850000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -209,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727778571921</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added entyties, dto's, mappers, repositories, docker-compose">
+      <option name="closed" value="true" />
+      <created>1727902996782</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727902996782</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,6 +287,17 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Empty project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Empty project" />
+    <MESSAGE value="added entyties, dto's, mappers, repositories, docker-compose" />
+    <option name="LAST_COMMIT_MESSAGE" value="added entyties, dto's, mappers, repositories, docker-compose" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.hibernate.query.SemanticException" package="org.hibernate.query" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

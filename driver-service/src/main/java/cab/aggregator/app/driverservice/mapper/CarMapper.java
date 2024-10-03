@@ -15,7 +15,7 @@ public interface CarMapper {
     CarResponseDto toDto(Car car);
 
     void updateCarFromDto(CarRequestDto carRequestDto, @MappingTarget Car
-            address);
+            car);
 
     List<CarResponseDto> toDtoList(List<Car> cars);
 

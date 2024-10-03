@@ -18,6 +18,6 @@ public interface DriverMapper {
 
     List<DriverResponseDto> toDtoList(List<Driver> drivers);
 
-    Driver toEntity(DriverRequestDto drriverRequestDto);
+    Driver toEntity(DriverRequestDto driverRequestDto);
 
 }

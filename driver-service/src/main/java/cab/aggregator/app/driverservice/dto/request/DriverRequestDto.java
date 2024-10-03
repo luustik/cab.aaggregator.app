@@ -19,18 +19,16 @@ public record DriverRequestDto (
                         @Pattern(regexp = "^[\\w.-]+@[\\w.-]+\\.[\\w.-]+$")
         String email,
 
-        @NotNull(message = "{email.notnull}", groups = {OnCreate.class, OnUpdate.class})
-                @Length(max = 255, message = "{email.length}", groups = {OnCreate.class, OnUpdate.class})
+        @NotNull(message = "{phoneNumber.notnull}", groups = {OnCreate.class, OnUpdate.class})
+                @Length(max = 255, message = "{phoneNumber.length}", groups = {OnCreate.class, OnUpdate.class})
                         @Pattern(regexp = "\\+375\\((29|44|33|25)\\)\\d{7}$")
         String phoneNumber,
 
-        @NotNull(message = "{message.notnull}", groups = {OnCreate.class, OnUpdate.class})
-                @Length(max = 255, message = "{message.length}", groups = {OnCreate.class, OnUpdate.class})
+        @NotNull(message = "{gender.notnull}", groups = {OnCreate.class, OnUpdate.class})
+                @Length(max = 255, message = "{gender.length}", groups = {OnCreate.class, OnUpdate.class})
         String gender,
 
-        @NotNull(message = "{model.notnull}", groups = {OnCreate.class, OnUpdate.class})
-                @Length(max = 255, message = "{model.length}", groups = {OnCreate.class, OnUpdate.class})
+        @NotNull(message = "{carsId.notnull}", groups = {OnCreate.class, OnUpdate.class})
         Set<Integer> carsId
 ){
-
 }
