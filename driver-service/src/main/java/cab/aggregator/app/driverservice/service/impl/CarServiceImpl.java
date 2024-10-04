@@ -90,10 +90,22 @@ public class CarServiceImpl implements CarService {
     }
 
     private Driver findDriverById(CarRequestDto carRequestDto) {
-        return driverRepository.findById(carRequestDto.driverId()).orElseThrow(()->{
-            return new EntityNotFoundException(DRIVER, carRequestDto.driverId());
-        });
+        return driverRepository.findById(carRequestDto.driverId())
+                .filter(driver -> !driver.isDeleted())
+                .orElseThrow(() -> new EntityNotFoundException(DRIVER, carRequestDto.driverId()));
     }
+
+//    private Driver findDriverById(CarRequestDto carRequestDto) {
+//
+//        Driver driver =driverRepository.findById(carRequestDto.driverId()).orElseThrow(()->{
+//            return new EntityNotFoundException(DRIVER, carRequestDto.driverId());
+//        });
+//
+//        if(driver.isDeleted()){
+//            throw new EntityNotFoundException(DRIVER, carRequestDto.driverId());
+//        }
+//        return driver;
+//    }
 
     private Car findCarByCarNumber(String carNumber) {
         return carRepository.findByCarNumber(carNumber).orElseThrow(()->{

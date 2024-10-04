@@ -13,6 +13,8 @@ public interface DriverService {
 
     List<DriverResponseDto> getDriversByGender(String gender);
 
+    void safeDeleteDriver(int driverId);
+
     void deleteDriver(int driverId);
 
     DriverResponseDto createDriver(DriverRequestDto driverRequestDto);

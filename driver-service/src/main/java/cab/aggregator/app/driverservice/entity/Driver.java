@@ -4,8 +4,6 @@ import cab.aggregator.app.driverservice.entity.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "driver")
 @Data
@@ -29,4 +27,6 @@ public class Driver {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted;
 }

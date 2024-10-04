@@ -1,5 +1,6 @@
 package cab.aggregator.app.driverservice.service.impl;
 
+import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
 import cab.aggregator.app.driverservice.dto.request.DriverRequestDto;
 import cab.aggregator.app.driverservice.dto.response.DriverResponseDto;
 import cab.aggregator.app.driverservice.entity.Driver;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static cab.aggregator.app.driverservice.utility.ResourceName.*;
 
@@ -44,6 +46,14 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
+    public void safeDeleteDriver(int driverId) {
+        Driver driver = findDriverById(driverId);
+        driver.setDeleted(true);
+        driverRepository.save(driver);
+    }
+
+    @Override
+    @Transactional
     public void deleteDriver(int driverId) {
         Driver driver = findDriverById(driverId);
         driverRepository.delete(driver);
@@ -52,8 +62,14 @@ public class DriverServiceImpl implements DriverService {
     @Override
     @Transactional
     public DriverResponseDto createDriver(DriverRequestDto driverRequestDto) {
+        Driver driver = checkIfDriverDelete(driverRequestDto);
+        if(driver != null) {
+            driver.setDeleted(false);
+            driverRepository.save(driver);
+            return driverMapper.toDto(driver);
+        }
         checkIfDriverUnique(driverRequestDto);
-        Driver driver = driverMapper.toEntity(driverRequestDto);
+        driver = driverMapper.toEntity(driverRequestDto);
         driverRepository.save(driver);
         return driverMapper.toDto(driver);
     }
@@ -73,6 +89,18 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.toDto(driver);
     }
 
+    private Driver checkIfDriverDelete(DriverRequestDto driverRequestDto) {
+        List<Driver> drivers = driverRepository.findByDeletedTrue();
+        return drivers.stream()
+                .filter(obj -> obj.getName().equals(driverRequestDto.name()))
+                .filter(obj -> obj.getEmail().equals(driverRequestDto.email()))
+                .filter(obj -> obj.getPhoneNumber().equals(driverRequestDto.phoneNumber()))
+                .filter(obj -> obj.getGender().name().equals(driverRequestDto.gender().toUpperCase()))
+                .findFirst()
+                .orElse(null);
+    }
+
+
     private void checkIfEmailUnique(DriverRequestDto driverRequestDto) {
 
         if(driverRepository.existsByEmail(driverRequestDto.email())) {
@@ -91,6 +119,12 @@ public class DriverServiceImpl implements DriverService {
         checkIfEmailUnique(driverRequestDto);
         checkIfPhoneNumberUnique(driverRequestDto);
     }
+
+//    private Driver findDriverById(int driverId) {
+//        return driverRepository.findById(driverId)
+//                .filter(driver -> !driver.isDeleted())
+//                .orElseThrow(() -> new EntityNotFoundException(DRIVER, driverId));
+//    }
 
     private Driver findDriverById(int driverId) {
         return driverRepository.findById(driverId).orElseThrow(()->{

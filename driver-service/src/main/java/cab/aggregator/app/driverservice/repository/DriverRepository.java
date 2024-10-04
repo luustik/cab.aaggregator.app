@@ -13,6 +13,8 @@ public interface DriverRepository extends JpaRepository<Driver, Integer> {
 
     Optional<Driver> findById(int driverId);
 
+    List<Driver> findByDeletedTrue();
+
     List<Driver> findAllByGender(Gender gender);
 
     boolean existsByEmail(String email);

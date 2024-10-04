@@ -14,6 +14,6 @@ public record DriverResponseDto(
 
          String gender,
 
-         Set<Integer> carsId
+         boolean deleted
 ) {
 }

@@ -30,6 +30,9 @@
             <column name="gender" type="varchar">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+            </column>
         </createTable>
 
         <rollback>

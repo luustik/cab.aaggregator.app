@@ -16,7 +16,7 @@ public record DriverRequestDto (
 @Schema(description = "Driver email", example = "nvienjnb@knsb.com")
         @NotNull(message = "{email.notnull}", groups = {OnCreate.class, OnUpdate.class})
                 @Length(max = 255, message = "{email.length}", groups = {OnCreate.class, OnUpdate.class})
-                        @Pattern(regexp = "^[\\w.-]+@[\\w.-]+\\.[\\w.-]+$")
+                        @Pattern(regexp = "^[\\w.-]+@[\\w.-]+\\.[\\w.-]+$", message = "{email.pattern}")
         String email,
 @Schema(description = "Driver phone number", example = "+375(29)1234567")
         @NotNull(message = "{phoneNumber.notnull}", groups = {OnCreate.class, OnUpdate.class})
@@ -26,7 +26,7 @@ public record DriverRequestDto (
 @Schema(description = "Driver gender", example = "FEMALE/MALE")
         @NotNull(message = "{gender.notnull}", groups = {OnCreate.class, OnUpdate.class})
                 @Length(max = 255, message = "{gender.length}", groups = {OnCreate.class, OnUpdate.class})
-                        @Pattern(regexp = "(MALE|FEMALE)")
+                        @Pattern(regexp = "^(?i)(male|female)$")
         String gender
 ){
 }
