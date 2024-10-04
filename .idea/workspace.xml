@@ -4,14 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="fixed bugs, added liquibase">
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="fixed some bugs">
+      <change afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/CarController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/DriverController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/CarRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/CarRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/DriverRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/DriverRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/config/ValidConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/config/ValidConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Car.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Driver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/exception/ResourceAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/exception/ResourceAlreadyExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/DriverServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/DriverServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/utility/ExceptionMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/utility/ExceptionMessage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -334,6 +341,27 @@
       <workItem from="1727984737574" duration="432000" />
       <workItem from="1727987669661" duration="47000" />
       <workItem from="1727987724585" duration="19000" />
+      <workItem from="1727987983634" duration="157000" />
+      <workItem from="1727988164623" duration="22000" />
+      <workItem from="1727988191778" duration="72000" />
+      <workItem from="1727988301591" duration="50000" />
+      <workItem from="1727988385270" duration="131000" />
+      <workItem from="1727988533067" duration="102000" />
+      <workItem from="1727988653915" duration="59000" />
+      <workItem from="1727988742282" duration="2095000" />
+      <workItem from="1727990866190" duration="414000" />
+      <workItem from="1727991324219" duration="90000" />
+      <workItem from="1727991424754" duration="311000" />
+      <workItem from="1727991752854" duration="1807000" />
+      <workItem from="1727994810251" duration="8000" />
+      <workItem from="1727994850951" duration="5000" />
+      <workItem from="1728022001917" duration="2878000" />
+      <workItem from="1728025586730" duration="368000" />
+      <workItem from="1728026158140" duration="15000" />
+      <workItem from="1728026209566" duration="29000" />
+      <workItem from="1728026248077" duration="131000" />
+      <workItem from="1728026460801" duration="71000" />
+      <workItem from="1728026538327" duration="524000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -359,7 +387,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727961871357</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added services, exceptions handlers, edit some classes">
+      <option name="closed" value="true" />
+      <created>1727988070332</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1727988070332</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -380,7 +416,9 @@
     <MESSAGE value="Empty project" />
     <MESSAGE value="added entyties, dto's, mappers, repositories, docker-compose" />
     <MESSAGE value="fixed bugs, added liquibase" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs, added liquibase" />
+    <MESSAGE value="added services, exceptions handlers, edit some classes" />
+    <MESSAGE value="fixed some bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed some bugs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

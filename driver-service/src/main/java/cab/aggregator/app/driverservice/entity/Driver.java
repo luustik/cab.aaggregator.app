@@ -7,13 +7,13 @@ import lombok.Data;
 import java.util.Set;
 
 @Entity
-@Table(name = "drivers")
+@Table(name = "driver")
 @Data
 public class Driver {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="driver_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
 
     @Column(name = "name", nullable = false)

@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "cars")
+@Table(name = "car")
 @Data
 public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="car_id")
+    @Column(name="id")
     private int id;
 
     @Column(name = "color", nullable = false)

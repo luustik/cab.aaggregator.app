@@ -39,7 +39,7 @@ public class DriverServiceImpl implements DriverService {
     @Override
     @Transactional(readOnly = true)
     public List<DriverResponseDto> getDriversByGender(String gender) {
-        return driverMapper.toDtoList(driverRepository.findAllByGender(Gender.valueOf(gender)));
+        return driverMapper.toDtoList(driverRepository.findAllByGender(Gender.valueOf(gender.toUpperCase())));
     }
 
     @Override
@@ -72,11 +72,10 @@ public class DriverServiceImpl implements DriverService {
     }
 
     private void checkIfDriverUnique(DriverRequestDto driverRequestDto) {
-        if(driverRepository.existsByEmail(driverRequestDto.email())) {
-            throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.email());
-        }
-        if(driverRepository.existsByPhoneNumber(driverRequestDto.phoneNumber())) {
-            throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.phoneNumber());
+
+        if(driverRepository.existsByEmail(driverRequestDto.email())
+                && driverRepository.existsByPhoneNumber(driverRequestDto.phoneNumber())) {
+            throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.phoneNumber(),driverRequestDto.email());
         }
     }
 

@@ -5,11 +5,12 @@ import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
 import cab.aggregator.app.driverservice.dto.response.CarResponseDto;
 import cab.aggregator.app.driverservice.entity.Car;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CarMapper {
 
     CarResponseDto toDto(Car car);

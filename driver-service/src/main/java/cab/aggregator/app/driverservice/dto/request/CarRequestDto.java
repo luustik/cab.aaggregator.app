@@ -15,7 +15,7 @@ public record CarRequestDto (
 
         @NotNull(message = "{carNumber.notnull}", groups = {OnCreate.class, OnUpdate.class})
                 @Length(max = 255, message = "{carNumber.length}", groups = {OnCreate.class, OnUpdate.class})
-                        @Pattern(regexp = "^\\d{4}[A-Za-z]{2}-[1-7]$")
+                        @Pattern(regexp = "^\\d{4}[A-Z]{2}-[1-7]$")
         String carNumber,
 
         @NotNull(message = "{color.notnull}", groups = {OnCreate.class, OnUpdate.class})

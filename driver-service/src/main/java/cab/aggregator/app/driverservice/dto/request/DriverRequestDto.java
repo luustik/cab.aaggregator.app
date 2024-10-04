@@ -26,9 +26,7 @@ public record DriverRequestDto (
 
         @NotNull(message = "{gender.notnull}", groups = {OnCreate.class, OnUpdate.class})
                 @Length(max = 255, message = "{gender.length}", groups = {OnCreate.class, OnUpdate.class})
-        String gender,
-
-        @NotNull(message = "{carsId.notnull}", groups = {OnCreate.class, OnUpdate.class})
-        Set<Integer> carsId
+                        @Pattern(regexp = "(MALE|FEMALE)")
+        String gender
 ){
 }
