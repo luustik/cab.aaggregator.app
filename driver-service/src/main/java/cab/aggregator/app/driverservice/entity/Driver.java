@@ -29,9 +29,4 @@ public class Driver {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy = "driver",
-            orphanRemoval = true,
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL)
-    private Set<Car> cars;
 }

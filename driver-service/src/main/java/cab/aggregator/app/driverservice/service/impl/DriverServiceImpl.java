@@ -62,21 +62,34 @@ public class DriverServiceImpl implements DriverService {
     @Transactional
     public DriverResponseDto updateDriver(int id, DriverRequestDto driverRequestDto) {
         Driver driver = findDriverById(id);
-        if (!driverRequestDto.email().equals(driver.getEmail())
-                || !driverRequestDto.phoneNumber().equals(driver.getPhoneNumber())) {
-            checkIfDriverUnique(driverRequestDto);
+        if (!driverRequestDto.email().equals(driver.getEmail())) {
+            checkIfEmailUnique(driverRequestDto);
+        }
+        if(!driverRequestDto.phoneNumber().equals(driver.getPhoneNumber())){
+            checkIfPhoneNumberUnique(driverRequestDto);
         }
         driverMapper.updateDriverFromDto(driverRequestDto, driver);
         driverRepository.save(driver);
         return driverMapper.toDto(driver);
     }
 
-    private void checkIfDriverUnique(DriverRequestDto driverRequestDto) {
+    private void checkIfEmailUnique(DriverRequestDto driverRequestDto) {
 
-        if(driverRepository.existsByEmail(driverRequestDto.email())
-                && driverRepository.existsByPhoneNumber(driverRequestDto.phoneNumber())) {
-            throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.phoneNumber(),driverRequestDto.email());
+        if(driverRepository.existsByEmail(driverRequestDto.email())) {
+            throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.email());
         }
+
+    }
+
+    private void checkIfPhoneNumberUnique(DriverRequestDto driverRequestDto) {
+        if(driverRepository.existsByPhoneNumber(driverRequestDto.phoneNumber())) {
+            throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.phoneNumber());
+        }
+    }
+
+    private void checkIfDriverUnique(DriverRequestDto driverRequestDto) {
+        checkIfEmailUnique(driverRequestDto);
+        checkIfPhoneNumberUnique(driverRequestDto);
     }
 
     private Driver findDriverById(int driverId) {

@@ -1,15 +1,20 @@
 package cab.aggregator.app.driverservice.dto.exception;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 import java.util.Map;
 
+@Schema(description = "Multi exception DTO")
 @Builder
 public record MultiExceptionDto (
-    Integer status,
+        @Schema(description = "Status")
+        Integer status,
 
-    String message,
+        @Schema(description = "Message")
+        String message,
 
-    Map<String, String> errors
+        @Schema(description = "Errors")
+        Map<String, String> errors
 ){
 }

@@ -1,12 +1,12 @@
 package cab.aggregator.app.driverservice.controller.controllerImpl;
 
+import cab.aggregator.app.driverservice.controller.CarApi;
 import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
-import cab.aggregator.app.driverservice.dto.request.DriverRequestDto;
 import cab.aggregator.app.driverservice.dto.response.CarResponseDto;
-import cab.aggregator.app.driverservice.dto.response.DriverResponseDto;
 import cab.aggregator.app.driverservice.dto.validation.OnCreate;
 import cab.aggregator.app.driverservice.dto.validation.OnUpdate;
 import cab.aggregator.app.driverservice.service.CarService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/cars")
 @RequiredArgsConstructor
 @Validated
-public class CarController {
+public class CarController implements CarApi {
 
     private final CarService carService;
 
@@ -47,13 +47,13 @@ public class CarController {
     }
 
     @PostMapping("/new-car")
-    public CarResponseDto createCar(@Validated(OnCreate.class) @RequestBody CarRequestDto requestDto) {
+    public CarResponseDto createCar(@Valid @Validated(OnCreate.class) @RequestBody CarRequestDto requestDto) {
         return carService.createCar(requestDto);
     }
 
     @PutMapping("/edit-car/{id}")
     public CarResponseDto updateCar(@PathVariable int id,
-                                          @Validated(OnUpdate.class) @RequestBody CarRequestDto requestDto) {
+                                         @Valid @Validated(OnUpdate.class) @RequestBody CarRequestDto requestDto) {
         return carService.updateCar(id, requestDto);
     }
 }

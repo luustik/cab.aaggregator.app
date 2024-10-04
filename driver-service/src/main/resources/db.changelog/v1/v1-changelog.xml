@@ -4,7 +4,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
+    <changeSet id="v1-1-tag" author="lustikkkkk">
+        <tagDatabase tag="v1.1-create-driver"/>
+    </changeSet>
+
     <include file="v1-create-driver-table.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="v1-2-tag" author="lustikkkkk">
+        <tagDatabase tag="v1.1-create-car"/>
+    </changeSet>
+
     <include file="v1-create-car-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
