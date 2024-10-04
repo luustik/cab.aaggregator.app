@@ -4,23 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="connect swagger, fixed bugs">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" afterDir="false" />
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="fixed swagger, controller, added method to CarService and DriverService, implementation soft delete">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/CarApi.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/DriverApi.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/CarController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/DriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/DriverController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Driver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/DriverRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/DriverRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/DriverService.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/DriverService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/CarServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/CarServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/DriverServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/DriverServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/resources/db.changelog/v1/v1-create-driver-table.xml" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/resources/db.changelog/v1/v1-create-driver-table.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/resources/messages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/resources/messages.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -380,7 +367,7 @@
       <workItem from="1728038506878" duration="1245000" />
       <workItem from="1728039806888" duration="302000" />
       <workItem from="1728040161726" duration="208000" />
-      <workItem from="1728040414747" duration="10699000" />
+      <workItem from="1728040414747" duration="11630000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -430,7 +417,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728040650796</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="fixed swagger, controller, added method to CarService and DriverService, implementation soft delete">
+      <option name="closed" value="true" />
+      <created>1728051314244</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1728051314245</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -454,7 +449,8 @@
     <MESSAGE value="added services, exceptions handlers, edit some classes" />
     <MESSAGE value="fixed some bugs" />
     <MESSAGE value="connect swagger, fixed bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="connect swagger, fixed bugs" />
+    <MESSAGE value="fixed swagger, controller, added method to CarService and DriverService, implementation soft delete" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed swagger, controller, added method to CarService and DriverService, implementation soft delete" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

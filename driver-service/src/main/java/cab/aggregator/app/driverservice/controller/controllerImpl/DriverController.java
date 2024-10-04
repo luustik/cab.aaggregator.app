@@ -8,6 +8,7 @@ import cab.aggregator.app.driverservice.service.DriverService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,9 @@ public class DriverController {
 
     @Operation(summary = "Get all drivers by gender")
     @GetMapping("/driver-by-gender/{gender}")
-    public List<DriverResponseDto> getAllDriversByGender(@Valid @Validated @PathVariable String gender) {
+    public List<DriverResponseDto> getAllDriversByGender(@Valid @Validated
+                      @PathVariable
+                      @Pattern(regexp = "^(?i)(male|female)$", message = "{gender.pattern}") String gender) {
         return driverService.getDriversByGender(gender);
     }
 

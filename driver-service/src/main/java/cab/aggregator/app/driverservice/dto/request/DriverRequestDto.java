@@ -26,7 +26,7 @@ public record DriverRequestDto (
 @Schema(description = "Driver gender", example = "FEMALE/MALE")
         @NotNull(message = "{gender.notnull}", groups = {OnCreate.class, OnUpdate.class})
                 @Length(max = 255, message = "{gender.length}", groups = {OnCreate.class, OnUpdate.class})
-                        @Pattern(regexp = "^(?i)(male|female)$")
+                        @Pattern(regexp = "^(?i)(male|female)$", message ="{gender.pattern}")
         String gender
 ){
 }
