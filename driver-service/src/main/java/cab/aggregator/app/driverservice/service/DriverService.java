@@ -1,6 +1,7 @@
 package cab.aggregator.app.driverservice.service;
 
 import cab.aggregator.app.driverservice.dto.request.DriverRequestDto;
+import cab.aggregator.app.driverservice.dto.response.DriverContainerResponseDto;
 import cab.aggregator.app.driverservice.dto.response.DriverResponseDto;
 
 import java.util.List;
@@ -9,9 +10,9 @@ public interface DriverService {
 
     DriverResponseDto getDriverById(int driverId);
 
-    List<DriverResponseDto> getAllDrivers();
+    DriverContainerResponseDto getAllDrivers();
 
-    List<DriverResponseDto> getDriversByGender(String gender);
+    DriverContainerResponseDto getDriversByGender(String gender);
 
     void safeDeleteDriver(int driverId);
 

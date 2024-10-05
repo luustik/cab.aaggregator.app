@@ -1,6 +1,7 @@
 package cab.aggregator.app.driverservice.controller.controllerImpl;
 
 import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
+import cab.aggregator.app.driverservice.dto.response.CarContainerResponseDto;
 import cab.aggregator.app.driverservice.dto.response.CarResponseDto;
 import cab.aggregator.app.driverservice.dto.validation.OnCreate;
 import cab.aggregator.app.driverservice.dto.validation.OnUpdate;
@@ -9,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +33,8 @@ public class CarController {
     }
 
     @Operation(summary = "Get all cars")
-    @GetMapping("/show")
-    public List<CarResponseDto> getAllCars(){
+    @GetMapping
+    public CarContainerResponseDto getAllCars(){
         return carService.getAllCars();
     }
 
@@ -43,24 +46,32 @@ public class CarController {
 
     @Operation(summary = "Get all cars by driver id")
     @GetMapping("/cars-driver/{driverId}")
-    public List<CarResponseDto> getAllCarsByDriverId(@PathVariable int driverId){
+    public CarContainerResponseDto getAllCarsByDriverId(@PathVariable int driverId){
         return carService.getAllCarsByDriverId(driverId);
     }
 
+//    @Operation(summary = "Get all cars by driver id")
+//    @GetMapping("/cars-driver/{driverId}")
+//    public List<CarResponseDto> getAllCarsByDriverId(@PathVariable int driverId){
+//        return carService.getAllCarsByDriverId(driverId);
+//    }
+
     @Operation(summary = "Delete car by id")
     @DeleteMapping("/{id}")
-    public void deleteCarById(@PathVariable int id){
+    public ResponseEntity<CarResponseDto> deleteCarById(@PathVariable int id){
         carService.deleteCar(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Create new car")
-    @PostMapping("/new-car")
-    public CarResponseDto createCar(@Valid @Validated(OnCreate.class) @RequestBody CarRequestDto requestDto) {
-        return carService.createCar(requestDto);
+    @PostMapping
+    public ResponseEntity<CarResponseDto> createCar(@Valid @Validated(OnCreate.class) @RequestBody CarRequestDto requestDto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(carService.createCar(requestDto));
     }
 
     @Operation(summary = "Update car by id")
-    @PutMapping("/edit-car/{id}")
+    @PutMapping("/{id}")
     public CarResponseDto updateCar(@PathVariable int id,
                                          @Valid @Validated(OnUpdate.class) @RequestBody CarRequestDto requestDto) {
         return carService.updateCar(id, requestDto);

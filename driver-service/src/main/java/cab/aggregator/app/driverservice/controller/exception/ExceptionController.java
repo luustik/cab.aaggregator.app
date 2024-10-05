@@ -21,27 +21,24 @@ public class ExceptionController {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionDto handleEntityNotFound(EntityNotFoundException e){
+    public ExceptionDto handleEntityNotFound(RuntimeException e){
         return ExceptionDto.builder()
-                .status(HttpStatus.NOT_FOUND.value())
                 .message(e.getMessage())
                 .build();
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionDto handleResourceAlreadyExists(ResourceAlreadyExistsException e){
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ExceptionDto handleResourceAlreadyExists(RuntimeException e){
         return ExceptionDto.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
                 .message(e.getMessage())
                 .build();
     }
 
     @ExceptionHandler(IllegalStateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionDto handleIllegalState(IllegalStateException e){
+    public ExceptionDto handleIllegalState(RuntimeException e){
         return ExceptionDto.builder()
-                .status(HttpStatus.NOT_FOUND.value())
                 .message(e.getMessage())
                 .build();
     }
@@ -56,7 +53,6 @@ public class ExceptionController {
             errors.put(fieldName, errorMessage);
         });
         return MultiExceptionDto.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
                 .message(ExceptionMessage.VALIDATION_FAILED_MESSAGE)
                 .errors(errors)
                 .build();
@@ -72,7 +68,6 @@ public class ExceptionController {
             errors.put(fieldName, errorMessage);
         });
         return MultiExceptionDto.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
                 .message(ExceptionMessage.VALIDATION_FAILED_MESSAGE)
                 .errors(errors)
                 .build();
@@ -82,7 +77,6 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDto handleException(Exception e){
         return ExceptionDto.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(ExceptionMessage.INTERNAL_ERROR_MESSAGE + e.getMessage())
                 .build();
     }

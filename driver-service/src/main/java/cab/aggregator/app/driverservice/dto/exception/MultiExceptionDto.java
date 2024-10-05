@@ -8,8 +8,6 @@ import java.util.Map;
 @Schema(description = "Multi exception DTO")
 @Builder
 public record MultiExceptionDto (
-        @Schema(description = "Status")
-        Integer status,
 
         @Schema(description = "Message")
         String message,

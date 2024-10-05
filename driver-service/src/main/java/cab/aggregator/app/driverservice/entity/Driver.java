@@ -3,10 +3,15 @@ package cab.aggregator.app.driverservice.entity;
 import cab.aggregator.app.driverservice.entity.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "driver")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Driver {
 
     @Id

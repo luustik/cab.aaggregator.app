@@ -1,11 +1,13 @@
 package cab.aggregator.app.driverservice.service.impl;
 
 import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
+import cab.aggregator.app.driverservice.dto.response.CarContainerResponseDto;
 import cab.aggregator.app.driverservice.dto.response.CarResponseDto;
 import cab.aggregator.app.driverservice.entity.Car;
 import cab.aggregator.app.driverservice.entity.Driver;
 import cab.aggregator.app.driverservice.exception.EntityNotFoundException;
 import cab.aggregator.app.driverservice.exception.ResourceAlreadyExistsException;
+import cab.aggregator.app.driverservice.mapper.CarContainerResponseMapper;
 import cab.aggregator.app.driverservice.mapper.CarMapper;
 import cab.aggregator.app.driverservice.repository.CarRepository;
 import cab.aggregator.app.driverservice.repository.DriverRepository;
@@ -13,8 +15,6 @@ import cab.aggregator.app.driverservice.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static cab.aggregator.app.driverservice.utility.ResourceName.*;
 
@@ -24,6 +24,7 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private final CarMapper carMapper;
+    private final CarContainerResponseMapper carContainerResponseMapper;
     private final DriverRepository driverRepository;
 
     @Override
@@ -32,10 +33,11 @@ public class CarServiceImpl implements CarService {
         return carMapper.toDto(findCarById(carId));
     }
 
+
     @Transactional(readOnly = true)
     @Override
-    public List<CarResponseDto> getAllCars() {
-        return carMapper.toDtoList(carRepository.findAll());
+    public CarContainerResponseDto getAllCars() {
+        return carContainerResponseMapper.toDto(carMapper.toDtoList(carRepository.findAll()));
     }
 
     @Transactional(readOnly = true)
@@ -46,12 +48,8 @@ public class CarServiceImpl implements CarService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CarResponseDto> getAllCarsByDriverId(int driverId) {
-        List<Car> carsByDriverId = carRepository.findAll()
-                .stream()
-                .filter(s -> s.getDriver().getId() == driverId)
-                .toList();
-        return carMapper.toDtoList(carsByDriverId);
+    public CarContainerResponseDto getAllCarsByDriverId(int driverId) {
+        return carContainerResponseMapper.toDto(carMapper.toDtoList(carRepository.findAllByDriverId(driverId)));
     }
 
     @Override
@@ -94,18 +92,6 @@ public class CarServiceImpl implements CarService {
                 .filter(driver -> !driver.isDeleted())
                 .orElseThrow(() -> new EntityNotFoundException(DRIVER, carRequestDto.driverId()));
     }
-
-//    private Driver findDriverById(CarRequestDto carRequestDto) {
-//
-//        Driver driver =driverRepository.findById(carRequestDto.driverId()).orElseThrow(()->{
-//            return new EntityNotFoundException(DRIVER, carRequestDto.driverId());
-//        });
-//
-//        if(driver.isDeleted()){
-//            throw new EntityNotFoundException(DRIVER, carRequestDto.driverId());
-//        }
-//        return driver;
-//    }
 
     private Car findCarByCarNumber(String carNumber) {
         return carRepository.findByCarNumber(carNumber).orElseThrow(()->{

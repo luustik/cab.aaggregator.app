@@ -1,12 +1,13 @@
 package cab.aggregator.app.driverservice.service.impl;
 
-import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
 import cab.aggregator.app.driverservice.dto.request.DriverRequestDto;
+import cab.aggregator.app.driverservice.dto.response.DriverContainerResponseDto;
 import cab.aggregator.app.driverservice.dto.response.DriverResponseDto;
 import cab.aggregator.app.driverservice.entity.Driver;
 import cab.aggregator.app.driverservice.entity.enums.Gender;
 import cab.aggregator.app.driverservice.exception.EntityNotFoundException;
 import cab.aggregator.app.driverservice.exception.ResourceAlreadyExistsException;
+import cab.aggregator.app.driverservice.mapper.DriverContainerResponseMapper;
 import cab.aggregator.app.driverservice.mapper.DriverMapper;
 import cab.aggregator.app.driverservice.repository.DriverRepository;
 import cab.aggregator.app.driverservice.service.DriverService;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static cab.aggregator.app.driverservice.utility.ResourceName.*;
 
@@ -25,6 +25,7 @@ public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
+    private final DriverContainerResponseMapper driverContainerResponseMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -34,14 +35,15 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<DriverResponseDto> getAllDrivers() {
-        return driverMapper.toDtoList(driverRepository.findAll());
+    public DriverContainerResponseDto getAllDrivers() {
+        return driverContainerResponseMapper.toDto(driverMapper.toDtoList(driverRepository.findAll()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<DriverResponseDto> getDriversByGender(String gender) {
-        return driverMapper.toDtoList(driverRepository.findAllByGender(Gender.valueOf(gender.toUpperCase())));
+    public DriverContainerResponseDto getDriversByGender(String gender) {
+        return driverContainerResponseMapper.toDto(driverMapper
+                .toDtoList(driverRepository.findAllByGender(Gender.valueOf(gender.toUpperCase()))));
     }
 
     @Override

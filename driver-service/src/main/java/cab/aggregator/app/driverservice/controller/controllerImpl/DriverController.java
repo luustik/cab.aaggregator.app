@@ -1,6 +1,7 @@
 package cab.aggregator.app.driverservice.controller.controllerImpl;
 
 import cab.aggregator.app.driverservice.dto.request.DriverRequestDto;
+import cab.aggregator.app.driverservice.dto.response.DriverContainerResponseDto;
 import cab.aggregator.app.driverservice.dto.response.DriverResponseDto;
 import cab.aggregator.app.driverservice.dto.validation.OnCreate;
 import cab.aggregator.app.driverservice.dto.validation.OnUpdate;
@@ -10,10 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/drivers")
@@ -31,14 +32,14 @@ public class DriverController {
     }
 
     @Operation(summary = "Get all drivers")
-    @GetMapping("/show")
-    public List<DriverResponseDto> getAllDrivers(){
+    @GetMapping
+    public DriverContainerResponseDto getAllDrivers(){
         return driverService.getAllDrivers();
     }
 
     @Operation(summary = "Get all drivers by gender")
     @GetMapping("/driver-by-gender/{gender}")
-    public List<DriverResponseDto> getAllDriversByGender(@Valid @Validated
+    public DriverContainerResponseDto getAllDriversByGender(@Valid @Validated
                       @PathVariable
                       @Pattern(regexp = "^(?i)(male|female)$", message = "{gender.pattern}") String gender) {
         return driverService.getDriversByGender(gender);
@@ -52,19 +53,21 @@ public class DriverController {
 
     @Operation(summary = "Hard delete driver by Id")
     @DeleteMapping("/{id}")
-    public void deleteDriverById(@PathVariable int id) {
+    public ResponseEntity<DriverResponseDto> deleteDriverById(@PathVariable int id) {
         driverService.deleteDriver(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Create new driver")
-    @PostMapping("/new-driver")
-    public DriverResponseDto createDriver(@Valid @Validated(OnCreate.class)
+    @PostMapping
+    public ResponseEntity<DriverResponseDto> createDriver(@Valid @Validated(OnCreate.class)
                                               @RequestBody DriverRequestDto requestDto) {
-        return driverService.createDriver(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(driverService.createDriver(requestDto));
     }
 
     @Operation(summary = "Update driver by Id")
-    @PutMapping("/update-driver/{id}")
+    @PutMapping("/{id}")
     public DriverResponseDto updateDriver(@PathVariable int id,
                                           @Valid @Validated(OnUpdate.class) @RequestBody DriverRequestDto requestDto) {
         return driverService.updateDriver(id, requestDto);

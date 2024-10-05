@@ -7,9 +7,6 @@ import lombok.Builder;
 @Builder
 public record ExceptionDto(
 
-        @Schema(description = "Status")
-        Integer status,
-
         @Schema(description = "Message")
         String message
 ) {
