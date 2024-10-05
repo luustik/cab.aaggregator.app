@@ -4,17 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="added gender validation and message">
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="fixed bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/CarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/DriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/DriverController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/exception/ExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/exception/ExceptionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/ExceptionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/ExceptionDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/MultiExceptionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/MultiExceptionDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Car.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/entity/Driver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/CarRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/repository/CarRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/CarController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/DriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/DriverController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/exception/ExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/exception/handler/ExceptionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/ExceptionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/Exception.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/MultiExceptionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/MultiException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/CarContainerResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/CarContainerResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/CarResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/CarResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverContainerResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverContainerResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarContainerResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarContainerResponseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverContainerResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverContainerResponseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/CarService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/DriverService.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/DriverService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/CarServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/CarServiceImpl.java" afterDir="false" />
@@ -113,6 +119,10 @@
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db\data" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="cab.aggregator.app.driverservice.controller" />
+      <recent name="cab.aggregator.app.driverservice.exception.handler" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.DriverServiceApplication">
@@ -381,7 +391,8 @@
       <workItem from="1728040414747" duration="11822000" />
       <workItem from="1728058084296" duration="769000" />
       <workItem from="1728062770238" duration="341000" />
-      <workItem from="1728150105404" duration="5930000" />
+      <workItem from="1728150105404" duration="6363000" />
+      <workItem from="1728160324501" duration="418000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -447,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728052279799</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fixed bugs">
+      <option name="closed" value="true" />
+      <created>1728156174052</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1728156174052</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -473,7 +492,8 @@
     <MESSAGE value="connect swagger, fixed bugs" />
     <MESSAGE value="fixed swagger, controller, added method to CarService and DriverService, implementation soft delete" />
     <MESSAGE value="added gender validation and message" />
-    <option name="LAST_COMMIT_MESSAGE" value="added gender validation and message" />
+    <MESSAGE value="fixed bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

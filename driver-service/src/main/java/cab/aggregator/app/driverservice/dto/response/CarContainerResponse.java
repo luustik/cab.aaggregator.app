@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record CarContainerResponseDto(
-        List<CarResponseDto> carResponseDtos
+public record CarContainerResponse(
+        List<CarResponse> items
 ) {
 }

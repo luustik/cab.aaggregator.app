@@ -1,8 +1,6 @@
 package cab.aggregator.app.driverservice.dto.response;
 
-import java.util.Set;
-
-public record DriverResponseDto(
+public record DriverResponse(
 
          int id,
 

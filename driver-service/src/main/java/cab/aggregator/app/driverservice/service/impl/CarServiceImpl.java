@@ -1,8 +1,8 @@
 package cab.aggregator.app.driverservice.service.impl;
 
-import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
-import cab.aggregator.app.driverservice.dto.response.CarContainerResponseDto;
-import cab.aggregator.app.driverservice.dto.response.CarResponseDto;
+import cab.aggregator.app.driverservice.dto.request.CarRequest;
+import cab.aggregator.app.driverservice.dto.response.CarContainerResponse;
+import cab.aggregator.app.driverservice.dto.response.CarResponse;
 import cab.aggregator.app.driverservice.entity.Car;
 import cab.aggregator.app.driverservice.entity.Driver;
 import cab.aggregator.app.driverservice.exception.EntityNotFoundException;
@@ -29,32 +29,32 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional(readOnly = true)
-    public CarResponseDto getCarById(int carId) {
+    public CarResponse getCarById(int carId) {
         return carMapper.toDto(findCarById(carId));
     }
 
 
     @Transactional(readOnly = true)
     @Override
-    public CarContainerResponseDto getAllCars() {
+    public CarContainerResponse getAllCars() {
         return carContainerResponseMapper.toDto(carMapper.toDtoList(carRepository.findAll()));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public CarResponseDto getCarByCarNumber(String carNumber) {
+    public CarResponse getCarByCarNumber(String carNumber) {
         return carMapper.toDto(findCarByCarNumber(carNumber));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public CarContainerResponseDto getAllCarsByDriverId(int driverId) {
+    public CarContainerResponse getAllCarsByDriverId(int driverId) {
         return carContainerResponseMapper.toDto(carMapper.toDtoList(carRepository.findAllByDriverId(driverId)));
     }
 
     @Override
     @Transactional
-    public CarResponseDto createCar(CarRequestDto carRequestDto) {
+    public CarResponse createCar(CarRequest carRequestDto) {
         checkIfCarUnique(carRequestDto);
         Car car = carMapper.toEntity(carRequestDto);
         car.setDriver(findDriverById(carRequestDto));
@@ -63,7 +63,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
-    public CarResponseDto updateCar(int carId, CarRequestDto carRequestDto) {
+    public CarResponse updateCar(int carId, CarRequest carRequestDto) {
         Car car = findCarById(carId);
         if(!car.getCarNumber().equals(carRequestDto.carNumber())){
             checkIfCarUnique(carRequestDto);
@@ -81,13 +81,13 @@ public class CarServiceImpl implements CarService {
         carRepository.delete(car);
     }
 
-    private void checkIfCarUnique(CarRequestDto carRequestDto) {
+    private void checkIfCarUnique(CarRequest carRequestDto) {
         if(carRepository.existsByCarNumber(carRequestDto.carNumber())) {
             throw new ResourceAlreadyExistsException(CAR, carRequestDto.carNumber());
         }
     }
 
-    private Driver findDriverById(CarRequestDto carRequestDto) {
+    private Driver findDriverById(CarRequest carRequestDto) {
         return driverRepository.findById(carRequestDto.driverId())
                 .filter(driver -> !driver.isDeleted())
                 .orElseThrow(() -> new EntityNotFoundException(DRIVER, carRequestDto.driverId()));

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 @Schema(description = "DriverRequest DTO")
-public record DriverRequestDto (
+public record DriverRequest(
 @Schema(description = "Driver name", example = "Pasha")
         @NotNull(message = "{name.notnull}", groups = {OnCreate.class, OnUpdate.class})
                 @Length(max = 255, message = "{name.length}", groups = {OnCreate.class, OnUpdate.class})

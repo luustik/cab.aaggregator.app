@@ -1,6 +1,6 @@
 package cab.aggregator.app.driverservice.dto.response;
 
-public record CarResponseDto (
+public record CarResponse(
 
          int id,
 

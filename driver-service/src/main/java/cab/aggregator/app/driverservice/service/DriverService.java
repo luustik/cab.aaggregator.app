@@ -1,25 +1,23 @@
 package cab.aggregator.app.driverservice.service;
 
-import cab.aggregator.app.driverservice.dto.request.DriverRequestDto;
-import cab.aggregator.app.driverservice.dto.response.DriverContainerResponseDto;
-import cab.aggregator.app.driverservice.dto.response.DriverResponseDto;
-
-import java.util.List;
+import cab.aggregator.app.driverservice.dto.request.DriverRequest;
+import cab.aggregator.app.driverservice.dto.response.DriverContainerResponse;
+import cab.aggregator.app.driverservice.dto.response.DriverResponse;
 
 public interface DriverService {
 
-    DriverResponseDto getDriverById(int driverId);
+    DriverResponse getDriverById(int driverId);
 
-    DriverContainerResponseDto getAllDrivers();
+    DriverContainerResponse getAllDrivers();
 
-    DriverContainerResponseDto getDriversByGender(String gender);
+    DriverContainerResponse getDriversByGender(String gender);
 
     void safeDeleteDriver(int driverId);
 
     void deleteDriver(int driverId);
 
-    DriverResponseDto createDriver(DriverRequestDto driverRequestDto);
+    DriverResponse createDriver(DriverRequest driverRequestDto);
 
-    DriverResponseDto updateDriver(int id,DriverRequestDto driverRequestDto);
+    DriverResponse updateDriver(int id, DriverRequest driverRequestDto);
 
 }

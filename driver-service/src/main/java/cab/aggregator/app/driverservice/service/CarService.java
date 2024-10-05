@@ -1,22 +1,22 @@
 package cab.aggregator.app.driverservice.service;
 
-import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
-import cab.aggregator.app.driverservice.dto.response.CarContainerResponseDto;
-import cab.aggregator.app.driverservice.dto.response.CarResponseDto;
+import cab.aggregator.app.driverservice.dto.request.CarRequest;
+import cab.aggregator.app.driverservice.dto.response.CarContainerResponse;
+import cab.aggregator.app.driverservice.dto.response.CarResponse;
 
 public interface CarService {
 
-    CarResponseDto getCarById(int carId);
+    CarResponse getCarById(int carId);
 
-    CarContainerResponseDto getAllCars();
+    CarContainerResponse getAllCars();
 
-    CarResponseDto getCarByCarNumber(String carNumber);
+    CarResponse getCarByCarNumber(String carNumber);
 
-    CarContainerResponseDto getAllCarsByDriverId(int driverId);
+    CarContainerResponse getAllCarsByDriverId(int driverId);
 
-    CarResponseDto createCar(CarRequestDto carRequestDto);
+    CarResponse createCar(CarRequest carRequestDto);
 
-    CarResponseDto updateCar(int carId, CarRequestDto carRequestDto);
+    CarResponse updateCar(int carId, CarRequest carRequestDto);
 
     void deleteCar(int carId);
 

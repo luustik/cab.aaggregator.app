@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record DriverContainerResponseDto(
-        List<DriverResponseDto> driverResponseDtos
+public record DriverContainerResponse(
+        List<DriverResponse> items
 ) {
 }

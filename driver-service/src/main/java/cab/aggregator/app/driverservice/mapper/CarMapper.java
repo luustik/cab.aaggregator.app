@@ -1,7 +1,7 @@
 package cab.aggregator.app.driverservice.mapper;
 
-import cab.aggregator.app.driverservice.dto.request.CarRequestDto;
-import cab.aggregator.app.driverservice.dto.response.CarResponseDto;
+import cab.aggregator.app.driverservice.dto.request.CarRequest;
+import cab.aggregator.app.driverservice.dto.response.CarResponse;
 import cab.aggregator.app.driverservice.entity.Car;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,13 +14,13 @@ import java.util.List;
 public interface CarMapper {
 
     @Mapping(source = "driver.id", target = "driverId")
-    CarResponseDto toDto(Car car);
+    CarResponse toDto(Car car);
 
-    void updateCarFromDto(CarRequestDto carRequestDto, @MappingTarget Car
+    void updateCarFromDto(CarRequest carRequestDto, @MappingTarget Car
             car);
 
-    List<CarResponseDto> toDtoList(List<Car> cars);
+    List<CarResponse> toDtoList(List<Car> cars);
 
-    Car toEntity(CarRequestDto carRequestDto);
+    Car toEntity(CarRequest carRequestDto);
 
 }

@@ -1,7 +1,7 @@
 package cab.aggregator.app.driverservice.mapper;
 
-import cab.aggregator.app.driverservice.dto.response.CarContainerResponseDto;
-import cab.aggregator.app.driverservice.dto.response.CarResponseDto;
+import cab.aggregator.app.driverservice.dto.response.CarContainerResponse;
+import cab.aggregator.app.driverservice.dto.response.CarResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CarContainerResponseMapper {
 
-    default CarContainerResponseDto toDto(List<CarResponseDto> cars){
-        return CarContainerResponseDto.builder().carResponseDtos(cars).build();
+    default CarContainerResponse toDto(List<CarResponse> cars){
+        return CarContainerResponse.builder().items(cars).build();
     }
 }

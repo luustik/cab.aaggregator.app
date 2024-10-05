@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 
 @Schema(description = "CarRequest DTO")
-public record CarRequestDto (
+public record CarRequest(
         @Schema(description = "Car model", example = "audi")
                 @NotNull(message = "{model.notnull}", groups = {OnCreate.class, OnUpdate.class})
                         @Length(max = 255, message = "{model.length}", groups = {OnCreate.class, OnUpdate.class})

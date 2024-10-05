@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Schema(description = "Exception DTO")
 @Builder
-public record ExceptionDto(
+public record Exception(
 
         @Schema(description = "Message")
         String message

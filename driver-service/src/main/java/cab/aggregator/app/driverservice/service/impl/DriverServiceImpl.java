@@ -1,8 +1,8 @@
 package cab.aggregator.app.driverservice.service.impl;
 
-import cab.aggregator.app.driverservice.dto.request.DriverRequestDto;
-import cab.aggregator.app.driverservice.dto.response.DriverContainerResponseDto;
-import cab.aggregator.app.driverservice.dto.response.DriverResponseDto;
+import cab.aggregator.app.driverservice.dto.request.DriverRequest;
+import cab.aggregator.app.driverservice.dto.response.DriverContainerResponse;
+import cab.aggregator.app.driverservice.dto.response.DriverResponse;
 import cab.aggregator.app.driverservice.entity.Driver;
 import cab.aggregator.app.driverservice.entity.enums.Gender;
 import cab.aggregator.app.driverservice.exception.EntityNotFoundException;
@@ -29,19 +29,19 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional(readOnly = true)
-    public DriverResponseDto getDriverById(int driverId) {
+    public DriverResponse getDriverById(int driverId) {
         return driverMapper.toDto(findDriverById(driverId));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public DriverContainerResponseDto getAllDrivers() {
+    public DriverContainerResponse getAllDrivers() {
         return driverContainerResponseMapper.toDto(driverMapper.toDtoList(driverRepository.findAll()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public DriverContainerResponseDto getDriversByGender(String gender) {
+    public DriverContainerResponse getDriversByGender(String gender) {
         return driverContainerResponseMapper.toDto(driverMapper
                 .toDtoList(driverRepository.findAllByGender(Gender.valueOf(gender.toUpperCase()))));
     }
@@ -63,7 +63,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public DriverResponseDto createDriver(DriverRequestDto driverRequestDto) {
+    public DriverResponse createDriver(DriverRequest driverRequestDto) {
         Driver driver = checkIfDriverDelete(driverRequestDto);
         if(driver != null) {
             driver.setDeleted(false);
@@ -78,7 +78,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public DriverResponseDto updateDriver(int id, DriverRequestDto driverRequestDto) {
+    public DriverResponse updateDriver(int id, DriverRequest driverRequestDto) {
         Driver driver = findDriverById(id);
         if (!driverRequestDto.email().equals(driver.getEmail())) {
             checkIfEmailUnique(driverRequestDto);
@@ -91,7 +91,7 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.toDto(driver);
     }
 
-    private Driver checkIfDriverDelete(DriverRequestDto driverRequestDto) {
+    private Driver checkIfDriverDelete(DriverRequest driverRequestDto) {
         List<Driver> drivers = driverRepository.findByDeletedTrue();
         return drivers.stream()
                 .filter(obj -> obj.getName().equals(driverRequestDto.name()))
@@ -103,7 +103,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
 
-    private void checkIfEmailUnique(DriverRequestDto driverRequestDto) {
+    private void checkIfEmailUnique(DriverRequest driverRequestDto) {
 
         if(driverRepository.existsByEmail(driverRequestDto.email())) {
             throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.email());
@@ -111,13 +111,13 @@ public class DriverServiceImpl implements DriverService {
 
     }
 
-    private void checkIfPhoneNumberUnique(DriverRequestDto driverRequestDto) {
+    private void checkIfPhoneNumberUnique(DriverRequest driverRequestDto) {
         if(driverRepository.existsByPhoneNumber(driverRequestDto.phoneNumber())) {
             throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.phoneNumber());
         }
     }
 
-    private void checkIfDriverUnique(DriverRequestDto driverRequestDto) {
+    private void checkIfDriverUnique(DriverRequest driverRequestDto) {
         checkIfEmailUnique(driverRequestDto);
         checkIfPhoneNumberUnique(driverRequestDto);
     }
