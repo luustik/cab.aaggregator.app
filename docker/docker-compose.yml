@@ -1,0 +1,17 @@
+version: '3.1'
+
+volumes:
+  pg_taxi:
+
+services:
+  taxi_db:
+    image: postgres:15.1-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=taxi_db
+    volumes:
+      - pg_taxi:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
