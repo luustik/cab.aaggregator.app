@@ -16,9 +16,7 @@ public interface PassengerRepository extends JpaRepository<Passenger, Integer> {
 
     Optional<Passenger> findByPhone(String phone);
 
-    List<Passenger> findAllByDeletedIsFalse();
-
-    List<Passenger> findAllByDeletedIsTrue();
+    List<Passenger> findByDeletedIsTrue();
 
     boolean existsByEmail(String email);
 

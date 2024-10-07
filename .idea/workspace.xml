@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="create new branch, new module for passenger service">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="create entity, repository, dto and mapper, connection liquibase">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/passenger-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/mapper/PassengerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/mapper/PassengerMapper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,9 +17,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Record" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -391,7 +386,8 @@
       <workItem from="1728160324501" duration="1637000" />
       <workItem from="1728162088916" duration="451000" />
       <workItem from="1728288248387" duration="1433000" />
-      <workItem from="1728289706826" duration="1591000" />
+      <workItem from="1728289706826" duration="2015000" />
+      <workItem from="1728295081727" duration="708000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -481,7 +477,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728161705371</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="create entity, repository, dto and mapper, connection liquibase">
+      <option name="closed" value="true" />
+      <created>1728291602943</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1728291602944</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -510,7 +514,8 @@
     <MESSAGE value="fixed bugs" />
     <MESSAGE value="refactor project and files" />
     <MESSAGE value="create new branch, new module for passenger service" />
-    <option name="LAST_COMMIT_MESSAGE" value="create new branch, new module for passenger service" />
+    <MESSAGE value="create entity, repository, dto and mapper, connection liquibase" />
+    <option name="LAST_COMMIT_MESSAGE" value="create entity, repository, dto and mapper, connection liquibase" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
