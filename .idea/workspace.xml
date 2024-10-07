@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="refactor project and files" />
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="create new branch, new module for passenger service">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="feat/driver-service" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -71,7 +79,8 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
     &quot;Spring Boot.DriverServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#1 on feat/driver-service&quot;,
+    &quot;Spring Boot.PassengerServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/passenger-service&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;22&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -105,10 +114,17 @@
       <recent name="cab.aggregator.app.driverservice.exception.handler" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.DriverServiceApplication">
+  <component name="RunManager" selected="Spring Boot.PassengerServiceApplication">
     <configuration name="DriverServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="driver-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="cab.aggregator.app.driverservice.DriverServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PassengerServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="passenger-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="cab.aggregator.app.passengerservice.PassengerServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -372,7 +388,10 @@
       <workItem from="1728058084296" duration="769000" />
       <workItem from="1728062770238" duration="341000" />
       <workItem from="1728150105404" duration="6363000" />
-      <workItem from="1728160324501" duration="1033000" />
+      <workItem from="1728160324501" duration="1637000" />
+      <workItem from="1728162088916" duration="451000" />
+      <workItem from="1728288248387" duration="1433000" />
+      <workItem from="1728289706826" duration="1591000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -454,7 +473,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728160967362</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="create new branch, new module for passenger service">
+      <option name="closed" value="true" />
+      <created>1728161705371</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728161705371</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +509,8 @@
     <MESSAGE value="added gender validation and message" />
     <MESSAGE value="fixed bugs" />
     <MESSAGE value="refactor project and files" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor project and files" />
+    <MESSAGE value="create new branch, new module for passenger service" />
+    <option name="LAST_COMMIT_MESSAGE" value="create new branch, new module for passenger service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
