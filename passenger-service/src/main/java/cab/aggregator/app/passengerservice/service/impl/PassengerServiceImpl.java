@@ -91,6 +91,7 @@ public class PassengerServiceImpl implements PassengerService {
             checkIfPhoneUnique(passengerRequestDto);
         }
         passengerMapper.updatePassengerFromDto(passengerRequestDto, passenger);
+        passenger.setDeleted(false);
         passengerRepository.save(passenger);
         return passengerMapper.toDto(passenger);
     }
