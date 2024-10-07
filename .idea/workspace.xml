@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="added service and service implementation, implemented exceptions handler and create custom exceptions">
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="added controller, connection swagger">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/passenger-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/controller/PassengerControllerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/controller/PassengerControllerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/dto/exception/Exception.java" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/dto/exception/Exception.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/dto/exception/MultiException.java" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/dto/exception/MultiException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/dto/request/PassengerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/dto/request/PassengerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,13 +83,13 @@
     "ignore.virus.scanning.warn.message": "true",
     "jdk.selected.JAVA_MODULE": "22",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/УЧЕБА/java projects/Modsen/cab.aggregator.app/passenger-service/src/main/java/cab/aggregator/app/passengerservice",
+    "last_opened_file_path": "D:/УЧЕБА/java projects/Modsen/cab.aggregator.app/passenger-service/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "editor.preferences.folding",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -96,6 +100,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\passenger-service\src\main\resources" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\passenger-service\src\main\java\cab\aggregator\app\passengerservice" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\passenger-service\src\main\java\cab\aggregator\app\passengerservice\dto" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db.changelog\v1\driver" />
@@ -392,7 +397,8 @@
       <workItem from="1728162088916" duration="451000" />
       <workItem from="1728288248387" duration="1433000" />
       <workItem from="1728289706826" duration="2015000" />
-      <workItem from="1728295081727" duration="4437000" />
+      <workItem from="1728295081727" duration="5311000" />
+      <workItem from="1728306935688" duration="1768000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -498,7 +504,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728298624526</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="added controller, connection swagger">
+      <option name="closed" value="true" />
+      <created>1728300058675</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1728300058675</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -529,7 +543,8 @@
     <MESSAGE value="create new branch, new module for passenger service" />
     <MESSAGE value="create entity, repository, dto and mapper, connection liquibase" />
     <MESSAGE value="added service and service implementation, implemented exceptions handler and create custom exceptions" />
-    <option name="LAST_COMMIT_MESSAGE" value="added service and service implementation, implemented exceptions handler and create custom exceptions" />
+    <MESSAGE value="added controller, connection swagger" />
+    <option name="LAST_COMMIT_MESSAGE" value="added controller, connection swagger" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
