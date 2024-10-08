@@ -97,12 +97,10 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     private Passenger checkIfPassengerDelete(PassengerRequest passengerRequestDto) {
-        List<Passenger> passengers = passengerRepository.findByDeletedIsTrue();
-        return passengers.stream()
-                .filter(obj -> obj.getName().equals(passengerRequestDto.name()))
-                .filter(obj -> obj.getEmail().equals(passengerRequestDto.email()))
-                .filter(obj -> obj.getPhone().equals(passengerRequestDto.phone()))
-                .findFirst()
+        return passengerRepository
+                .findByNameAndEmailAndPhoneAndDeletedIsTrue(passengerRequestDto.name(),
+                                                        passengerRequestDto.email(),
+                                                        passengerRequestDto.phone())
                 .orElse(null);
     }
 
@@ -125,25 +123,19 @@ public class PassengerServiceImpl implements PassengerService {
 
     private Passenger findPassengerById(int id) {
         return passengerRepository.findById(id).orElseThrow(
-                ()->{
-                    return new EntityNotFoundException(PASSENGER, id);
-                }
+                ()-> new EntityNotFoundException(PASSENGER, id)
         );
     }
 
     private Passenger findPassengerByPhone(String phone) {
         return passengerRepository.findByPhone(phone).orElseThrow(
-                ()->{
-                    return new EntityNotFoundException(PASSENGER, phone);
-                }
+                ()-> new EntityNotFoundException(PASSENGER, phone)
         );
     }
 
     private Passenger findPassengerByEmail(String email) {
         return passengerRepository.findByEmail(email).orElseThrow(
-                ()->{
-                    return new EntityNotFoundException(PASSENGER, email);
-                }
+                ()-> new EntityNotFoundException(PASSENGER, email)
         );
     }
 }

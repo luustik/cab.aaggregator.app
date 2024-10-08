@@ -38,7 +38,7 @@ public class PassengerControllerImpl {
     }
 
     @Operation(summary = "Get passenger by phone")
-    @GetMapping("/passenger-by-phone/{phone}")
+    @GetMapping("/phone/{phone}")
     public PassengerResponse getPassengerByPhone(@Valid
                                                  @Validated
                                                  @PathVariable
@@ -48,7 +48,7 @@ public class PassengerControllerImpl {
     }
 
     @Operation(summary = "Get passenger by email")
-    @GetMapping("/passenger-by-email/{email}")
+    @GetMapping("/email/{email}")
     public PassengerResponse getPassengerByEmail(@Valid
                                                  @Validated
                                                  @PathVariable

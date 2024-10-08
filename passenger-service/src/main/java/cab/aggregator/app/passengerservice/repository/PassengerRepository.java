@@ -18,6 +18,8 @@ public interface PassengerRepository extends JpaRepository<Passenger, Integer> {
 
     List<Passenger> findByDeletedIsTrue();
 
+    Optional<Passenger> findByNameAndEmailAndPhoneAndDeletedIsTrue(String name, String email, String phone);
+
     boolean existsByEmail(String email);
 
     boolean existsByPhone(String phone);
