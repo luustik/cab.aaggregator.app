@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/cab-aggregator-app/pom.xml" />
         <option value="$PROJECT_DIR$/driver-service/pom.xml" />
+        <option value="$PROJECT_DIR$/passenger-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

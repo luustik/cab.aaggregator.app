@@ -4,27 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="fixed bugs">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/CarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/controllerImpl/DriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/DriverController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/controller/exception/ExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/exception/handler/ExceptionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/ExceptionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/Exception.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/MultiExceptionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/exception/MultiException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/CarRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/request/DriverRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/CarContainerResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/CarContainerResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/CarResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/CarResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverContainerResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverContainerResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/dto/response/DriverResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarContainerResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarContainerResponseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/CarMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverContainerResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverContainerResponseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/mapper/DriverMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/CarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/DriverService.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/DriverService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/CarServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/CarServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/DriverServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/service/impl/DriverServiceImpl.java" afterDir="false" />
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="added controller, connection swagger">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/controller/PassengerControllerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/controller/PassengerControllerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/repository/PassengerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/repository/PassengerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/service/impl/PassengerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/java/cab/aggregator/app/passengerservice/service/impl/PassengerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/passenger-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/passenger-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,19 +20,20 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Record" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="feat/driver-service" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -77,41 +63,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.docker.taxi_db: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;Notification.DisplayName-DoNotAsk-Database detector&quot;: &quot;Database detector&quot;,
-    &quot;Notification.DoNotAsk-Database detector&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;Spring Boot.DriverServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#1 on feat/driver-service&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;22&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/УЧЕБА/java projects/practice&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.docker.taxi_db: Compose Deployment.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Notification.DisplayName-DoNotAsk-Database detector": "Database detector",
+    "Notification.DoNotAsk-Database detector": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "Spring Boot.DriverServiceApplication.executor": "Run",
+    "Spring Boot.PassengerServiceApplication.executor": "Run",
+    "git-widget-placeholder": "#2 on feat/passenger-service",
+    "ignore.virus.scanning.warn.message": "true",
+    "jdk.selected.JAVA_MODULE": "22",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/УЧЕБА/java projects/Modsen/cab.aggregator.app/passenger-service/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editor.preferences.folding",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\passenger-service\src\main\resources" />
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\passenger-service\src\main\java\cab\aggregator\app\passengerservice" />
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\passenger-service\src\main\java\cab\aggregator\app\passengerservice\dto" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db.changelog\v1\driver" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -124,11 +114,21 @@
       <recent name="cab.aggregator.app.driverservice.controller" />
       <recent name="cab.aggregator.app.driverservice.exception.handler" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cab.aggregator.app.passengerservice.config" />
+    </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.DriverServiceApplication">
+  <component name="RunManager" selected="Spring Boot.PassengerServiceApplication">
     <configuration name="DriverServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="driver-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="cab.aggregator.app.driverservice.DriverServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PassengerServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="passenger-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="cab.aggregator.app.passengerservice.PassengerServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -392,7 +392,12 @@
       <workItem from="1728058084296" duration="769000" />
       <workItem from="1728062770238" duration="341000" />
       <workItem from="1728150105404" duration="6363000" />
-      <workItem from="1728160324501" duration="418000" />
+      <workItem from="1728160324501" duration="1637000" />
+      <workItem from="1728162088916" duration="451000" />
+      <workItem from="1728288248387" duration="1433000" />
+      <workItem from="1728289706826" duration="2015000" />
+      <workItem from="1728295081727" duration="5311000" />
+      <workItem from="1728306935688" duration="1768000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -466,7 +471,47 @@
       <option name="project" value="LOCAL" />
       <updated>1728156174052</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="refactor project and files">
+      <option name="closed" value="true" />
+      <created>1728160967362</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1728160967362</updated>
+    </task>
+    <task id="LOCAL-00011" summary="create new branch, new module for passenger service">
+      <option name="closed" value="true" />
+      <created>1728161705371</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728161705371</updated>
+    </task>
+    <task id="LOCAL-00012" summary="create entity, repository, dto and mapper, connection liquibase">
+      <option name="closed" value="true" />
+      <created>1728291602943</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1728291602944</updated>
+    </task>
+    <task id="LOCAL-00013" summary="added service and service implementation, implemented exceptions handler and create custom exceptions">
+      <option name="closed" value="true" />
+      <created>1728298624526</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1728298624526</updated>
+    </task>
+    <task id="LOCAL-00014" summary="added controller, connection swagger">
+      <option name="closed" value="true" />
+      <created>1728300058675</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1728300058675</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -493,7 +538,12 @@
     <MESSAGE value="fixed swagger, controller, added method to CarService and DriverService, implementation soft delete" />
     <MESSAGE value="added gender validation and message" />
     <MESSAGE value="fixed bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs" />
+    <MESSAGE value="refactor project and files" />
+    <MESSAGE value="create new branch, new module for passenger service" />
+    <MESSAGE value="create entity, repository, dto and mapper, connection liquibase" />
+    <MESSAGE value="added service and service implementation, implemented exceptions handler and create custom exceptions" />
+    <MESSAGE value="added controller, connection swagger" />
+    <option name="LAST_COMMIT_MESSAGE" value="added controller, connection swagger" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
