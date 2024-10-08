@@ -7,4 +7,5 @@ public final class ExceptionMessage {
     public static final String ENTITY_WITH_ID_NOT_FOUND_MESSAGE = "The %s with id %d not found";
     public static final String INTERNAL_ERROR_MESSAGE = "Internal error";
     public static final String VALIDATION_FAILED_MESSAGE = "Validation failed";
+    public static final String ENTITY_LIST_IS_EMPTY_MESSAGE = "The %s list is empty";
 }

@@ -3,9 +3,6 @@ package cab.aggregator.app.rideservice.service;
 import cab.aggregator.app.rideservice.dto.request.RideRequest;
 import cab.aggregator.app.rideservice.dto.response.RideContainerResponse;
 import cab.aggregator.app.rideservice.dto.response.RideResponse;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 public interface RideService {
 

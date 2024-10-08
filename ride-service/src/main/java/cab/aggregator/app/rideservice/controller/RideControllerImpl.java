@@ -7,20 +7,25 @@ import cab.aggregator.app.rideservice.dto.validation.OnCreate;
 import cab.aggregator.app.rideservice.dto.validation.OnUpdate;
 import cab.aggregator.app.rideservice.service.RideService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static cab.aggregator.app.rideservice.entity.enums.Status.COMPLETED;
 
 @RestController
 @RequestMapping("/api/v1/rides")
 @RequiredArgsConstructor
 @Validated
 @Tag(name="Ride Controller")
+@Slf4j
 public class RideControllerImpl {
 
     private final RideService rideService;
@@ -101,7 +106,11 @@ public class RideControllerImpl {
     @PatchMapping("/{id}")
     @Operation(summary = "Update ride status by id")
     public RideResponse updateRideStatus(@PathVariable Long id,
-                                     @Valid @Validated(OnUpdate.class) @RequestBody String status) {
+                         @Valid @Validated(OnUpdate.class)
+                         @Pattern(regexp = "^(?i)(CREATED|ACCEPTED|WAY_TO_PASSENGER|WAY_TO_DESTINATION|COMPLETED|CANCELLED)$",
+                                              message = "{status.pattern}")
+                         @RequestBody
+                         String status) {
         return rideService.updateRideStatus(id, status);
     }
 

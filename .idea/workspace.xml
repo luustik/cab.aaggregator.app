@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="created entity, repository, connection liquibase, created dto and mapper">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" afterDir="false" />
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="created controllers, exception handler, connect swagger and validation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/exception/ResourceAlreadyExistsException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ride-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/controller/RideControllerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/controller/RideControllerImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/request/RideRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/request/RideRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/exception/EntityNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/exception/EntityNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/service/RideService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/service/RideService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/service/impl/RideServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/service/impl/RideServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/utility/ExceptionMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/utility/ExceptionMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ride-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -403,7 +406,11 @@
       <workItem from="1728329146651" duration="2073000" />
       <workItem from="1728372221371" duration="1372000" />
       <workItem from="1728374617735" duration="6517000" />
-      <workItem from="1728381798248" duration="1043000" />
+      <workItem from="1728381798248" duration="1873000" />
+      <workItem from="1728384359322" duration="238000" />
+      <workItem from="1728384628157" duration="1606000" />
+      <workItem from="1728386485721" duration="23000" />
+      <workItem from="1728390785629" duration="5074000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -485,7 +492,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728331217101</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="created controllers, exception handler, connect swagger and validation">
+      <option name="closed" value="true" />
+      <created>1728383141412</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728383141412</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,7 +528,8 @@
     <MESSAGE value="added gender validation and message" />
     <MESSAGE value="fixed bugs" />
     <MESSAGE value="created entity, repository, connection liquibase, created dto and mapper" />
-    <option name="LAST_COMMIT_MESSAGE" value="created entity, repository, connection liquibase, created dto and mapper" />
+    <MESSAGE value="created controllers, exception handler, connect swagger and validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="created controllers, exception handler, connect swagger and validation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
