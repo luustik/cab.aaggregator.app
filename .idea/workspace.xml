@@ -5,27 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="created entity, repository, connection liquibase, created dto and mapper">
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/request/RideRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/response/RideContainerResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/response/RideResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/validation/OnCreate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/validation/OnUpdate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/entity/Ride.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/entity/enums/Status.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/mapper/RideContainerMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/mapper/RideMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/repository/RideRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/resources/db.changelog/data/ride-data.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/resources/db.changelog/db.changelog-master.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/resources/db.changelog/v1/v1-changelog.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ride-service/src/main/resources/db.changelog/v1/v1-create-ride-table.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/020064c2-b69d-413c-a8cf-af96701e9250/storage_v2/_src_/database/taxi_db.Px6lpA/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver-service/src/main/java/cab/aggregator/app/driverservice/exception/ResourceAlreadyExistsException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ride-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ride-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/request/RideRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/request/RideRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,10 +21,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Record" />
         <option value="package-info" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -98,7 +83,7 @@
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;22&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/УЧЕБА/java projects/Modsen/cab.aggregator.app/ride-service/src/main/resources/db.changelog/data&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/УЧЕБА/java projects/Modsen/cab.aggregator.app/ride-service/src/main/java/cab/aggregator/app/rideservice/utility&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -118,6 +103,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\ride-service\src\main\java\cab\aggregator\app\rideservice\utility" />
+      <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\ride-service\src\main\java\cab\aggregator\app\rideservice" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\ride-service\src\main\resources\db.changelog\data" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\ride-service\src\main\resources\db.changelog" />
       <recent name="D:\УЧЕБА\java projects\Modsen\cab.aggregator.app\driver-service\src\main\resources\db.changelog\v1\driver" />
@@ -131,6 +118,10 @@
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="cab.aggregator.app.driverservice.controller" />
       <recent name="cab.aggregator.app.driverservice.exception.handler" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cab.aggregator.app.rideservice.config" />
+      <recent name="cab.aggregator.app.rideservice.exception.handler" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.RideServiceApplication">
@@ -409,7 +400,10 @@
       <workItem from="1728150105404" duration="6363000" />
       <workItem from="1728160324501" duration="418000" />
       <workItem from="1728321253675" duration="7849000" />
-      <workItem from="1728329146651" duration="1972000" />
+      <workItem from="1728329146651" duration="2073000" />
+      <workItem from="1728372221371" duration="1372000" />
+      <workItem from="1728374617735" duration="6517000" />
+      <workItem from="1728381798248" duration="1043000" />
     </task>
     <task id="LOCAL-00001" summary="Empty project">
       <option name="closed" value="true" />
@@ -483,7 +477,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728156174052</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="created entity, repository, connection liquibase, created dto and mapper">
+      <option name="closed" value="true" />
+      <created>1728331217101</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1728331217101</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
