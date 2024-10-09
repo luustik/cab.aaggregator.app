@@ -42,23 +42,21 @@ public class RideControllerImpl {
         return rideService.getAllRides();
     }
 
-    @GetMapping("/ride-by-driver-id/{driverId}")
+    @GetMapping("/driver-id/{driverId}")
     @Operation(summary = "Get all rides by driver id")
     public RideContainerResponse getAllRidesByDriverId(@Valid @Validated
-                                                         @PathVariable
-                                                         Long driverId) {
+                                                         @PathVariable Long driverId) {
         return rideService.getAllRidesByDriverId(driverId);
     }
 
-    @GetMapping("/ride-by-passenger-id/{passengerId}")
+    @GetMapping("/passenger-id/{passengerId}")
     @Operation(summary = "Get all rides by passenger id")
     public RideContainerResponse getAllRidesByPassengerId(@Valid @Validated
-                                                       @PathVariable
-                                                       Long passengerId) {
+                                                       @PathVariable Long passengerId) {
         return rideService.getAllRidesByPassengerId(passengerId);
     }
 
-    @GetMapping("/ride-by-status/{status}")
+    @GetMapping("/status/{status}")
     @Operation(summary = "Get all rides by status")
     public RideContainerResponse getAllRidesByStatus(@Valid @Validated
                                                @PathVariable
@@ -103,6 +101,13 @@ public class RideControllerImpl {
                 .body(rideService.createRide(request));
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Update ride by id")
+    public RideResponse updateRide(@PathVariable Long id,
+                                   @Valid @Validated(OnUpdate.class) @RequestBody RideRequest request) {
+        return rideService.updateRide(id, request);
+    }
+
     @PatchMapping("/{id}")
     @Operation(summary = "Update ride status by id")
     public RideResponse updateRideStatus(@PathVariable Long id,
@@ -114,10 +119,4 @@ public class RideControllerImpl {
         return rideService.updateRideStatus(id, status);
     }
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Update ride by id")
-    public RideResponse updateRide(@PathVariable Long id,
-                                       @Valid @Validated(OnUpdate.class) @RequestBody RideRequest request) {
-        return rideService.updateRide(id, request);
-    }
 }

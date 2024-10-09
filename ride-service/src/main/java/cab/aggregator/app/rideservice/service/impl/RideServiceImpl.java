@@ -15,11 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Random;
 
 import static cab.aggregator.app.rideservice.utility.ResourceName.RIDE;
+import static org.hibernate.annotations.UuidGenerator.Style.RANDOM;
 
 @Service
 @RequiredArgsConstructor
@@ -91,17 +95,20 @@ public class RideServiceImpl implements RideService {
 
     @Override
     @Transactional
-    public RideResponse createRide(RideRequest rideRequest) {
-        Ride ride = rideMapper.toEntity(rideRequest);
+    public RideResponse updateRideStatus(Long id, String status) {
+        Ride ride = findById(id);
+        ride.setStatus(Status.valueOf(status.toUpperCase()));
         rideRepository.save(ride);
         return rideMapper.toDto(ride);
     }
 
     @Override
     @Transactional
-    public RideResponse updateRideStatus(Long id, String status) {
-        Ride ride = findById(id);
-        ride.setStatus(Status.valueOf(status.toUpperCase()));
+    public RideResponse createRide(RideRequest rideRequest) {
+        Ride ride = rideMapper.toEntity(rideRequest);
+        ride.setOrderDateTime(LocalDateTime.now());
+        ride.setCost(generateCost());
+        ride.setStatus(Status.CREATED);
         rideRepository.save(ride);
         return rideMapper.toDto(ride);
     }
@@ -113,6 +120,14 @@ public class RideServiceImpl implements RideService {
         rideMapper.updateRideFromDto(rideRequest, ride);
         rideRepository.save(ride);
         return rideMapper.toDto(ride);
+    }
+
+    public BigDecimal generateCost() {
+        Random RANDOM = new Random();
+        int integerPart = RANDOM.nextInt((int) Math.pow(10, 3));
+        int fractionalPart = RANDOM.nextInt((int) Math.pow(10, 2));
+        BigDecimal price = new BigDecimal(integerPart + "." + String.format("%0" + 2 + "d", fractionalPart));
+        return price.setScale(2, RoundingMode.HALF_UP);
     }
 
     private List<Ride> checkIfListEmpty(List<Ride> rides) {
@@ -128,8 +143,8 @@ public class RideServiceImpl implements RideService {
     }
 
     private Ride findById(Long rideId) {
-        return rideRepository.findById(rideId).orElseThrow(()->{
-            return new EntityNotFoundException(RIDE,rideId);
-        });
+        return rideRepository.findById(rideId).orElseThrow(()->
+             new EntityNotFoundException(RIDE,rideId)
+        );
     }
 }
