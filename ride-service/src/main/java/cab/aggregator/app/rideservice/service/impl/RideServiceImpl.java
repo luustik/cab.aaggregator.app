@@ -17,11 +17,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Locale;
-import java.util.Random;
 
 import static cab.aggregator.app.rideservice.utility.ResourceName.RIDE;
 
@@ -30,10 +27,12 @@ import static cab.aggregator.app.rideservice.utility.ResourceName.RIDE;
 public class RideServiceImpl implements RideService {
 
     @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
     private final RideRepository rideRepository;
     private final RideMapper rideMapper;
     private final RideContainerMapper rideContainerMapper;
+    private final CalculateCost calculateCost;
+    private final ValidationStatusService validationStatusService;
 
     @Override
     @Transactional(readOnly = true)
@@ -98,7 +97,9 @@ public class RideServiceImpl implements RideService {
     @Transactional
     public RideResponse updateRideStatus(Long id, String status) {
         Ride ride = findById(id);
-        ride.setStatus(Status.valueOf(status.toUpperCase()));
+        Status newStatus = validationStatusService.validateStatus(ride.getStatus(),
+                Status.valueOf(status.toUpperCase()));
+        ride.setStatus(newStatus);
         rideRepository.save(ride);
         return rideMapper.toDto(ride);
     }
@@ -108,7 +109,7 @@ public class RideServiceImpl implements RideService {
     public RideResponse createRide(RideRequest rideRequest) {
         Ride ride = rideMapper.toEntity(rideRequest);
         ride.setOrderDateTime(LocalDateTime.now());
-        ride.setCost(generateCost());
+        ride.setCost(calculateCost.generatePrice());
         ride.setStatus(Status.CREATED);
         rideRepository.save(ride);
         return rideMapper.toDto(ride);
@@ -121,14 +122,6 @@ public class RideServiceImpl implements RideService {
         rideMapper.updateRideFromDto(rideRequest, ride);
         rideRepository.save(ride);
         return rideMapper.toDto(ride);
-    }
-
-    public BigDecimal generateCost() {
-        Random RANDOM = new Random();
-        int integerPart = RANDOM.nextInt((int) Math.pow(10, 3));
-        int fractionalPart = RANDOM.nextInt((int) Math.pow(10, 2));
-        BigDecimal price = new BigDecimal(integerPart + "." + String.format("%0" + 2 + "d", fractionalPart));
-        return price.setScale(2, RoundingMode.HALF_UP);
     }
 
     private Ride findById(Long rideId) {

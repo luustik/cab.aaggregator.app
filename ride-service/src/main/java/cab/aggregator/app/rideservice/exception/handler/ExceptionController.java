@@ -3,7 +3,10 @@ package cab.aggregator.app.rideservice.exception.handler;
 import cab.aggregator.app.rideservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.rideservice.dto.exception.MultiException;
 import cab.aggregator.app.rideservice.exception.EntityNotFoundException;
+import cab.aggregator.app.rideservice.exception.ImpossibleStatusException;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -18,10 +21,12 @@ import java.util.Locale;
 import java.util.Map;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
+@Slf4j
 public class ExceptionController {
 
     @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -31,9 +36,10 @@ public class ExceptionController {
                 .build();
     }
 
-    @ExceptionHandler(IllegalStateException.class)
+    @ExceptionHandler({IllegalStateException.class, ImpossibleStatusException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionDto handleIllegalState(RuntimeException e){
+    public ExceptionDto handleBadRequest(RuntimeException e){
+        log.info("Set status {}", HttpStatus.BAD_REQUEST.value());
         return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();
