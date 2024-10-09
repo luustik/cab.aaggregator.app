@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="created controllers, exception handler, connect swagger and validation">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/controller/RideControllerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/controller/RideControllerImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/request/RideRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/dto/request/RideRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/entity/Ride.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/entity/Ride.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/service/impl/RideServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/java/cab/aggregator/app/rideservice/service/impl/RideServiceImpl.java" afterDir="false" />
+    <list default="true" id="1bd3d7f6-78df-402c-a73c-d26a175ae642" name="Changes" comment="Changing the way the Create and Update methods work, changing the request dto">
+      <change beforePath="$PROJECT_DIR$/ride-service/src/main/resources/db.changelog/v1/v1-create-ride-table.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ride-service/src/main/resources/db.changelog/v1/v1-create-ride-table.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -497,7 +493,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728383141412</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Changing the way the Create and Update methods work, changing the request dto">
+      <option name="closed" value="true" />
+      <created>1728457726988</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1728457726988</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -526,7 +530,8 @@
     <MESSAGE value="fixed bugs" />
     <MESSAGE value="created entity, repository, connection liquibase, created dto and mapper" />
     <MESSAGE value="created controllers, exception handler, connect swagger and validation" />
-    <option name="LAST_COMMIT_MESSAGE" value="created controllers, exception handler, connect swagger and validation" />
+    <MESSAGE value="Changing the way the Create and Update methods work, changing the request dto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changing the way the Create and Update methods work, changing the request dto" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
