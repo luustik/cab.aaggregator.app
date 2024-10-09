@@ -10,26 +10,27 @@ import cab.aggregator.app.rideservice.mapper.RideContainerMapper;
 import cab.aggregator.app.rideservice.mapper.RideMapper;
 import cab.aggregator.app.rideservice.repository.RideRepository;
 import cab.aggregator.app.rideservice.service.RideService;
+import cab.aggregator.app.rideservice.utility.Utilities;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import static cab.aggregator.app.rideservice.utility.ResourceName.RIDE;
-import static org.hibernate.annotations.UuidGenerator.Style.RANDOM;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class RideServiceImpl implements RideService {
 
+    @Autowired
+    private MessageSource messageSource;
     private final RideRepository rideRepository;
     private final RideMapper rideMapper;
     private final RideContainerMapper rideContainerMapper;
@@ -45,8 +46,8 @@ public class RideServiceImpl implements RideService {
     public RideContainerResponse getAllRides() {
         return rideContainerMapper
                 .toContainer(rideMapper
-                        .toDtoList(checkIfListEmpty(rideRepository
-                                .findAll())));
+                        .toDtoList(rideRepository
+                                .findAll()));
     }
 
     @Override
@@ -54,8 +55,8 @@ public class RideServiceImpl implements RideService {
     public RideContainerResponse getAllRidesByDriverId(Long driverId) {
         return rideContainerMapper
                 .toContainer(rideMapper
-                        .toDtoList(checkIfListEmpty(rideRepository
-                                .findAllByDriverId(driverId))));
+                        .toDtoList(rideRepository
+                                .findAllByDriverId(driverId)));
     }
 
     @Override
@@ -63,8 +64,8 @@ public class RideServiceImpl implements RideService {
     public RideContainerResponse getAllRidesByStatus(String status) {
         return rideContainerMapper
                 .toContainer(rideMapper
-                        .toDtoList(checkIfListEmpty(rideRepository
-                                .findAllByStatus(Status.valueOf(status.toUpperCase())))));
+                        .toDtoList(rideRepository
+                                .findAllByStatus(Status.valueOf(status.toUpperCase()))));
     }
 
     @Override
@@ -72,8 +73,8 @@ public class RideServiceImpl implements RideService {
     public RideContainerResponse getAllRidesByPassengerId(Long passengerId) {
         return rideContainerMapper
                 .toContainer(rideMapper
-                        .toDtoList(checkIfListEmpty(rideRepository
-                                .findAllByPassengerId(passengerId))));
+                        .toDtoList(rideRepository
+                                .findAllByPassengerId(passengerId)));
     }
 
     @Override
@@ -81,9 +82,9 @@ public class RideServiceImpl implements RideService {
     public RideContainerResponse getAllBetweenOrderDateTime(String start, String end) {
         return rideContainerMapper
                 .toContainer(rideMapper
-                        .toDtoList(checkIfListEmpty(rideRepository
-                                .findAllByOrderDateTimeBetween(convertStringToLocalDateTime(start),
-                                        convertStringToLocalDateTime(end)))));
+                        .toDtoList(rideRepository
+                                .findAllByOrderDateTimeBetween(Utilities.convertStringToLocalDateTime(start),
+                                        Utilities.convertStringToLocalDateTime(end))));
     }
 
     @Override
@@ -130,21 +131,10 @@ public class RideServiceImpl implements RideService {
         return price.setScale(2, RoundingMode.HALF_UP);
     }
 
-    private List<Ride> checkIfListEmpty(List<Ride> rides) {
-        if (rides.isEmpty()) {
-            throw new EntityNotFoundException(RIDE);
-        }
-        return rides;
-    }
-
-    private LocalDateTime convertStringToLocalDateTime(String localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return LocalDateTime.parse(localDateTime, formatter);
-    }
-
     private Ride findById(Long rideId) {
-        return rideRepository.findById(rideId).orElseThrow(()->
-             new EntityNotFoundException(RIDE,rideId)
-        );
+        return rideRepository
+                .findById(rideId)
+                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("ENTITY_WITH_ID_NOT_FOUND_MESSAGE",
+                        new Object[]{RIDE,rideId}, Locale.getDefault())));
     }
 }

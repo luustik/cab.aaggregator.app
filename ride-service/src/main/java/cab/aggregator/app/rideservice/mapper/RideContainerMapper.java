@@ -11,6 +11,8 @@ import java.util.List;
 public interface RideContainerMapper {
 
     default RideContainerResponse toContainer(List<RideResponse> rides){
-        return RideContainerResponse.builder().items(rides).build();
+        return RideContainerResponse.builder()
+                .items(rides)
+                .build();
     }
 }
