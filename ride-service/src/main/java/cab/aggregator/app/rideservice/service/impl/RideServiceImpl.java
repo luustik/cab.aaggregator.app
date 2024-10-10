@@ -43,48 +43,48 @@ public class RideServiceImpl implements RideService {
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllRides(Integer offset, Integer limit) {
+    public RideContainerResponse getAllRides(int offset, int limit) {
         return rideContainerMapper
                 .toContainer(rideRepository
-                        .findAll(PageRequest.of(offset,limit))
-                            .map(rideMapper::toDto));
+                        .findAll(PageRequest.of(offset, limit))
+                        .map(rideMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllRidesByDriverId(Long driverId, Integer offset, Integer limit) {
+    public RideContainerResponse getAllRidesByDriverId(Long driverId, int offset, int limit) {
         return rideContainerMapper
                 .toContainer(rideRepository
-                        .findAllByDriverId(driverId, PageRequest.of(offset,limit))
-                                .map(rideMapper::toDto));
+                        .findAllByDriverId(driverId, PageRequest.of(offset, limit))
+                        .map(rideMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllRidesByStatus(String status, Integer offset, Integer limit) {
+    public RideContainerResponse getAllRidesByStatus(String status, int offset, int limit) {
         return rideContainerMapper
                 .toContainer(rideRepository
-                        .findAllByStatus(Status.valueOf(status.toUpperCase()), PageRequest.of(offset,limit))
-                            .map(rideMapper::toDto));
+                        .findAllByStatus(Status.valueOf(status.toUpperCase()), PageRequest.of(offset, limit))
+                        .map(rideMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllRidesByPassengerId(Long passengerId, Integer offset, Integer limit) {
+    public RideContainerResponse getAllRidesByPassengerId(Long passengerId, int offset, int limit) {
         return rideContainerMapper
                 .toContainer(rideRepository
-                        .findAllByPassengerId(passengerId,PageRequest.of(offset,limit))
-                            .map(rideMapper::toDto));
+                        .findAllByPassengerId(passengerId, PageRequest.of(offset, limit))
+                        .map(rideMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllBetweenOrderDateTime(String start, String end, Integer offset, Integer limit) {
+    public RideContainerResponse getAllBetweenOrderDateTime(String start, String end, int offset, int limit) {
         return rideContainerMapper
                 .toContainer(rideRepository
-                                .findAllByOrderDateTimeBetween(Utilities.convertStringToLocalDateTime(start),
-                                        Utilities.convertStringToLocalDateTime(end), PageRequest.of(offset,limit))
-                                            .map(rideMapper::toDto));
+                        .findAllByOrderDateTimeBetween(Utilities.convertStringToLocalDateTime(start),
+                                Utilities.convertStringToLocalDateTime(end), PageRequest.of(offset, limit))
+                        .map(rideMapper::toDto));
     }
 
     @Override
@@ -129,6 +129,6 @@ public class RideServiceImpl implements RideService {
         return rideRepository
                 .findById(rideId)
                 .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("ENTITY_WITH_ID_NOT_FOUND_MESSAGE",
-                        new Object[]{RIDE,rideId}, Locale.getDefault())));
+                        new Object[]{RIDE, rideId}, Locale.getDefault())));
     }
 }

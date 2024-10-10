@@ -30,7 +30,7 @@ public class ExceptionController {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionDto handleEntityNotFound(RuntimeException e){
+    public ExceptionDto handleEntityNotFound(RuntimeException e) {
         return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();
@@ -38,7 +38,7 @@ public class ExceptionController {
 
     @ExceptionHandler({IllegalStateException.class, ImpossibleStatusException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionDto handleBadRequest(RuntimeException e){
+    public ExceptionDto handleBadRequest(RuntimeException e) {
         log.info("Set status {}", HttpStatus.BAD_REQUEST.value());
         return ExceptionDto.builder()
                 .message(e.getMessage())
@@ -47,7 +47,7 @@ public class ExceptionController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MultiException handleMethodArgumentNotValid(MethodArgumentNotValidException e){
+    public MultiException handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
@@ -55,14 +55,14 @@ public class ExceptionController {
             errors.put(fieldName, errorMessage);
         });
         return MultiException.builder()
-                .message(messageSource.getMessage("VALIDATION_FAILED_MESSAGE",null, Locale.getDefault()))
+                .message(messageSource.getMessage("VALIDATION_FAILED_MESSAGE", null, Locale.getDefault()))
                 .errors(errors)
                 .build();
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MultiException handleConstraintViolation(ConstraintViolationException e){
+    public MultiException handleConstraintViolation(ConstraintViolationException e) {
         Map<String, String> errors = new HashMap<>();
         e.getConstraintViolations().forEach(error -> {
             String fieldName = error.getPropertyPath().toString();
@@ -70,14 +70,14 @@ public class ExceptionController {
             errors.put(fieldName, errorMessage);
         });
         return MultiException.builder()
-                .message(messageSource.getMessage("VALIDATION_FAILED_MESSAGE",null, Locale.getDefault()))
+                .message(messageSource.getMessage("VALIDATION_FAILED_MESSAGE", null, Locale.getDefault()))
                 .errors(errors)
                 .build();
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionDto handleException(Exception e){
+    public ExceptionDto handleException(Exception e) {
         return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();

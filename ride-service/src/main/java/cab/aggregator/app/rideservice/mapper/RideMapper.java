@@ -6,9 +6,6 @@ import cab.aggregator.app.rideservice.entity.Ride;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RideMapper {

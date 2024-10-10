@@ -1,4 +1,5 @@
 package cab.aggregator.app.rideservice.utility;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
