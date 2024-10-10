@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 import java.util.Random;
 
 @Service
-public class CalculateCost {
+public class CalculationCost {
 
     private static final int PRECISION = 5;
     private static final int SCALE = 2;

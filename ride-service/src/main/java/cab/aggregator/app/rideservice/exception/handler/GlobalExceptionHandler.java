@@ -7,7 +7,6 @@ import cab.aggregator.app.rideservice.exception.ImpossibleStatusException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -20,12 +19,14 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static cab.aggregator.app.rideservice.utility.Constants.DEFAULT_EXCEPTION_MESSAGE;
+import static cab.aggregator.app.rideservice.utility.Constants.VALIDATION_FAILED_MESSAGE;
+
 @RestControllerAdvice
 @RequiredArgsConstructor
 @Slf4j
-public class ExceptionController {
+public class GlobalExceptionHandler {
 
-    @Autowired
     private final MessageSource messageSource;
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -55,7 +56,7 @@ public class ExceptionController {
             errors.put(fieldName, errorMessage);
         });
         return MultiException.builder()
-                .message(messageSource.getMessage("VALIDATION_FAILED_MESSAGE", null, Locale.getDefault()))
+                .message(messageSource.getMessage(VALIDATION_FAILED_MESSAGE, null, Locale.getDefault()))
                 .errors(errors)
                 .build();
     }
@@ -70,7 +71,7 @@ public class ExceptionController {
             errors.put(fieldName, errorMessage);
         });
         return MultiException.builder()
-                .message(messageSource.getMessage("VALIDATION_FAILED_MESSAGE", null, Locale.getDefault()))
+                .message(messageSource.getMessage(VALIDATION_FAILED_MESSAGE, null, Locale.getDefault()))
                 .errors(errors)
                 .build();
     }
@@ -79,7 +80,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDto handleException(Exception e) {
         return ExceptionDto.builder()
-                .message(e.getMessage())
+                .message(DEFAULT_EXCEPTION_MESSAGE)
                 .build();
     }
 }

@@ -12,7 +12,6 @@ import cab.aggregator.app.rideservice.repository.RideRepository;
 import cab.aggregator.app.rideservice.service.RideService;
 import cab.aggregator.app.rideservice.utility.Utilities;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,18 +20,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
+import static cab.aggregator.app.rideservice.utility.Constants.ENTITY_WITH_ID_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.rideservice.utility.ResourceName.RIDE;
 
 @Service
 @RequiredArgsConstructor
 public class RideServiceImpl implements RideService {
 
-    @Autowired
     private final MessageSource messageSource;
     private final RideRepository rideRepository;
     private final RideMapper rideMapper;
     private final RideContainerMapper rideContainerMapper;
-    private final CalculateCost calculateCost;
+    private final CalculationCost calculationCost;
     private final ValidationStatusService validationStatusService;
 
     @Override
@@ -110,7 +109,7 @@ public class RideServiceImpl implements RideService {
     public RideResponse createRide(RideRequest rideRequest) {
         Ride ride = rideMapper.toEntity(rideRequest);
         ride.setOrderDateTime(LocalDateTime.now());
-        ride.setCost(calculateCost.generatePrice());
+        ride.setCost(calculationCost.generatePrice());
         ride.setStatus(Status.CREATED);
         rideRepository.save(ride);
         return rideMapper.toDto(ride);
@@ -128,7 +127,7 @@ public class RideServiceImpl implements RideService {
     private Ride findById(Long rideId) {
         return rideRepository
                 .findById(rideId)
-                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage("ENTITY_WITH_ID_NOT_FOUND_MESSAGE",
+                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE,
                         new Object[]{RIDE, rideId}, Locale.getDefault())));
     }
 }
