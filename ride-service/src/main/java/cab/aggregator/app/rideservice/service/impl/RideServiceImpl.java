@@ -14,6 +14,7 @@ import cab.aggregator.app.rideservice.utility.Utilities;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,48 +43,48 @@ public class RideServiceImpl implements RideService {
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllRides() {
+    public RideContainerResponse getAllRides(Integer offset, Integer limit) {
         return rideContainerMapper
-                .toContainer(rideMapper
-                        .toDtoList(rideRepository
-                                .findAll()));
+                .toContainer(rideRepository
+                        .findAll(PageRequest.of(offset,limit))
+                            .map(rideMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllRidesByDriverId(Long driverId) {
+    public RideContainerResponse getAllRidesByDriverId(Long driverId, Integer offset, Integer limit) {
         return rideContainerMapper
-                .toContainer(rideMapper
-                        .toDtoList(rideRepository
-                                .findAllByDriverId(driverId)));
+                .toContainer(rideRepository
+                        .findAllByDriverId(driverId, PageRequest.of(offset,limit))
+                                .map(rideMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllRidesByStatus(String status) {
+    public RideContainerResponse getAllRidesByStatus(String status, Integer offset, Integer limit) {
         return rideContainerMapper
-                .toContainer(rideMapper
-                        .toDtoList(rideRepository
-                                .findAllByStatus(Status.valueOf(status.toUpperCase()))));
+                .toContainer(rideRepository
+                        .findAllByStatus(Status.valueOf(status.toUpperCase()), PageRequest.of(offset,limit))
+                            .map(rideMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllRidesByPassengerId(Long passengerId) {
+    public RideContainerResponse getAllRidesByPassengerId(Long passengerId, Integer offset, Integer limit) {
         return rideContainerMapper
-                .toContainer(rideMapper
-                        .toDtoList(rideRepository
-                                .findAllByPassengerId(passengerId)));
+                .toContainer(rideRepository
+                        .findAllByPassengerId(passengerId,PageRequest.of(offset,limit))
+                            .map(rideMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RideContainerResponse getAllBetweenOrderDateTime(String start, String end) {
+    public RideContainerResponse getAllBetweenOrderDateTime(String start, String end, Integer offset, Integer limit) {
         return rideContainerMapper
-                .toContainer(rideMapper
-                        .toDtoList(rideRepository
+                .toContainer(rideRepository
                                 .findAllByOrderDateTimeBetween(Utilities.convertStringToLocalDateTime(start),
-                                        Utilities.convertStringToLocalDateTime(end))));
+                                        Utilities.convertStringToLocalDateTime(end), PageRequest.of(offset,limit))
+                                            .map(rideMapper::toDto));
     }
 
     @Override

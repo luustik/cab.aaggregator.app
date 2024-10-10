@@ -7,8 +7,10 @@ import cab.aggregator.app.rideservice.dto.validation.OnCreate;
 import cab.aggregator.app.rideservice.dto.validation.OnUpdate;
 import cab.aggregator.app.rideservice.service.RideService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -42,30 +44,37 @@ public class RideControllerImpl implements RideController {
 
     @Override
     @GetMapping
-    public RideContainerResponse getAllRides() {
-        return rideService.getAllRides();
+    public RideContainerResponse getAllRides(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                                             @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
+        return rideService.getAllRides(offset,limit);
     }
 
     @Override
     @GetMapping("/driver-id/{driverId}")
     public RideContainerResponse getAllRidesByDriverId(@Valid @Validated
-                                                         @PathVariable Long driverId) {
-        return rideService.getAllRidesByDriverId(driverId);
+                                                       @PathVariable Long driverId,
+                                                       @RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                                                       @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
+        return rideService.getAllRidesByDriverId(driverId, offset, limit);
     }
 
     @Override
     @GetMapping("/passenger-id/{passengerId}")
     public RideContainerResponse getAllRidesByPassengerId(@Valid @Validated
-                                                       @PathVariable Long passengerId) {
-        return rideService.getAllRidesByPassengerId(passengerId);
+                                                       @PathVariable Long passengerId,
+                                                       @RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                                                       @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
+        return rideService.getAllRidesByPassengerId(passengerId, offset,limit);
     }
 
     @Override
     @GetMapping("/status/{status}")
     public RideContainerResponse getAllRidesByStatus(@Valid @Validated
                                                @PathVariable
-                                               @Pattern(regexp = REGEXP_STATUS, message = "{status.pattern}") String status) {
-        return rideService.getAllRidesByStatus(status);
+                                               @Pattern(regexp = REGEXP_STATUS, message = "{status.pattern}") String status,
+                                               @RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                                               @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
+        return rideService.getAllRidesByStatus(status,offset,limit);
     }
 
 
@@ -77,8 +86,10 @@ public class RideControllerImpl implements RideController {
             String start,
             @RequestParam
             @Pattern(regexp = REGEXP_DATE_TIME, message = "{date.pattern}")
-            String end) {
-        return rideService.getAllBetweenOrderDateTime(start, end);
+            String end,
+            @RequestParam(value = "offset", defaultValue = "0") Integer offset,
+            @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
+        return rideService.getAllBetweenOrderDateTime(start, end,offset, limit);
     }
 
 
