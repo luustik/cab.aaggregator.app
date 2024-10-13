@@ -12,7 +12,7 @@ public interface RatingMapper {
 
     RatingResponse toDto(Rating rating);
 
-    void updateRideFromDto(RatingRequest carRequestDto, @MappingTarget Rating rating);
+    void updateRatingFromDto(RatingRequest carRequestDto, @MappingTarget Rating rating);
 
     Rating toEntity(RatingRequest ratingRequest);
 }
