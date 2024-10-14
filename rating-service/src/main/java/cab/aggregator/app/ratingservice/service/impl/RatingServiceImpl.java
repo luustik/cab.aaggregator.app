@@ -87,7 +87,6 @@ public class RatingServiceImpl implements RatingService {
         return ratingMapper.toDto(rating);
     }
 
-    //!RoleUser.valueOf(ratingRequest.roleUser()).equals(rating.getRoleUser())
     @Override
     @Transactional
     public RatingResponse updateRating(Long id, RatingRequest ratingRequest) {
