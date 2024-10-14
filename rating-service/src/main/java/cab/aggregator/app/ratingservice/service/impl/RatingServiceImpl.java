@@ -6,6 +6,7 @@ import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 import cab.aggregator.app.ratingservice.entity.Rating;
 import cab.aggregator.app.ratingservice.entity.enums.RoleUser;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
+import cab.aggregator.app.ratingservice.exception.ResourceAlreadyExistException;
 import cab.aggregator.app.ratingservice.mapper.RatingContainerMapper;
 import cab.aggregator.app.ratingservice.mapper.RatingMapper;
 import cab.aggregator.app.ratingservice.repository.RatingRepository;
@@ -24,10 +25,10 @@ import static cab.aggregator.app.ratingservice.utility.Constants.*;
 @RequiredArgsConstructor
 public class RatingServiceImpl implements RatingService {
 
-    RatingRepository ratingRepository;
-    MessageSource messageSource;
-    RatingMapper ratingMapper;
-    RatingContainerMapper ratingContainerMapper;
+    private final RatingRepository ratingRepository;
+    private final MessageSource messageSource;
+    private final RatingMapper ratingMapper;
+    private final RatingContainerMapper ratingContainerMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -38,9 +39,9 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     @Transactional(readOnly = true)
-    public RatingResponse getRatingByRideId(Long rideId) {
+    public RatingResponse getRatingByRideIdAndRole(Long rideId, String role) {
         return ratingMapper
-                .toDto(findRatingByRideId(rideId));
+                .toDto(findRatingByRideIdAndRole(rideId, role));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class RatingServiceImpl implements RatingService {
         return ratingContainerMapper
                 .toContainer(ratingRepository
                         .findAllByUserIdAndRoleUser(userId, RoleUser.valueOf(role.toUpperCase())
-                                ,PageRequest.of(offset, limit))
+                                , PageRequest.of(offset, limit))
                         .map(ratingMapper::toDto));
     }
 
@@ -67,7 +68,7 @@ public class RatingServiceImpl implements RatingService {
     public RatingContainerResponse getAllByRole(String role, int offset, int limit) {
         return ratingContainerMapper
                 .toContainer(ratingRepository
-                        .findAllByRoleUser(RoleUser.valueOf(role.toUpperCase()),PageRequest.of(offset, limit))
+                        .findAllByRoleUser(RoleUser.valueOf(role.toUpperCase()), PageRequest.of(offset, limit))
                         .map(ratingMapper::toDto));
     }
 
@@ -81,28 +82,41 @@ public class RatingServiceImpl implements RatingService {
     @Transactional
     public RatingResponse createRating(RatingRequest ratingRequest) {
         Rating rating = ratingMapper.toEntity(ratingRequest);
+        checkIfExistRatingByRideIdAndRole(rating.getRideId(), rating.getRoleUser());
         ratingRepository.save(rating);
         return ratingMapper.toDto(rating);
     }
 
+    //!RoleUser.valueOf(ratingRequest.roleUser()).equals(rating.getRoleUser())
     @Override
     @Transactional
     public RatingResponse updateRating(Long id, RatingRequest ratingRequest) {
         Rating rating = findRatingById(id);
+        if (!ratingRequest.rideId().equals(rating.getRideId())
+                || !RoleUser.valueOf(ratingRequest.roleUser()).equals(rating.getRoleUser())) {
+            checkIfExistRatingByRideIdAndRole(ratingRequest.rideId(), RoleUser.valueOf(ratingRequest.roleUser().toUpperCase()));
+        }
         ratingMapper.updateRatingFromDto(ratingRequest, rating);
         ratingRepository.save(rating);
         return ratingMapper.toDto(rating);
     }
 
-    private Rating findRatingById(Long id){
-        return ratingRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE,
-                new Object[]{RATING, id}, Locale.getDefault())));
+    private void checkIfExistRatingByRideIdAndRole(Long rideId, RoleUser role) {
+        if (ratingRepository.existsByRideIdAndRoleUser(rideId, role)) {
+            throw new ResourceAlreadyExistException(messageSource.getMessage(RESOURCE_ALREADY_EXISTS_MESSAGE,
+                    new Object[]{RATING, RIDE, rideId, role.toString()}, Locale.getDefault()));
+        }
     }
 
-    private Rating findRatingByRideId(Long rideId){
-        return ratingRepository.findByRideId(rideId)
-                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_RIDE_ID_NOT_FOUND_MESSAGE,
-                        new Object[]{RATING, RIDE, rideId}, Locale.getDefault())));
+    private Rating findRatingById(Long id) {
+        return ratingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE,
+                        new Object[]{RATING, id}, Locale.getDefault())));
+    }
+
+    private Rating findRatingByRideIdAndRole(Long rideId, String role) {
+        return ratingRepository.findByRideIdAndRoleUser(rideId, RoleUser.valueOf(role.toUpperCase()))
+                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_RESOURCE_NOT_FOUND_MESSAGE,
+                        new Object[]{role, RATING, RIDE, rideId}, Locale.getDefault())));
     }
 }

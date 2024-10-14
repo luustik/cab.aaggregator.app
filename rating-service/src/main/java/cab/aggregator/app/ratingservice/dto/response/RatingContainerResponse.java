@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record RatingContainerResponse (
+public record RatingContainerResponse(
 
         List<RatingResponse> items,
 
@@ -16,5 +16,5 @@ public record RatingContainerResponse (
         int countPages,
 
         long totalElements
-){
+) {
 }

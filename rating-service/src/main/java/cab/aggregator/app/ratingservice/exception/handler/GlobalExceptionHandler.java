@@ -3,6 +3,7 @@ package cab.aggregator.app.ratingservice.exception.handler;
 import cab.aggregator.app.ratingservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.ratingservice.dto.exception.MultiException;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
+import cab.aggregator.app.ratingservice.exception.ResourceAlreadyExistException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -29,6 +30,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionDto handleEntityNotFound(RuntimeException e) {
+        return ExceptionDto.builder()
+                .message(e.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ExceptionDto handleResourceAlreadyExist(RuntimeException e) {
         return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();

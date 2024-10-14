@@ -1,7 +1,14 @@
 package cab.aggregator.app.ratingservice.entity;
 
 import cab.aggregator.app.ratingservice.entity.enums.RoleUser;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +24,7 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ride_id",nullable = false)
+    @Column(name = "ride_id", nullable = false)
     private Long rideId;
 
     @Column(name = "user_id", nullable = false)
