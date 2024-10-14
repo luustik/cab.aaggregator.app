@@ -5,9 +5,11 @@ import cab.aggregator.app.ratingservice.entity.enums.RoleUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
 
     Page<Rating> findAllByUserIdAndRoleUser(Long userId, RoleUser roleUser, Pageable pageable);

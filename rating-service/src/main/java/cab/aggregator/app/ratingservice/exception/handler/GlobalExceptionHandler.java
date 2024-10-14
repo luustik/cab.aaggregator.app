@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDto handleException(Exception e) {
         return ExceptionDto.builder()
-                .message(DEFAULT_EXCEPTION_MESSAGE)
+                .message(messageSource.getMessage(DEFAULT_EXCEPTION_MESSAGE, null, Locale.getDefault()))
                 .build();
     }
 }
