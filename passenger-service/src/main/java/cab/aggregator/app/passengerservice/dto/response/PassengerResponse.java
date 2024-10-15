@@ -1,15 +1,14 @@
 package cab.aggregator.app.passengerservice.dto.response;
 
-public record PassengerResponse (
-    int id,
+public record PassengerResponse(
+        int id,
 
-    String name,
+        String name,
 
-    String email,
+        String email,
 
-    String phone,
+        String phone,
 
-    boolean deleted
-    ){
-
+        boolean deleted
+) {
 }

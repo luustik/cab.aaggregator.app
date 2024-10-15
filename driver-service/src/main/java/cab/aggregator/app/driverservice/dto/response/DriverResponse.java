@@ -2,16 +2,16 @@ package cab.aggregator.app.driverservice.dto.response;
 
 public record DriverResponse(
 
-         int id,
+        int id,
 
-         String name,
+        String name,
 
-         String email,
+        String email,
 
-         String phoneNumber,
+        String phoneNumber,
 
-         String gender,
+        String gender,
 
-         boolean deleted
+        boolean deleted
 ) {
 }

@@ -14,5 +14,5 @@ public record MultiException(
 
         @Schema(description = "Errors")
         Map<String, String> errors
-){
+) {
 }

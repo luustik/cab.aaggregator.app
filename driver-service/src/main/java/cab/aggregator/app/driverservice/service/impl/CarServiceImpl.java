@@ -13,10 +13,15 @@ import cab.aggregator.app.driverservice.repository.CarRepository;
 import cab.aggregator.app.driverservice.repository.DriverRepository;
 import cab.aggregator.app.driverservice.service.CarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static cab.aggregator.app.driverservice.utility.ResourceName.*;
+import java.util.Locale;
+
+import static cab.aggregator.app.driverservice.utility.Constants.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,7 @@ public class CarServiceImpl implements CarService {
     private final CarMapper carMapper;
     private final CarContainerResponseMapper carContainerResponseMapper;
     private final DriverRepository driverRepository;
+    private final MessageSource messageSource;
 
     @Override
     @Transactional(readOnly = true)
@@ -33,11 +39,12 @@ public class CarServiceImpl implements CarService {
         return carMapper.toDto(findCarById(carId));
     }
 
-
     @Transactional(readOnly = true)
     @Override
-    public CarContainerResponse getAllCars() {
-        return carContainerResponseMapper.toDto(carMapper.toDtoList(carRepository.findAll()));
+    public CarContainerResponse getAllCars(int offset, int limit) {
+        return carContainerResponseMapper.toContainer(carRepository
+                .findAll(PageRequest.of(offset, limit))
+                .map(carMapper::toDto));
     }
 
     @Transactional(readOnly = true)
@@ -48,8 +55,10 @@ public class CarServiceImpl implements CarService {
 
     @Transactional(readOnly = true)
     @Override
-    public CarContainerResponse getAllCarsByDriverId(int driverId) {
-        return carContainerResponseMapper.toDto(carMapper.toDtoList(carRepository.findAllByDriverId(driverId)));
+    public CarContainerResponse getAllCarsByDriverId(int driverId, int offset, int limit) {
+        return carContainerResponseMapper.toContainer(carRepository
+                .findAllByDriverId(driverId, PageRequest.of(offset, limit))
+                .map(carMapper::toDto));
     }
 
     @Override
@@ -65,7 +74,7 @@ public class CarServiceImpl implements CarService {
     @Transactional
     public CarResponse updateCar(int carId, CarRequest carRequestDto) {
         Car car = findCarById(carId);
-        if(!car.getCarNumber().equals(carRequestDto.carNumber())){
+        if (!car.getCarNumber().equals(carRequestDto.carNumber())) {
             checkIfCarUnique(carRequestDto);
         }
         carMapper.updateCarFromDto(carRequestDto, car);
@@ -82,26 +91,31 @@ public class CarServiceImpl implements CarService {
     }
 
     private void checkIfCarUnique(CarRequest carRequestDto) {
-        if(carRepository.existsByCarNumber(carRequestDto.carNumber())) {
-            throw new ResourceAlreadyExistsException(CAR, carRequestDto.carNumber());
+        if (carRepository.existsByCarNumber(carRequestDto.carNumber())) {
+            throw new ResourceAlreadyExistsException(messageSource.getMessage(RESOURCE_ALREADY_EXIST_MESSAGE,
+                    new Object[]{CAR, carRequestDto.carNumber()}, Locale.getDefault()));
         }
     }
 
     private Driver findDriverById(CarRequest carRequestDto) {
         return driverRepository.findById(carRequestDto.driverId())
                 .filter(driver -> !driver.isDeleted())
-                .orElseThrow(() -> new EntityNotFoundException(DRIVER, carRequestDto.driverId()));
+                .orElseThrow(() ->
+                        new EntityNotFoundException(messageSource.getMessage(ENTITY_NOT_FOUND_MESSAGE,
+                                new Object[]{DRIVER, carRequestDto.driverId()}, Locale.getDefault())));
     }
 
     private Car findCarByCarNumber(String carNumber) {
-        return carRepository.findByCarNumber(carNumber).orElseThrow(()->{
-            return new EntityNotFoundException(CAR,carNumber);
-        });
+        return carRepository.findByCarNumber(carNumber)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(messageSource.getMessage(ENTITY_NOT_FOUND_MESSAGE,
+                                new Object[]{CAR, carNumber}, Locale.getDefault())));
     }
 
     private Car findCarById(int carId) {
-        return carRepository.findById(carId).orElseThrow(()->{
-            return new EntityNotFoundException(CAR, carId);
-        });
+        return carRepository.findById(carId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(messageSource.getMessage(ENTITY_NOT_FOUND_MESSAGE,
+                                new Object[]{CAR, carId}, Locale.getDefault())));
     }
 }

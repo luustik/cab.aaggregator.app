@@ -8,11 +8,11 @@ public interface CarService {
 
     CarResponse getCarById(int carId);
 
-    CarContainerResponse getAllCars();
+    CarContainerResponse getAllCars(int offset, int limit);
 
     CarResponse getCarByCarNumber(String carNumber);
 
-    CarContainerResponse getAllCarsByDriverId(int driverId);
+    CarContainerResponse getAllCarsByDriverId(int driverId, int offset, int limit);
 
     CarResponse createCar(CarRequest carRequestDto);
 

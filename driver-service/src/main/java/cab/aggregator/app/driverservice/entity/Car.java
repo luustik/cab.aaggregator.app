@@ -1,8 +1,13 @@
 package cab.aggregator.app.driverservice.entity;
 
-
-import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +21,7 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
     @Column(name = "color", nullable = false)
@@ -29,6 +34,6 @@ public class Car {
     private String carNumber;
 
     @ManyToOne
-    @JoinColumn(name="driver_id")
+    @JoinColumn(name = "driver_id")
     private Driver driver;
 }

@@ -4,13 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <changeSet id="v1-init-ride" author="kirill.lustoff@gmail.com">
-        <loadData tableName="ride" file="data/ride-data.csv" relativeToChangelogFile="true"/>
-        <rollback>
-            <delete tableName="ride">
-                <where>id IN (SELECT id FROM ride)</where>
-            </delete>
-        </rollback>
-    </changeSet>
+    <include file="v1-create-passenger-table.xml" relativeToChangelogFile="true"/>
+    <include file="v1-init-passenger-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

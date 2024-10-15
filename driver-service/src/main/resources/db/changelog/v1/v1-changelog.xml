@@ -4,10 +4,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <changeSet id="v1" author="lustikkkkk">
-        <tagDatabase tag="v1"/>
-    </changeSet>
-
-    <include file="v1/v1-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="driver/v1-create-driver-table.xml" relativeToChangelogFile="true"/>
+    <include file="car/v1-create-car-table.xml" relativeToChangelogFile="true"/>
+    <include file="driver/v1-init-driver-table.xml" relativeToChangelogFile="true"/>
+    <include file="car/v1-init-car-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

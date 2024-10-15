@@ -8,9 +8,11 @@ public interface DriverService {
 
     DriverResponse getDriverById(int driverId);
 
-    DriverContainerResponse getAllDrivers();
+    DriverContainerResponse getAllDriversAdmin(int offset, int limit);
 
-    DriverContainerResponse getDriversByGender(String gender);
+    DriverContainerResponse getAllDrivers(int offset, int limit);
+
+    DriverContainerResponse getDriversByGender(String gender, int offset, int limit);
 
     void safeDeleteDriver(int driverId);
 
