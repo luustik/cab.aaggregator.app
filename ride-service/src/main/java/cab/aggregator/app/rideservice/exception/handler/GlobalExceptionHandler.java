@@ -6,7 +6,6 @@ import cab.aggregator.app.rideservice.exception.EntityNotFoundException;
 import cab.aggregator.app.rideservice.exception.ImpossibleStatusException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -24,7 +23,6 @@ import static cab.aggregator.app.rideservice.utility.Constants.VALIDATION_FAILED
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-@Slf4j
 public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
@@ -37,10 +35,17 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler({IllegalStateException.class, ImpossibleStatusException.class})
+    @ExceptionHandler(ImpossibleStatusException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ExceptionDto handleImpossibleStatus(RuntimeException e) {
+        return ExceptionDto.builder()
+                .message(e.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionDto handleBadRequest(RuntimeException e) {
-        log.info("Set status {}", HttpStatus.BAD_REQUEST.value());
         return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();

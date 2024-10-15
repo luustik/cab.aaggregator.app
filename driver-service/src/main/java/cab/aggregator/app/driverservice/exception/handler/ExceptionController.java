@@ -4,8 +4,9 @@ import cab.aggregator.app.driverservice.dto.exception.Exception;
 import cab.aggregator.app.driverservice.dto.exception.MultiException;
 import cab.aggregator.app.driverservice.exception.EntityNotFoundException;
 import cab.aggregator.app.driverservice.exception.ResourceAlreadyExistsException;
-import cab.aggregator.app.driverservice.utility.ExceptionMessage;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,10 +15,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
+import static cab.aggregator.app.driverservice.utility.Constants.VALIDATION_FAILED_MESSAGE;
+import static cab.aggregator.app.driverservice.utility.Constants.DEFAULT_EXCEPTION_MESSAGE;
+
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class ExceptionController {
+
+    private final MessageSource messageSource;
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -53,7 +61,7 @@ public class ExceptionController {
             errors.put(fieldName, errorMessage);
         });
         return MultiException.builder()
-                .message(ExceptionMessage.VALIDATION_FAILED_MESSAGE)
+                .message(messageSource.getMessage(VALIDATION_FAILED_MESSAGE, null, Locale.getDefault()))
                 .errors(errors)
                 .build();
     }
@@ -68,7 +76,7 @@ public class ExceptionController {
             errors.put(fieldName, errorMessage);
         });
         return MultiException.builder()
-                .message(ExceptionMessage.VALIDATION_FAILED_MESSAGE)
+                .message(messageSource.getMessage(VALIDATION_FAILED_MESSAGE, null, Locale.getDefault()))
                 .errors(errors)
                 .build();
     }
@@ -77,7 +85,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Exception handleException(java.lang.Exception e){
         return Exception.builder()
-                .message(ExceptionMessage.INTERNAL_ERROR_MESSAGE + e.getMessage())
+                .message(messageSource.getMessage(DEFAULT_EXCEPTION_MESSAGE, null, Locale.getDefault()))
                 .build();
     }
 }

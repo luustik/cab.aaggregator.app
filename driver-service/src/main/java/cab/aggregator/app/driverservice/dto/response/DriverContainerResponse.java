@@ -6,6 +6,14 @@ import java.util.List;
 
 @Builder
 public record DriverContainerResponse(
-        List<DriverResponse> items
+        List<DriverResponse> items,
+
+        int currentPage,
+
+        int sizePage,
+
+        int countPages,
+
+        long totalElements
 ) {
 }

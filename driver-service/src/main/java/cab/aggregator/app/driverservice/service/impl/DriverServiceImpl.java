@@ -12,12 +12,16 @@ import cab.aggregator.app.driverservice.mapper.DriverMapper;
 import cab.aggregator.app.driverservice.repository.DriverRepository;
 import cab.aggregator.app.driverservice.service.DriverService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 
-import static cab.aggregator.app.driverservice.utility.ResourceName.*;
+import static cab.aggregator.app.driverservice.utility.Constants.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
     private final DriverContainerResponseMapper driverContainerResponseMapper;
+    private final MessageSource messageSource;
 
     @Override
     @Transactional(readOnly = true)
@@ -35,15 +40,24 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional(readOnly = true)
-    public DriverContainerResponse getAllDrivers() {
-        return driverContainerResponseMapper.toDto(driverMapper.toDtoList(driverRepository.findAll()));
+    public DriverContainerResponse getAllDriversAdmin(int offset, int limit) {
+        return driverContainerResponseMapper.toContainer(driverRepository.findAll(PageRequest.of(offset, limit))
+                .map(driverMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public DriverContainerResponse getDriversByGender(String gender) {
-        return driverContainerResponseMapper.toDto(driverMapper
-                .toDtoList(driverRepository.findAllByGender(Gender.valueOf(gender.toUpperCase()))));
+    public DriverContainerResponse getAllDrivers(int offset, int limit) {
+        return driverContainerResponseMapper.toContainer(driverRepository.findByDeletedFalse(PageRequest.of(offset, limit))
+                .map(driverMapper::toDto));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DriverContainerResponse getDriversByGender(String gender,int offset, int limit) {
+        return driverContainerResponseMapper.toContainer(driverRepository
+                .findAllByGenderAndDeletedFalse(Gender.valueOf(gender.toUpperCase()), PageRequest.of(offset, limit))
+                .map(driverMapper::toDto));
     }
 
     @Override
@@ -65,7 +79,7 @@ public class DriverServiceImpl implements DriverService {
     @Transactional
     public DriverResponse createDriver(DriverRequest driverRequestDto) {
         Driver driver = checkIfDriverDelete(driverRequestDto);
-        if(driver != null) {
+        if (driver != null) {
             driver.setDeleted(false);
             driverRepository.save(driver);
             return driverMapper.toDto(driver);
@@ -83,7 +97,7 @@ public class DriverServiceImpl implements DriverService {
         if (!driverRequestDto.email().equals(driver.getEmail())) {
             checkIfEmailUnique(driverRequestDto);
         }
-        if(!driverRequestDto.phoneNumber().equals(driver.getPhoneNumber())){
+        if (!driverRequestDto.phoneNumber().equals(driver.getPhoneNumber())) {
             checkIfPhoneNumberUnique(driverRequestDto);
         }
         driverMapper.updateDriverFromDto(driverRequestDto, driver);
@@ -102,18 +116,21 @@ public class DriverServiceImpl implements DriverService {
                 .orElse(null);
     }
 
-
     private void checkIfEmailUnique(DriverRequest driverRequestDto) {
 
-        if(driverRepository.existsByEmail(driverRequestDto.email())) {
-            throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.email());
+        if (driverRepository.existsByEmail(driverRequestDto.email())) {
+            throw new ResourceAlreadyExistsException(
+                    messageSource.getMessage(RESOURCE_ALREADY_EXIST_MESSAGE,
+                            new Object[]{DRIVER, driverRequestDto.email()}, Locale.getDefault())
+            );
         }
 
     }
 
     private void checkIfPhoneNumberUnique(DriverRequest driverRequestDto) {
-        if(driverRepository.existsByPhoneNumber(driverRequestDto.phoneNumber())) {
-            throw new ResourceAlreadyExistsException(DRIVER, driverRequestDto.phoneNumber());
+        if (driverRepository.existsByPhoneNumber(driverRequestDto.phoneNumber())) {
+            throw new ResourceAlreadyExistsException(messageSource.getMessage(RESOURCE_ALREADY_EXIST_MESSAGE,
+                    new Object[]{DRIVER, driverRequestDto.phoneNumber()}, Locale.getDefault()));
         }
     }
 
@@ -122,15 +139,10 @@ public class DriverServiceImpl implements DriverService {
         checkIfPhoneNumberUnique(driverRequestDto);
     }
 
-//    private Driver findDriverById(int driverId) {
-//        return driverRepository.findById(driverId)
-//                .filter(driver -> !driver.isDeleted())
-//                .orElseThrow(() -> new EntityNotFoundException(DRIVER, driverId));
-//    }
-
     private Driver findDriverById(int driverId) {
-        return driverRepository.findById(driverId).orElseThrow(()->{
-            return new EntityNotFoundException(DRIVER,driverId);
-        });
+        return driverRepository.findByIdAndDeletedFalse(driverId).orElseThrow(() ->
+                new EntityNotFoundException(messageSource.getMessage(ENTITY_NOT_FOUND_MESSAGE,
+                        new Object[]{DRIVER, driverId}, Locale.getDefault()))
+        );
     }
 }

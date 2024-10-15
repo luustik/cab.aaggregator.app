@@ -6,9 +6,9 @@ import cab.aggregator.app.driverservice.dto.response.DriverResponse;
 import cab.aggregator.app.driverservice.dto.validation.OnCreate;
 import cab.aggregator.app.driverservice.dto.validation.OnUpdate;
 import cab.aggregator.app.driverservice.service.DriverService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,49 +16,52 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static cab.aggregator.app.driverservice.utility.Constants.GENDER_PATTERN;
+
 @RestController
 @RequestMapping("/api/v1/drivers")
 @RequiredArgsConstructor
 @Validated
-@Tag(name="Driver controller")
-public class DriverController {
+public class DriverController implements DriverAPI{
 
     private final DriverService driverService;
 
-    @Operation(summary = "Get driver dy Id")
     @GetMapping("/{id}")
     public DriverResponse getDriverById(@PathVariable int id) {
         return driverService.getDriverById(id);
     }
 
-    @Operation(summary = "Get all drivers")
-    @GetMapping
-    public DriverContainerResponse getAllDrivers(){
-        return driverService.getAllDrivers();
+    @GetMapping("/admin")
+    public DriverContainerResponse getAllDriversAdmin(@RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
+                                                      @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit){
+        return driverService.getAllDriversAdmin(offset,limit);
     }
 
-    @Operation(summary = "Get all drivers by gender")
+    @GetMapping
+    public DriverContainerResponse getAllDrivers(@RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
+                                                 @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit){
+        return driverService.getAllDrivers(offset,limit);
+    }
+
     @GetMapping("/driver-by-gender/{gender}")
     public DriverContainerResponse getAllDriversByGender(@Valid @Validated
                       @PathVariable
-                      @Pattern(regexp = "^(?i)(male|female)$", message = "{gender.pattern}") String gender) {
-        return driverService.getDriversByGender(gender);
+                      @Pattern(regexp = GENDER_PATTERN, message = "{gender.pattern}") String gender,
+                      @RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
+                      @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
+        return driverService.getDriversByGender(gender,offset,limit);
     }
 
-    @Operation(summary = "Safe delete driver by Id")
     @DeleteMapping("/safe/{id}")
     public void safeDeleteDriverById(@PathVariable int id) {
         driverService.safeDeleteDriver(id);
     }
 
-    @Operation(summary = "Hard delete driver by Id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<DriverResponse> deleteDriverById(@PathVariable int id) {
+    public void deleteDriverById(@PathVariable int id) {
         driverService.deleteDriver(id);
-        return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Create new driver")
     @PostMapping
     public ResponseEntity<DriverResponse> createDriver(@Valid @Validated(OnCreate.class)
                                               @RequestBody DriverRequest request) {
@@ -66,7 +69,6 @@ public class DriverController {
                 .body(driverService.createDriver(request));
     }
 
-    @Operation(summary = "Update driver by Id")
     @PutMapping("/{id}")
     public DriverResponse updateDriver(@PathVariable int id,
                                        @Valid @Validated(OnUpdate.class) @RequestBody DriverRequest request) {
