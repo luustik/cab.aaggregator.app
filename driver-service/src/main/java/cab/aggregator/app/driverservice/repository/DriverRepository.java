@@ -17,7 +17,7 @@ public interface DriverRepository extends JpaRepository<Driver, Integer> {
 
     List<Driver> findByDeletedTrue();
 
-    Page<Driver> findAllByGenderAndDeletedFalse(Gender gender,Pageable pageable);
+    Page<Driver> findAllByGenderAndDeletedFalse(Gender gender, Pageable pageable);
 
     Page<Driver> findByDeletedFalse(Pageable pageable);
 

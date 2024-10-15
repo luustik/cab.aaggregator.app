@@ -7,25 +7,28 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
+import static cab.aggregator.app.passengerservice.utility.Constants.EMAIL_PATTERN;
+import static cab.aggregator.app.passengerservice.utility.Constants.PHONE_NUMBER_PATTERN;
+
 @Schema(description = "PassengerRequest DTO")
-public record PassengerRequest (
+public record PassengerRequest(
 
-    @Schema(description = "Passenger name", example = "Kirill")
+        @Schema(description = "Passenger name", example = "Kirill")
         @NotNull(message = "{passengerName.notnull}", groups = {OnCreate.class, OnUpdate.class})
-            @Length(max = 255, message = "{passengerName.length}", groups = {OnCreate.class, OnUpdate.class})
-    String name,
+        @Length(max = 255, message = "{passengerName.length}", groups = {OnCreate.class, OnUpdate.class})
+        String name,
 
-    @Schema(description = "Passenger email", example = "qwerty@qwe.com")
+        @Schema(description = "Passenger email", example = "qwerty@qwe.com")
         @NotNull(message = "{passengerEmail.notnull}", groups = {OnCreate.class, OnUpdate.class})
-            @Length(max = 255, message = "{passengerEmail.length}", groups = {OnCreate.class, OnUpdate.class})
-                @Pattern(regexp = "^[\\w.-]+@[\\w.-]+\\.[\\w.-]+$", message = "{passengerEmail.pattern}")
-    String email,
+        @Length(max = 255, message = "{passengerEmail.length}", groups = {OnCreate.class, OnUpdate.class})
+        @Pattern(regexp = EMAIL_PATTERN, message = "{passengerEmail.pattern}")
+        String email,
 
-    @Schema(description = "Passenger phone", example = "+375(25)1234567")
+        @Schema(description = "Passenger phone", example = "+375(25)1234567")
         @NotNull(message = "{passengerPhone.notnull}", groups = {OnCreate.class, OnUpdate.class})
-            @Length(max = 255, message = "{passengerPhone.length}", groups = {OnCreate.class, OnUpdate.class})
-                @Pattern(regexp = "\\+375\\((29|44|33|25)\\)\\d{7}$", message = "{passengerPhone.pattern}")
-    String phone
+        @Length(max = 255, message = "{passengerPhone.length}", groups = {OnCreate.class, OnUpdate.class})
+        @Pattern(regexp = PHONE_NUMBER_PATTERN, message = "{passengerPhone.pattern}")
+        String phone
 
-){
+) {
 }

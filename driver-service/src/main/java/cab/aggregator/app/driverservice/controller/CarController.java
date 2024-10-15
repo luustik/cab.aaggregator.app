@@ -27,44 +27,51 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api/v1/cars")
 @RequiredArgsConstructor
 @Validated
-public class CarController implements CarAPI{
+public class CarController implements CarAPI {
 
     private final CarService carService;
 
+    @Override
     @GetMapping("/{id}")
-    public CarResponse getCarById(@PathVariable int id){
+    public CarResponse getCarById(@PathVariable int id) {
         return carService.getCarById(id);
     }
 
+    @Override
     @GetMapping
     public CarContainerResponse getAllCars(@RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
-                                           @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit){
-        return carService.getAllCars(offset,limit);
+                                           @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
+        return carService.getAllCars(offset, limit);
     }
 
+    @Override
     @GetMapping("/car-by-number/{carNumber}")
-    public CarResponse getCarByCarNumber(@PathVariable String carNumber){
+    public CarResponse getCarByCarNumber(@PathVariable String carNumber) {
         return carService.getCarByCarNumber(carNumber);
     }
 
+    @Override
     @GetMapping("/cars-driver/{driverId}")
     public CarContainerResponse getAllCarsByDriverId(@PathVariable int driverId,
                                                      @RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
-                                                     @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit){
-        return carService.getAllCarsByDriverId(driverId,offset,limit);
+                                                     @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
+        return carService.getAllCarsByDriverId(driverId, offset, limit);
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    public void deleteCarById(@PathVariable int id){
+    public void deleteCarById(@PathVariable int id) {
         carService.deleteCar(id);
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<CarResponse> createCar(@Valid @Validated(OnCreate.class) @RequestBody CarRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(carService.createCar(request));
+                .body(carService.createCar(request));
     }
 
+    @Override
     @PutMapping("/{id}")
     public CarResponse updateCar(@PathVariable int id,
                                  @Valid @Validated(OnUpdate.class) @RequestBody CarRequest request) {

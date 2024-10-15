@@ -11,12 +11,17 @@ import cab.aggregator.app.passengerservice.mapper.PassengerMapper;
 import cab.aggregator.app.passengerservice.repository.PassengerRepository;
 import cab.aggregator.app.passengerservice.service.PassengerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Locale;
 
-import static cab.aggregator.app.passengerservice.utility.ResourceName.PASSENGER;
+import static cab.aggregator.app.passengerservice.utility.Constants.PASSENGER;
+import static cab.aggregator.app.passengerservice.utility.Constants.RESOURCE_ALREADY_EXIST_MESSAGE;
+import static cab.aggregator.app.passengerservice.utility.Constants.ENTITY_WITH_ID_NOT_FOUND_MESSAGE;
+import static cab.aggregator.app.passengerservice.utility.Constants.ENTITY_WITH_RESOURCE_NOT_FOUND_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +30,7 @@ public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
     private final PassengerMapper passengerMapper;
     private final PassengerContainerMapper passengerContainerMapper;
+    private final MessageSource messageSource;
 
     @Override
     @Transactional(readOnly = true)
@@ -34,8 +40,18 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional(readOnly = true)
-    public PassengerContainerResponse getAllPassengers() {
-        return passengerContainerMapper.toContainer(passengerMapper.toDtoList(passengerRepository.findAll()));
+    public PassengerContainerResponse getAllPassengersAdmin(int offset, int limit) {
+        return passengerContainerMapper.toContainer(passengerRepository
+                .findAll(PageRequest.of(offset, limit))
+                .map(passengerMapper::toDto));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PassengerContainerResponse getAllPassengers(int offset, int limit) {
+        return passengerContainerMapper.toContainer(passengerRepository
+                .findByDeletedFalse(PageRequest.of(offset, limit))
+                .map(passengerMapper::toDto));
     }
 
     @Override
@@ -69,7 +85,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public PassengerResponse createPassenger(PassengerRequest passengerRequestDto) {
         Passenger passenger = checkIfPassengerDelete(passengerRequestDto);
-        if(passenger != null) {
+        if (passenger != null) {
             passenger.setDeleted(false);
             passengerRepository.save(passenger);
             return passengerMapper.toDto(passenger);
@@ -87,7 +103,7 @@ public class PassengerServiceImpl implements PassengerService {
         if (!passengerRequestDto.email().equals(passenger.getEmail())) {
             checkIfEmailUnique(passengerRequestDto);
         }
-        if(!passengerRequestDto.phone().equals(passenger.getPhone())){
+        if (!passengerRequestDto.phone().equals(passenger.getPhone())) {
             checkIfPhoneUnique(passengerRequestDto);
         }
         passengerMapper.updatePassengerFromDto(passengerRequestDto, passenger);
@@ -99,8 +115,8 @@ public class PassengerServiceImpl implements PassengerService {
     private Passenger checkIfPassengerDelete(PassengerRequest passengerRequestDto) {
         return passengerRepository
                 .findByNameAndEmailAndPhoneAndDeletedIsTrue(passengerRequestDto.name(),
-                                                        passengerRequestDto.email(),
-                                                        passengerRequestDto.phone())
+                        passengerRequestDto.email(),
+                        passengerRequestDto.phone())
                 .orElse(null);
     }
 
@@ -110,32 +126,35 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     private void checkIfEmailUnique(PassengerRequest passengerRequestDto) {
-        if(passengerRepository.existsByEmail(passengerRequestDto.email())) {
-            throw new ResourceAlreadyExistsException(PASSENGER, passengerRequestDto.email());
+        if (passengerRepository.existsByEmail(passengerRequestDto.email())) {
+            throw new ResourceAlreadyExistsException(messageSource.getMessage(RESOURCE_ALREADY_EXIST_MESSAGE, new Object[]{PASSENGER, passengerRequestDto.email()}, Locale.getDefault()));
         }
     }
 
     private void checkIfPhoneUnique(PassengerRequest passengerRequestDto) {
-        if(passengerRepository.existsByPhone(passengerRequestDto.phone())) {
-            throw new ResourceAlreadyExistsException(PASSENGER, passengerRequestDto.phone());
+        if (passengerRepository.existsByPhone(passengerRequestDto.phone())) {
+            throw new ResourceAlreadyExistsException(messageSource.getMessage(RESOURCE_ALREADY_EXIST_MESSAGE, new Object[]{PASSENGER, passengerRequestDto.phone()}, Locale.getDefault()));
         }
     }
 
     private Passenger findPassengerById(int id) {
-        return passengerRepository.findById(id).orElseThrow(
-                ()-> new EntityNotFoundException(PASSENGER, id)
+        return passengerRepository.findByIdAndDeletedFalse(id)
+                .orElseThrow(
+                () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, id}, Locale.getDefault()))
         );
     }
 
     private Passenger findPassengerByPhone(String phone) {
-        return passengerRepository.findByPhone(phone).orElseThrow(
-                ()-> new EntityNotFoundException(PASSENGER, phone)
+        return passengerRepository.findByPhoneAndDeletedFalse(phone)
+                .orElseThrow(
+                () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_RESOURCE_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, phone}, Locale.getDefault()))
         );
     }
 
     private Passenger findPassengerByEmail(String email) {
-        return passengerRepository.findByEmail(email).orElseThrow(
-                ()-> new EntityNotFoundException(PASSENGER, email)
+        return passengerRepository.findByEmailAndDeletedFalse(email)
+                .orElseThrow(
+                () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_RESOURCE_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, email}, Locale.getDefault()))
         );
     }
 }

@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 
-@Tag(name="Car controller")
+@Tag(name = "Car controller")
 public interface CarAPI {
     @Operation(summary = "Get car by Id")
     CarResponse getCarById(int id);

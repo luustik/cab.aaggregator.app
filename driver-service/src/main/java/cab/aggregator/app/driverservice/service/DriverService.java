@@ -12,7 +12,7 @@ public interface DriverService {
 
     DriverContainerResponse getAllDrivers(int offset, int limit);
 
-    DriverContainerResponse getDriversByGender(String gender,int offset, int limit);
+    DriverContainerResponse getDriversByGender(String gender, int offset, int limit);
 
     void safeDeleteDriver(int driverId);
 

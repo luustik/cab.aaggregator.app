@@ -4,10 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <changeSet id="v1-tag" author="lustikkkkk">
-        <tagDatabase tag="v1-create-passenger"/>
-    </changeSet>
-
     <include file="v1-create-passenger-table.xml" relativeToChangelogFile="true"/>
+    <include file="v1-init-passenger-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

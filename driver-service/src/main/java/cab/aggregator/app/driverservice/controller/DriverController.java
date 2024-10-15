@@ -14,7 +14,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import static cab.aggregator.app.driverservice.utility.Constants.GENDER_PATTERN;
 
@@ -22,53 +30,61 @@ import static cab.aggregator.app.driverservice.utility.Constants.GENDER_PATTERN;
 @RequestMapping("/api/v1/drivers")
 @RequiredArgsConstructor
 @Validated
-public class DriverController implements DriverAPI{
+public class DriverController implements DriverAPI {
 
     private final DriverService driverService;
 
+    @Override
     @GetMapping("/{id}")
     public DriverResponse getDriverById(@PathVariable int id) {
         return driverService.getDriverById(id);
     }
 
+    @Override
     @GetMapping("/admin")
     public DriverContainerResponse getAllDriversAdmin(@RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
-                                                      @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit){
-        return driverService.getAllDriversAdmin(offset,limit);
+                                                      @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
+        return driverService.getAllDriversAdmin(offset, limit);
     }
 
+    @Override
     @GetMapping
     public DriverContainerResponse getAllDrivers(@RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
-                                                 @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit){
-        return driverService.getAllDrivers(offset,limit);
+                                                 @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
+        return driverService.getAllDrivers(offset, limit);
     }
 
+    @Override
     @GetMapping("/driver-by-gender/{gender}")
     public DriverContainerResponse getAllDriversByGender(@Valid @Validated
-                      @PathVariable
-                      @Pattern(regexp = GENDER_PATTERN, message = "{gender.pattern}") String gender,
-                      @RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
-                      @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
-        return driverService.getDriversByGender(gender,offset,limit);
+                                                         @PathVariable
+                                                         @Pattern(regexp = GENDER_PATTERN, message = "{gender.pattern}") String gender,
+                                                         @RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
+                                                         @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
+        return driverService.getDriversByGender(gender, offset, limit);
     }
 
+    @Override
     @DeleteMapping("/safe/{id}")
     public void safeDeleteDriverById(@PathVariable int id) {
         driverService.safeDeleteDriver(id);
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public void deleteDriverById(@PathVariable int id) {
         driverService.deleteDriver(id);
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<DriverResponse> createDriver(@Valid @Validated(OnCreate.class)
-                                              @RequestBody DriverRequest request) {
+                                                       @RequestBody DriverRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(driverService.createDriver(request));
     }
 
+    @Override
     @PutMapping("/{id}")
     public DriverResponse updateDriver(@PathVariable int id,
                                        @Valid @Validated(OnUpdate.class) @RequestBody DriverRequest request) {

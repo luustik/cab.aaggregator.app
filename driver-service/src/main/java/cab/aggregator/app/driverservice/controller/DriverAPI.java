@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 
 import static cab.aggregator.app.driverservice.utility.Constants.GENDER_PATTERN;
 
-@Tag(name="Driver controller")
+@Tag(name = "Driver controller")
 public interface DriverAPI {
     @Operation(summary = "Get driver dy Id")
     DriverResponse getDriverById(int id);

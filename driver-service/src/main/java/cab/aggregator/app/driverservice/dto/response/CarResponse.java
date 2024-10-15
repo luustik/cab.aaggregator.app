@@ -2,15 +2,15 @@ package cab.aggregator.app.driverservice.dto.response;
 
 public record CarResponse(
 
-         int id,
+        int id,
 
-         String color,
+        String color,
 
-         String model,
+        String model,
 
-         String carNumber,
+        String carNumber,
 
-         Integer driverId
+        Integer driverId
 
-){
+) {
 }

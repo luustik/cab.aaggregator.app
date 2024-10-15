@@ -42,7 +42,8 @@ public class CarServiceImpl implements CarService {
     @Transactional(readOnly = true)
     @Override
     public CarContainerResponse getAllCars(int offset, int limit) {
-        return carContainerResponseMapper.toContainer(carRepository.findAll(PageRequest.of(offset, limit))
+        return carContainerResponseMapper.toContainer(carRepository
+                .findAll(PageRequest.of(offset, limit))
                 .map(carMapper::toDto));
     }
 
@@ -54,8 +55,9 @@ public class CarServiceImpl implements CarService {
 
     @Transactional(readOnly = true)
     @Override
-    public CarContainerResponse getAllCarsByDriverId(int driverId,int offset, int limit) {
-        return carContainerResponseMapper.toContainer(carRepository.findAllByDriverId(driverId, PageRequest.of(offset, limit))
+    public CarContainerResponse getAllCarsByDriverId(int driverId, int offset, int limit) {
+        return carContainerResponseMapper.toContainer(carRepository
+                .findAllByDriverId(driverId, PageRequest.of(offset, limit))
                 .map(carMapper::toDto));
     }
 

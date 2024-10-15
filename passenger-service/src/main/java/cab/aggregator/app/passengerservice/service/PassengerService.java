@@ -8,7 +8,9 @@ public interface PassengerService {
 
     PassengerResponse getPassengerById(int id);
 
-    PassengerContainerResponse getAllPassengers();
+    PassengerContainerResponse getAllPassengersAdmin(int offset, int limit);
+
+    PassengerContainerResponse getAllPassengers(int offset, int limit);
 
     PassengerResponse getPassengerByPhone(String phone);
 

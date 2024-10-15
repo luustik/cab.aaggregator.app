@@ -41,20 +41,22 @@ public class DriverServiceImpl implements DriverService {
     @Override
     @Transactional(readOnly = true)
     public DriverContainerResponse getAllDriversAdmin(int offset, int limit) {
-        return driverContainerResponseMapper.toContainer(driverRepository.findAll(PageRequest.of(offset, limit))
+        return driverContainerResponseMapper.toContainer(driverRepository
+                .findAll(PageRequest.of(offset, limit))
                 .map(driverMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
     public DriverContainerResponse getAllDrivers(int offset, int limit) {
-        return driverContainerResponseMapper.toContainer(driverRepository.findByDeletedFalse(PageRequest.of(offset, limit))
+        return driverContainerResponseMapper.toContainer(driverRepository
+                .findByDeletedFalse(PageRequest.of(offset, limit))
                 .map(driverMapper::toDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public DriverContainerResponse getDriversByGender(String gender,int offset, int limit) {
+    public DriverContainerResponse getDriversByGender(String gender, int offset, int limit) {
         return driverContainerResponseMapper.toContainer(driverRepository
                 .findAllByGenderAndDeletedFalse(Gender.valueOf(gender.toUpperCase()), PageRequest.of(offset, limit))
                 .map(driverMapper::toDto));

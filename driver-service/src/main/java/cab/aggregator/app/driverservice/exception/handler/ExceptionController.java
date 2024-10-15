@@ -1,6 +1,6 @@
 package cab.aggregator.app.driverservice.exception.handler;
 
-import cab.aggregator.app.driverservice.dto.exception.Exception;
+import cab.aggregator.app.driverservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.driverservice.dto.exception.MultiException;
 import cab.aggregator.app.driverservice.exception.EntityNotFoundException;
 import cab.aggregator.app.driverservice.exception.ResourceAlreadyExistsException;
@@ -29,31 +29,31 @@ public class ExceptionController {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Exception handleEntityNotFound(RuntimeException e){
-        return Exception.builder()
+    public ExceptionDto handleEntityNotFound(RuntimeException e) {
+        return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Exception handleResourceAlreadyExists(RuntimeException e){
-        return Exception.builder()
+    public ExceptionDto handleResourceAlreadyExists(RuntimeException e) {
+        return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();
     }
 
     @ExceptionHandler(IllegalStateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Exception handleIllegalState(RuntimeException e){
-        return Exception.builder()
+    public ExceptionDto handleIllegalState(RuntimeException e) {
+        return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MultiException handleMethodArgumentNotValid(MethodArgumentNotValidException e){
+    public MultiException handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
@@ -68,7 +68,7 @@ public class ExceptionController {
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MultiException handleConstraintViolation(ConstraintViolationException e){
+    public MultiException handleConstraintViolation(ConstraintViolationException e) {
         Map<String, String> errors = new HashMap<>();
         e.getConstraintViolations().forEach(error -> {
             String fieldName = error.getPropertyPath().toString();
@@ -81,10 +81,10 @@ public class ExceptionController {
                 .build();
     }
 
-    @ExceptionHandler(java.lang.Exception.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Exception handleException(java.lang.Exception e){
-        return Exception.builder()
+    public ExceptionDto handleException(Exception e) {
+        return ExceptionDto.builder()
                 .message(messageSource.getMessage(DEFAULT_EXCEPTION_MESSAGE, null, Locale.getDefault()))
                 .build();
     }

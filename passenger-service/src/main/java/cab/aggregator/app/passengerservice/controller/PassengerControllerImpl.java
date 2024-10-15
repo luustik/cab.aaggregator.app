@@ -6,83 +6,99 @@ import cab.aggregator.app.passengerservice.dto.response.PassengerResponse;
 import cab.aggregator.app.passengerservice.dto.validation.OnCreate;
 import cab.aggregator.app.passengerservice.dto.validation.OnUpdate;
 import cab.aggregator.app.passengerservice.service.PassengerService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import static cab.aggregator.app.passengerservice.utility.Constants.EMAIL_PATTERN;
+import static cab.aggregator.app.passengerservice.utility.Constants.PHONE_NUMBER_PATTERN;
 
 @RestController
 @RequestMapping("/api/v1/passengers")
 @RequiredArgsConstructor
 @Validated
-@Tag(name="Passenger controller")
-public class PassengerControllerImpl {
+public class PassengerControllerImpl implements PassengerAPI {
 
     private final PassengerService passengerService;
 
-    @Operation(summary = "Get passenger by Id")
+    @Override
     @GetMapping("/{id}")
     public PassengerResponse getPassengerById(@PathVariable int id) {
         return passengerService.getPassengerById(id);
     }
 
-    @Operation(summary = "Get all passengers")
-    @GetMapping
-    public PassengerContainerResponse getAllPassengers(){
-        return passengerService.getAllPassengers();
+    @Override
+    @GetMapping("/admin")
+    public PassengerContainerResponse getAllPassengersAdmin(@RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
+                                                            @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
+        return passengerService.getAllPassengersAdmin(offset, limit);
     }
 
-    @Operation(summary = "Get passenger by phone")
+    @Override
+    @GetMapping
+    public PassengerContainerResponse getAllPassengers(@RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
+                                                       @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
+        return passengerService.getAllPassengers(offset, limit);
+    }
+
+    @Override
     @GetMapping("/phone/{phone}")
     public PassengerResponse getPassengerByPhone(@Valid
                                                  @Validated
                                                  @PathVariable
-                                                 @Pattern(regexp = "\\+375\\((29|44|33|25)\\)\\d{7}$",
-                                                          message = "{passengerPhone.pattern}") String phone) {
+                                                 @Pattern(regexp = PHONE_NUMBER_PATTERN,
+                                                         message = "{passengerPhone.pattern}") String phone) {
         return passengerService.getPassengerByPhone(phone);
     }
 
-    @Operation(summary = "Get passenger by email")
+    @Override
     @GetMapping("/email/{email}")
     public PassengerResponse getPassengerByEmail(@Valid
                                                  @Validated
                                                  @PathVariable
-                                                 @Pattern(regexp = "^[\\w.-]+@[\\w.-]+\\.[\\w.-]+$",
-                                                          message = "{passengerEmail.pattern}") String email) {
+                                                 @Pattern(regexp = EMAIL_PATTERN,
+                                                         message = "{passengerEmail.pattern}") String email) {
         return passengerService.getPassengerByEmail(email);
     }
 
-    @Operation(summary = "Soft delete passenger")
+    @Override
     @DeleteMapping("/soft/{id}")
-    public ResponseEntity<PassengerResponse> softDeleteDriverById(@PathVariable int id) {
+    public void softDeleteDriverById(@PathVariable int id) {
         passengerService.softDeletePassenger(id);
-        return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Hard delete passenger")
+    @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<PassengerResponse> hardDeleteDriverById(@PathVariable int id) {
+    public void hardDeleteDriverById(@PathVariable int id) {
         passengerService.hardDeletePassenger(id);
-        return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Create new passenger")
+    @Override
     @PostMapping
     public ResponseEntity<PassengerResponse> createDriver(@Valid @Validated(OnCreate.class)
-                                                       @RequestBody PassengerRequest request) {
+                                                          @RequestBody PassengerRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(passengerService.createPassenger(request));
     }
 
-    @Operation(summary = "Update passenger by Id")
+    @Override
     @PutMapping("/{id}")
     public PassengerResponse updateDriver(@PathVariable int id,
-                                       @Valid @Validated(OnUpdate.class) @RequestBody PassengerRequest request) {
+                                          @Valid @Validated(OnUpdate.class) @RequestBody PassengerRequest request) {
         return passengerService.updatePassenger(id, request);
     }
 }

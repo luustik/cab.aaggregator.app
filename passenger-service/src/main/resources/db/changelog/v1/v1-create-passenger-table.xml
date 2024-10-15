@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <changeSet id="v1" author="lustikkkkk">
+    <changeSet id="v1-create-passenger-table" author="lustikkkkk">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="passenger"/>
@@ -33,15 +33,6 @@
 
         <rollback>
             <dropTable tableName="passenger"/>
-        </rollback>
-    </changeSet>
-
-    <changeSet id="v1-load-data" author="lustikkkkk">
-        <loadData tableName="passenger" file="db.changelog/data/passenger-data.csv"/>
-        <rollback>
-            <delete tableName="passenger">
-                <where>id IN (SELECT id FROM driver)</where>
-            </delete>
         </rollback>
     </changeSet>
 
