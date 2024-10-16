@@ -1,6 +1,6 @@
 package cab.aggregator.app.ratingservice.entity;
 
-import cab.aggregator.app.ratingservice.entity.enums.RoleUser;
+import cab.aggregator.app.ratingservice.entity.enums.UserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -38,5 +38,5 @@ public class Rating {
 
     @Column(name = "role_user", nullable = false)
     @Enumerated(EnumType.STRING)
-    private RoleUser roleUser;
+    private UserRole userRole;
 }

@@ -7,6 +7,7 @@ import cab.aggregator.app.ratingservice.exception.ResourceAlreadyExistException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import static cab.aggregator.app.ratingservice.utility.Constants.DEFAULT_EXCEPTION_MESSAGE;
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return MultiException.builder()
-                .message(messageSource.getMessage(VALIDATION_FAILED_MESSAGE, null, Locale.getDefault()))
+                .message(messageSource.getMessage(VALIDATION_FAILED_MESSAGE, null, LocaleContextHolder.getLocale()))
                 .errors(errors)
                 .build();
     }
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return MultiException.builder()
-                .message(messageSource.getMessage(VALIDATION_FAILED_MESSAGE, null, Locale.getDefault()))
+                .message(messageSource.getMessage(VALIDATION_FAILED_MESSAGE, null, LocaleContextHolder.getLocale()))
                 .errors(errors)
                 .build();
     }
@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDto handleException(Exception e) {
         return ExceptionDto.builder()
-                .message(messageSource.getMessage(DEFAULT_EXCEPTION_MESSAGE, null, Locale.getDefault()))
+                .message(messageSource.getMessage(DEFAULT_EXCEPTION_MESSAGE, null, LocaleContextHolder.getLocale()))
                 .build();
     }
 }

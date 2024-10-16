@@ -1,6 +1,7 @@
 package cab.aggregator.app.ratingservice.service;
 
 import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
+import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 
@@ -20,5 +21,5 @@ public interface RatingService {
 
     RatingResponse createRating(RatingRequest ratingRequest);
 
-    RatingResponse updateRating(Long id, RatingRequest ratingRequest);
+    RatingResponse updateRating(Long id, RatingUpdateDto ratingUpdateDto);
 }

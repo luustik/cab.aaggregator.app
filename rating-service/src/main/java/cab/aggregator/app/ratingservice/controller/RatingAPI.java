@@ -1,6 +1,7 @@
 package cab.aggregator.app.ratingservice.controller;
 
 import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
+import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 import cab.aggregator.app.ratingservice.dto.validation.OnCreate;
@@ -54,5 +55,5 @@ public interface RatingAPI {
     public ResponseEntity<RatingResponse> createRating(@Valid @Validated(OnCreate.class) RatingRequest request);
 
     @Operation(summary = "Update rating by ID")
-    public RatingResponse updateRating(Long id, @Valid @Validated(OnUpdate.class) RatingRequest request);
+    public RatingResponse updateRating(Long id, @Valid @Validated(OnUpdate.class) RatingUpdateDto ratingUpdateDto);
 }

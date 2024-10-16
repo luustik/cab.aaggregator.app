@@ -10,23 +10,25 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
+import static cab.aggregator.app.ratingservice.utility.Constants.REGEXP_ROLE;
+
 @Schema(description = "Rating Request DTO")
 public record RatingRequest(
 
         @Schema(description = "Ride id")
         @Positive
-        @NotNull(message = "{ride.id.notnull}", groups = {OnCreate.class, OnUpdate.class})
+        @NotNull(message = "{ride.id.notnull}", groups = OnCreate.class)
         Long rideId,
 
         @Schema(description = "User id")
         @Positive
-        @NotNull(message = "{user.id.notnull}", groups = {OnCreate.class, OnUpdate.class})
+        @NotNull(message = "{user.id.notnull}", groups = OnCreate.class)
         Long userId,
 
         @Schema(description = "Rating")
         @Min(1)
         @Max(10)
-        @NotNull(message = "{rating.notnull}", groups = {OnCreate.class, OnUpdate.class})
+        @NotNull(message = "{rating.notnull}", groups = OnCreate.class)
         Integer rating,
 
         @Schema(description = "Comment")
@@ -34,7 +36,7 @@ public record RatingRequest(
         String comment,
 
         @Schema(description = "Role user")
-        @Pattern(regexp = "^(?i)(driver|passenger)$", message = "{role.user.pattern}")
-        String roleUser
+        @Pattern(regexp = REGEXP_ROLE, message = "{role.user.pattern}")
+        String userRole
 ) {
 }

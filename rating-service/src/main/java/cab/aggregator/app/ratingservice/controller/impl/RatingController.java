@@ -1,8 +1,8 @@
 package cab.aggregator.app.ratingservice.controller.impl;
 
-
 import cab.aggregator.app.ratingservice.controller.RatingAPI;
 import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
+import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 import cab.aggregator.app.ratingservice.dto.validation.OnCreate;
@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static cab.aggregator.app.ratingservice.utility.Constants.REGEXP_ROLE;
@@ -75,6 +76,7 @@ public class RatingController implements RatingAPI {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRatingById(@PathVariable Long id) {
         ratingService.deleteRating(id);
     }
@@ -86,8 +88,10 @@ public class RatingController implements RatingAPI {
                         .createRating(request));
     }
 
-    @PutMapping("/{id}")
-    public RatingResponse updateRating(@PathVariable Long id, @Valid @Validated(OnUpdate.class) @RequestBody RatingRequest request) {
-        return ratingService.updateRating(id, request);
+    @PatchMapping("/{id}")
+    public RatingResponse updateRating(@PathVariable Long id,
+                                       @Valid @Validated(OnUpdate.class)
+                                       @RequestBody RatingUpdateDto ratingUpdateDto) {
+        return ratingService.updateRating(id, ratingUpdateDto);
     }
 }

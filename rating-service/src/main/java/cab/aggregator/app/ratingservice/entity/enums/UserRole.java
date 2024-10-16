@@ -1,6 +1,6 @@
 package cab.aggregator.app.ratingservice.entity.enums;
 
-public enum RoleUser {
+public enum UserRole {
     DRIVER,
     PASSENGER
 }

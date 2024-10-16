@@ -12,6 +12,6 @@ public record RatingResponse(
 
         String comment,
 
-        String roleUser
+        String userRole
 ) {
 }

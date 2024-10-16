@@ -1,7 +1,7 @@
 package cab.aggregator.app.ratingservice.repository;
 
 import cab.aggregator.app.ratingservice.entity.Rating;
-import cab.aggregator.app.ratingservice.entity.enums.RoleUser;
+import cab.aggregator.app.ratingservice.entity.enums.UserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,11 +12,11 @@ import java.util.Optional;
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
 
-    Page<Rating> findAllByUserIdAndRoleUser(Long userId, RoleUser roleUser, Pageable pageable);
+    Page<Rating> findAllByUserIdAndUserRole(Long userId, UserRole userRole, Pageable pageable);
 
-    Page<Rating> findAllByRoleUser(RoleUser roleUser, Pageable pageable);
+    Page<Rating> findAllByUserRole(UserRole userRole, Pageable pageable);
 
-    Optional<Rating> findByRideIdAndRoleUser(Long rideId, RoleUser roleUser);
+    Optional<Rating> findByRideIdAndUserRole(Long rideId, UserRole userRole);
 
-    boolean existsByRideIdAndRoleUser(Long rideId, RoleUser roleUser);
+    boolean existsByRideIdAndUserRole(Long rideId, UserRole userRole);
 }
