@@ -1,4 +1,4 @@
-package cab.aggregator.app.rideservice.exception;
+package cab.aggregator.app.ratingservice.exception;
 
 public class CustomFeignException extends RuntimeException {
 

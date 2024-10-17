@@ -1,13 +1,11 @@
-package cab.aggregator.app.rideservice.client;
+package cab.aggregator.app.ratingservice.client;
 
-import cab.aggregator.app.rideservice.dto.exception.ExceptionDto;
-import cab.aggregator.app.rideservice.exception.CustomFeignException;
+import cab.aggregator.app.ratingservice.exception.CustomFeignException;
+import cab.aggregator.app.ratingservice.dto.exception.ExceptionDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
