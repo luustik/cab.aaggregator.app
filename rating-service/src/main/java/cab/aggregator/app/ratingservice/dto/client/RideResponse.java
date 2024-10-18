@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 
 public record RideResponse(
 
-        Long id,
+        long id,
 
-        Long driverId,
+        long driverId,
 
-        Long passengerId,
+        long passengerId,
 
         String departureAddress,
 

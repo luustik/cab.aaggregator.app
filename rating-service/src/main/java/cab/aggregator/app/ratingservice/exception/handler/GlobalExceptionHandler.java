@@ -1,8 +1,9 @@
 package cab.aggregator.app.ratingservice.exception.handler;
 
+import cab.aggregator.app.ratingservice.dto.client.ClientException;
 import cab.aggregator.app.ratingservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.ratingservice.dto.exception.MultiException;
-import cab.aggregator.app.ratingservice.exception.CustomFeignException;
+import cab.aggregator.app.ratingservice.exception.ExternalClientException;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
 import cab.aggregator.app.ratingservice.exception.ResourceAlreadyExistException;
 import jakarta.validation.ConstraintViolationException;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,7 +30,7 @@ public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
 
-    @ExceptionHandler({EntityNotFoundException.class, CustomFeignException.class})
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionDto handleEntityNotFound(RuntimeException e) {
         return ExceptionDto.builder()
@@ -42,6 +44,13 @@ public class GlobalExceptionHandler {
         return ExceptionDto.builder()
                 .message(e.getMessage())
                 .build();
+    }
+
+    @ExceptionHandler(ExternalClientException.class)
+    public ResponseEntity<ClientException> handleExternalClient(ExternalClientException e) {
+        ClientException clientException = e.getClientException();
+        return ResponseEntity.status(clientException.status())
+                .body(clientException);
     }
 
     @ExceptionHandler(IllegalStateException.class)
@@ -85,7 +94,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDto handleException(Exception e) {
-        e.printStackTrace();
         return ExceptionDto.builder()
                 .message(messageSource.getMessage(DEFAULT_EXCEPTION_MESSAGE, null, LocaleContextHolder.getLocale()))
                 .build();
