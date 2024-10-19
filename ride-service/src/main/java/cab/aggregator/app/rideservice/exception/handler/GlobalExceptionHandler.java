@@ -1,6 +1,5 @@
 package cab.aggregator.app.rideservice.exception.handler;
 
-import cab.aggregator.app.rideservice.dto.client.ClientErrorResponse;
 import cab.aggregator.app.rideservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.rideservice.dto.exception.MultiException;
 import cab.aggregator.app.rideservice.exception.ExternalClientException;

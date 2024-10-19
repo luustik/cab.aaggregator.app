@@ -78,7 +78,7 @@ public class RatingServiceImpl implements RatingService {
     @Transactional
     public RatingResponse createRating(RatingRequest ratingRequest) {
         Rating rating = ratingMapper.toEntity(ratingRequest);
-        validator.checkIfExistUser(rating.getUserId(),rating.getUserRole());
+        validator.checkIfExistUser(rating.getUserId(), rating.getUserRole());
         validator.checkIfExistRide(rating.getRideId());
         validator.checkIfExistRatingByRideIdAndRole(rating.getRideId(), rating.getUserRole());
         ratingRepository.save(rating);

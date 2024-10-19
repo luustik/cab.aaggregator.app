@@ -10,7 +10,7 @@ public class RideClientContainer {
 
     private final RideClient rideClient;
 
-    public RideResponse getById(long id){
+    public RideResponse getById(long id) {
         return rideClient.getRideById(id);
     }
 }

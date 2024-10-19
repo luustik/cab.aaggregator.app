@@ -25,15 +25,15 @@ public class ExternalClientErrorDecoder implements ErrorDecoder {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(readResponseBody(response));
         String message = jsonNode.get(MESSAGE).asText();
-        return new ExternalClientException(message,response.status());
+        return new ExternalClientException(message, response.status());
     }
 
     @SneakyThrows
     protected String readResponseBody(Response response) {
-            @Cleanup
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(response.body().asInputStream(), StandardCharsets.UTF_8));
-            return bufferedReader.lines()
-                    .collect(Collectors.joining("\n"));
+        @Cleanup
+        BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader(response.body().asInputStream(), StandardCharsets.UTF_8));
+        return bufferedReader.lines()
+                .collect(Collectors.joining("\n"));
     }
 }

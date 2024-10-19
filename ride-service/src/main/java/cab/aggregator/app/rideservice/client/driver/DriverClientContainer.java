@@ -10,7 +10,7 @@ public class DriverClientContainer {
 
     private final DriverClient driverClient;
 
-    public DriverResponse getById(int id){
+    public DriverResponse getById(int id) {
         return driverClient.getDriverById(id);
     }
 }

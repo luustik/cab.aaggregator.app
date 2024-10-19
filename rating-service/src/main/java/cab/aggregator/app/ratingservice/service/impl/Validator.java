@@ -30,21 +30,21 @@ public class Validator {
     private final MessageSource messageSource;
 
     public void checkIfExistUser(Long userId, UserRole role) {
-        switch (role){
+        switch (role) {
             case DRIVER -> checkIfExistDriver(userId);
             case PASSENGER -> checkIfExistPassenger(userId);
         }
     }
 
-    public void checkIfExistRide(Long rideId){
+    public void checkIfExistRide(Long rideId) {
         rideClientContainer.getById(rideId);
     }
 
-    private void checkIfExistPassenger(Long passengerId){
+    private void checkIfExistPassenger(Long passengerId) {
         passengerClientContainer.getById(passengerId.intValue());
     }
 
-    private void checkIfExistDriver(Long driverId){
+    private void checkIfExistDriver(Long driverId) {
         driverClientContainer.getById(driverId.intValue());
     }
 

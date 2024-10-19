@@ -10,7 +10,7 @@ public class PassengerClientContainer {
 
     private final PassengerClient passengerClient;
 
-    public PassengerResponse getById(int id){
+    public PassengerResponse getById(int id) {
         return passengerClient.getPassengerById(id);
     }
 }
