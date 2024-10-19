@@ -47,10 +47,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ExternalClientException.class)
-    public ResponseEntity<ClientErrorResponse> handleExternalClient(ExternalClientException e) {
-        ClientErrorResponse clientErrorResponse = e.getClientErrorResponse();
-        return ResponseEntity.status(clientErrorResponse.status())
-                .body(clientErrorResponse);
+    public ResponseEntity<ExceptionDto> handleExternalClient(ExternalClientException e) {
+        return ResponseEntity.status(e.getStatusCode())
+                .body(ExceptionDto.builder()
+                        .message(e.getMessage())
+                        .build());
     }
 
     @ExceptionHandler(IllegalStateException.class)

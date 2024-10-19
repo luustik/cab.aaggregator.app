@@ -27,11 +27,7 @@ public class ExternalClientErrorDecoder implements ErrorDecoder {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(readResponseBody(response));
         String message = jsonNode.get(MESSAGE).asText();
-        ClientErrorResponse clientErrorResponse = ClientErrorResponse.builder()
-                .status(HttpStatus.valueOf(response.status()))
-                .message(message)
-                .build();
-        return new ExternalClientException(clientErrorResponse);
+        return new ExternalClientException(message,response.status());
     }
 
     @SneakyThrows

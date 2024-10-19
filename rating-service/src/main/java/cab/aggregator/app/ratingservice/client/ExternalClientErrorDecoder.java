@@ -1,6 +1,5 @@
 package cab.aggregator.app.ratingservice.client;
 
-import cab.aggregator.app.ratingservice.dto.client.ClientErrorResponse;
 import cab.aggregator.app.ratingservice.exception.ExternalClientException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,7 +7,6 @@ import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -27,11 +25,7 @@ public class ExternalClientErrorDecoder implements ErrorDecoder {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(readResponseBody(response));
         String message = jsonNode.get(MESSAGE).asText();
-        ClientErrorResponse clientErrorResponse = ClientErrorResponse.builder()
-                .status(HttpStatus.valueOf(response.status()))
-                .message(message)
-                .build();
-        return new ExternalClientException(clientErrorResponse);
+        return new ExternalClientException(message,response.status());
     }
 
     @SneakyThrows

@@ -1,6 +1,5 @@
 package cab.aggregator.app.ratingservice.exception.handler;
 
-import cab.aggregator.app.ratingservice.dto.client.ClientErrorResponse;
 import cab.aggregator.app.ratingservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.ratingservice.dto.exception.MultiException;
 import cab.aggregator.app.ratingservice.exception.ExternalClientException;
@@ -47,10 +46,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ExternalClientException.class)
-    public ResponseEntity<ClientErrorResponse> handleExternalClient(ExternalClientException e) {
-        ClientErrorResponse clientErrorResponse = e.getClientErrorResponse();
-        return ResponseEntity.status(clientErrorResponse.status())
-                .body(clientErrorResponse);
+    public ResponseEntity<ExceptionDto> handleExternalClient(ExternalClientException e) {
+        return ResponseEntity.status(e.getStatusCode())
+                .body(ExceptionDto.builder()
+                        .message(e.getMessage())
+                        .build());
     }
 
     @ExceptionHandler(IllegalStateException.class)
