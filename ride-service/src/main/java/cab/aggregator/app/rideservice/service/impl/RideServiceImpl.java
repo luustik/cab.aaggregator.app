@@ -27,12 +27,13 @@ import static cab.aggregator.app.rideservice.utility.ResourceName.RIDE;
 @RequiredArgsConstructor
 public class RideServiceImpl implements RideService {
 
-    private final MessageSource messageSource;
     private final RideRepository rideRepository;
     private final RideMapper rideMapper;
     private final RideContainerMapper rideContainerMapper;
+    private final MessageSource messageSource;
     private final CalculationCost calculationCost;
     private final ValidationStatusService validationStatusService;
+    private final Validator validator;
 
     @Override
     @Transactional(readOnly = true)
@@ -52,6 +53,7 @@ public class RideServiceImpl implements RideService {
     @Override
     @Transactional(readOnly = true)
     public RideContainerResponse getAllRidesByDriverId(Long driverId, int offset, int limit) {
+        validator.checkIfExistDriver(driverId);
         return rideContainerMapper
                 .toContainer(rideRepository
                         .findAllByDriverId(driverId, PageRequest.of(offset, limit))
@@ -70,6 +72,7 @@ public class RideServiceImpl implements RideService {
     @Override
     @Transactional(readOnly = true)
     public RideContainerResponse getAllRidesByPassengerId(Long passengerId, int offset, int limit) {
+        validator.checkIfExistPassenger(passengerId);
         return rideContainerMapper
                 .toContainer(rideRepository
                         .findAllByPassengerId(passengerId, PageRequest.of(offset, limit))
@@ -108,6 +111,8 @@ public class RideServiceImpl implements RideService {
     @Transactional
     public RideResponse createRide(RideRequest rideRequest) {
         Ride ride = rideMapper.toEntity(rideRequest);
+        validator.checkIfExistDriver(ride.getDriverId());
+        validator.checkIfExistPassenger(ride.getPassengerId());
         ride.setOrderDateTime(LocalDateTime.now());
         ride.setCost(calculationCost.generatePrice());
         ride.setStatus(Status.CREATED);
@@ -119,6 +124,8 @@ public class RideServiceImpl implements RideService {
     @Transactional
     public RideResponse updateRide(Long id, RideRequest rideRequest) {
         Ride ride = findById(id);
+        validator.checkIfExistDriver(rideRequest.driverId());
+        validator.checkIfExistPassenger(rideRequest.passengerId());
         rideMapper.updateRideFromDto(rideRequest, ride);
         rideRepository.save(ride);
         return rideMapper.toDto(ride);

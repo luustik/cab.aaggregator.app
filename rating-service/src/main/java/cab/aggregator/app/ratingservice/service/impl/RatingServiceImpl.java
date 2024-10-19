@@ -7,7 +7,6 @@ import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 import cab.aggregator.app.ratingservice.entity.Rating;
 import cab.aggregator.app.ratingservice.entity.enums.UserRole;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
-import cab.aggregator.app.ratingservice.exception.ResourceAlreadyExistException;
 import cab.aggregator.app.ratingservice.mapper.RatingContainerMapper;
 import cab.aggregator.app.ratingservice.mapper.RatingMapper;
 import cab.aggregator.app.ratingservice.repository.RatingRepository;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_RESOURCE_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_WITH_ID_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.RATING;
-import static cab.aggregator.app.ratingservice.utility.Constants.RESOURCE_ALREADY_EXISTS_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.RIDE;
 
 @Service
@@ -30,9 +28,10 @@ import static cab.aggregator.app.ratingservice.utility.Constants.RIDE;
 public class RatingServiceImpl implements RatingService {
 
     private final RatingRepository ratingRepository;
-    private final MessageSource messageSource;
     private final RatingMapper ratingMapper;
+    private final MessageSource messageSource;
     private final RatingContainerMapper ratingContainerMapper;
+    private final Validator validator;
 
     @Override
     @Transactional(readOnly = true)
@@ -44,6 +43,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional(readOnly = true)
     public RatingResponse getRatingByRideIdAndRole(Long rideId, String role) {
+        validator.checkIfExistRide(rideId);
         return ratingMapper
                 .toDto(findRatingByRideIdAndRole(rideId, role));
     }
@@ -60,6 +60,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional(readOnly = true)
     public RatingContainerResponse getAllByUserIdAndRole(Long userId, String role, int offset, int limit) {
+        validator.checkIfExistUser(userId, UserRole.valueOf(role.toUpperCase()));
         return ratingContainerMapper
                 .toContainer(ratingRepository
                         .findAllByUserIdAndUserRole(userId, UserRole.valueOf(role.toUpperCase())
@@ -86,7 +87,9 @@ public class RatingServiceImpl implements RatingService {
     @Transactional
     public RatingResponse createRating(RatingRequest ratingRequest) {
         Rating rating = ratingMapper.toEntity(ratingRequest);
-        checkIfExistRatingByRideIdAndRole(rating.getRideId(), rating.getUserRole());
+        validator.checkIfExistUser(rating.getUserId(), rating.getUserRole());
+        validator.checkIfExistRide(rating.getRideId());
+        validator.checkIfExistRatingByRideIdAndRole(rating.getRideId(), rating.getUserRole());
         ratingRepository.save(rating);
         return ratingMapper.toDto(rating);
     }
@@ -101,13 +104,6 @@ public class RatingServiceImpl implements RatingService {
         return ratingMapper.toDto(rating);
     }
 
-    private void checkIfExistRatingByRideIdAndRole(Long rideId, UserRole role) {
-        if (ratingRepository.existsByRideIdAndUserRole(rideId, role)) {
-            throw new ResourceAlreadyExistException(messageSource.getMessage(RESOURCE_ALREADY_EXISTS_MESSAGE,
-                    new Object[]{RATING, RIDE, rideId, role.toString()}, LocaleContextHolder.getLocale()));
-        }
-    }
-
     private Rating findRatingById(Long id) {
         return ratingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE,
@@ -119,4 +115,5 @@ public class RatingServiceImpl implements RatingService {
                 .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_RESOURCE_NOT_FOUND_MESSAGE,
                         new Object[]{role, RATING, RIDE, rideId}, LocaleContextHolder.getLocale())));
     }
+
 }

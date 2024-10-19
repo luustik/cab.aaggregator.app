@@ -19,5 +19,5 @@ public record RatingUpdateDto(
         @Schema(description = "Comment")
         @Length(max = 255, message = "{comment.length}", groups = OnUpdate.class)
         String comment
-){
+) {
 }
