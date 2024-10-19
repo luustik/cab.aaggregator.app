@@ -3,9 +3,7 @@ package cab.aggregator.app.ratingservice.service.impl;
 import cab.aggregator.app.ratingservice.client.driver.DriverClientContainer;
 import cab.aggregator.app.ratingservice.client.passenger.PassengerClientContainer;
 import cab.aggregator.app.ratingservice.client.ride.RideClientContainer;
-import cab.aggregator.app.ratingservice.entity.Rating;
 import cab.aggregator.app.ratingservice.entity.enums.UserRole;
-import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
 import cab.aggregator.app.ratingservice.exception.ResourceAlreadyExistException;
 import cab.aggregator.app.ratingservice.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +11,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
-import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_RESOURCE_NOT_FOUND_MESSAGE;
-import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_WITH_ID_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.RATING;
 import static cab.aggregator.app.ratingservice.utility.Constants.RESOURCE_ALREADY_EXISTS_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.RIDE;
@@ -55,15 +51,4 @@ public class Validator {
         }
     }
 
-    public Rating findRatingById(Long id) {
-        return ratingRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE,
-                        new Object[]{RATING, id}, LocaleContextHolder.getLocale())));
-    }
-
-    public Rating findRatingByRideIdAndRole(Long rideId, String role) {
-        return ratingRepository.findByRideIdAndUserRole(rideId, UserRole.valueOf(role.toUpperCase()))
-                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_RESOURCE_NOT_FOUND_MESSAGE,
-                        new Object[]{role, RATING, RIDE, rideId}, LocaleContextHolder.getLocale())));
-    }
 }

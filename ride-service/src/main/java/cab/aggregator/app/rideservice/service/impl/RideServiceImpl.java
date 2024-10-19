@@ -5,17 +5,23 @@ import cab.aggregator.app.rideservice.dto.response.RideContainerResponse;
 import cab.aggregator.app.rideservice.dto.response.RideResponse;
 import cab.aggregator.app.rideservice.entity.Ride;
 import cab.aggregator.app.rideservice.entity.enums.Status;
+import cab.aggregator.app.rideservice.exception.EntityNotFoundException;
 import cab.aggregator.app.rideservice.mapper.RideContainerMapper;
 import cab.aggregator.app.rideservice.mapper.RideMapper;
 import cab.aggregator.app.rideservice.repository.RideRepository;
 import cab.aggregator.app.rideservice.service.RideService;
 import cab.aggregator.app.rideservice.utility.Utilities;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
+
+import static cab.aggregator.app.rideservice.utility.Constants.ENTITY_WITH_ID_NOT_FOUND_MESSAGE;
+import static cab.aggregator.app.rideservice.utility.ResourceName.RIDE;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +30,7 @@ public class RideServiceImpl implements RideService {
     private final RideRepository rideRepository;
     private final RideMapper rideMapper;
     private final RideContainerMapper rideContainerMapper;
+    private final MessageSource messageSource;
     private final CalculationCost calculationCost;
     private final ValidationStatusService validationStatusService;
     private final Validator validator;
@@ -31,7 +38,7 @@ public class RideServiceImpl implements RideService {
     @Override
     @Transactional(readOnly = true)
     public RideResponse getRideById(Long rideId) {
-        return rideMapper.toDto(validator.findById(rideId));
+        return rideMapper.toDto(findById(rideId));
     }
 
     @Override
@@ -85,14 +92,14 @@ public class RideServiceImpl implements RideService {
     @Override
     @Transactional
     public void deleteRide(Long id) {
-        Ride ride = validator.findById(id);
+        Ride ride = findById(id);
         rideRepository.delete(ride);
     }
 
     @Override
     @Transactional
     public RideResponse updateRideStatus(Long id, String status) {
-        Ride ride = validator.findById(id);
+        Ride ride = findById(id);
         Status newStatus = validationStatusService.validateStatus(ride.getStatus(),
                 Status.valueOf(status.toUpperCase()));
         ride.setStatus(newStatus);
@@ -116,7 +123,7 @@ public class RideServiceImpl implements RideService {
     @Override
     @Transactional
     public RideResponse updateRide(Long id, RideRequest rideRequest) {
-        Ride ride = validator.findById(id);
+        Ride ride = findById(id);
         validator.checkIfExistDriver(rideRequest.driverId());
         validator.checkIfExistPassenger(rideRequest.passengerId());
         rideMapper.updateRideFromDto(rideRequest, ride);
@@ -124,4 +131,10 @@ public class RideServiceImpl implements RideService {
         return rideMapper.toDto(ride);
     }
 
+    private Ride findById(Long rideId) {
+        return rideRepository
+                .findById(rideId)
+                .orElseThrow(() -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE,
+                        new Object[]{RIDE, rideId}, Locale.getDefault())));
+    }
 }
