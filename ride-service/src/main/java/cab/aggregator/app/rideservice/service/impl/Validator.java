@@ -2,7 +2,6 @@ package cab.aggregator.app.rideservice.service.impl;
 
 import cab.aggregator.app.rideservice.client.driver.DriverClientContainer;
 import cab.aggregator.app.rideservice.client.passenger.PassengerClientContainer;
-import cab.aggregator.app.rideservice.repository.RideRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
