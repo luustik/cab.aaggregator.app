@@ -1,14 +1,14 @@
 package cab.aggregator.app.ratingservice.exception;
 
-import cab.aggregator.app.ratingservice.dto.client.ClientException;
+import cab.aggregator.app.ratingservice.dto.client.ClientErrorResponse;
 import lombok.Getter;
 
 @Getter
 public class ExternalClientException extends RuntimeException {
 
-    private final ClientException clientException;
+    private final ClientErrorResponse clientErrorResponse;
 
-    public ExternalClientException(ClientException clientException) {
-        this.clientException = clientException;
+    public ExternalClientException(ClientErrorResponse clientErrorResponse) {
+        this.clientErrorResponse = clientErrorResponse;
     }
 }

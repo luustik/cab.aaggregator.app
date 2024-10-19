@@ -1,14 +1,14 @@
 package cab.aggregator.app.rideservice.exception;
 
-import cab.aggregator.app.rideservice.dto.client.ClientException;
+import cab.aggregator.app.rideservice.dto.client.ClientErrorResponse;
 import lombok.Getter;
 
 @Getter
 public class ExternalClientException extends RuntimeException {
 
-    private final ClientException clientException;
+    private final ClientErrorResponse clientErrorResponse;
 
-    public ExternalClientException(ClientException clientException) {
-        this.clientException = clientException;
+    public ExternalClientException(ClientErrorResponse clientErrorResponse) {
+        this.clientErrorResponse = clientErrorResponse;
     }
 }

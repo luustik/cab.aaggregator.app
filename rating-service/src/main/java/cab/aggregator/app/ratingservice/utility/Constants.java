@@ -15,4 +15,5 @@ public final class Constants {
 
     public static final String RATING = "Rating";
     public static final String RIDE = "Ride";
+    public static final String MESSAGE = "message";
 }
