@@ -1,6 +1,7 @@
 package cab.aggregator.app.ratingservice.controller.impl;
 
 import cab.aggregator.app.ratingservice.controller.RatingAPI;
+import cab.aggregator.app.ratingservice.dto.kafka.AvgRatingUserResponse;
 import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
 import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
@@ -93,5 +94,10 @@ public class RatingController implements RatingAPI {
                                        @Valid @Validated(OnUpdate.class)
                                        @RequestBody RatingUpdateDto ratingUpdateDto) {
         return ratingService.updateRating(id, ratingUpdateDto);
+    }
+
+    @GetMapping("/avg-rating/{role}/{id}")
+    public AvgRatingUserResponse calculateAvgRatingUser(@PathVariable Long id, @PathVariable String role) {
+        return ratingService.calculateRating(id, role);
     }
 }

@@ -1,9 +1,12 @@
 package cab.aggregator.app.ratingservice.service;
 
+import cab.aggregator.app.ratingservice.dto.kafka.AvgRatingUserResponse;
 import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
 import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
+import cab.aggregator.app.ratingservice.entity.enums.UserRole;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface RatingService {
 
@@ -22,4 +25,6 @@ public interface RatingService {
     RatingResponse createRating(RatingRequest ratingRequest);
 
     RatingResponse updateRating(Long id, RatingUpdateDto ratingUpdateDto);
+
+    AvgRatingUserResponse calculateRating(Long id, String userRole);
 }

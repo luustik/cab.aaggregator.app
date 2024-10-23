@@ -1,5 +1,6 @@
 package cab.aggregator.app.ratingservice.controller;
 
+import cab.aggregator.app.ratingservice.dto.kafka.AvgRatingUserResponse;
 import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
 import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
@@ -56,4 +57,8 @@ public interface RatingAPI {
 
     @Operation(summary = "Update rating by ID")
     public RatingResponse updateRating(Long id, @Valid @Validated(OnUpdate.class) RatingUpdateDto ratingUpdateDto);
+
+    AvgRatingUserResponse calculateAvgRatingUser(Long id, @Valid @Validated
+                                                          @Pattern(regexp = REGEXP_ROLE, message = "{role.user.pattern}")
+                                                          String role);
 }

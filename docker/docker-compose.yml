@@ -5,8 +5,31 @@ volumes:
   pg_driver:
   pg_rating:
   pg_ride:
+  kafka_data:
+  zookeeper_data:
 
 services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper_data:/wurstmeister/zookeeper
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/wurstmeister/kafka
 
   passenger_db:
     image: postgres:15.1-alpine

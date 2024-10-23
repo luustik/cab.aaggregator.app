@@ -12,6 +12,8 @@ public record DriverResponse(
 
         String gender,
 
-        boolean deleted
+        boolean deleted,
+
+        double avgGrade
 ) {
 }

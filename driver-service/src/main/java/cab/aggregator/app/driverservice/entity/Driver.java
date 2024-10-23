@@ -1,7 +1,10 @@
 package cab.aggregator.app.driverservice.entity;
 
 import cab.aggregator.app.driverservice.entity.enums.Gender;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +15,9 @@ import jakarta.persistence.EnumType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "driver")
@@ -40,4 +46,7 @@ public class Driver {
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
+
+    @Column(name = "avg_grade")
+    private double avgGrade;
 }
