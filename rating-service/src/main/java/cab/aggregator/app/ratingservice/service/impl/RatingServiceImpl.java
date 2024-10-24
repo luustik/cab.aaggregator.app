@@ -1,12 +1,15 @@
 package cab.aggregator.app.ratingservice.service.impl;
 
+import cab.aggregator.app.ratingservice.dto.kafka.AvgRatingUserResponse;
 import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
 import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 import cab.aggregator.app.ratingservice.entity.Rating;
 import cab.aggregator.app.ratingservice.entity.enums.UserRole;
+import cab.aggregator.app.ratingservice.exception.EmptyListException;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
+import cab.aggregator.app.ratingservice.kafka.KafkaSender;
 import cab.aggregator.app.ratingservice.mapper.RatingContainerMapper;
 import cab.aggregator.app.ratingservice.mapper.RatingMapper;
 import cab.aggregator.app.ratingservice.repository.RatingRepository;
@@ -18,8 +21,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_RESOURCE_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_WITH_ID_NOT_FOUND_MESSAGE;
+import static cab.aggregator.app.ratingservice.utility.Constants.LIST_EMPTY_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.RATING;
 import static cab.aggregator.app.ratingservice.utility.Constants.RIDE;
 
@@ -32,6 +38,7 @@ public class RatingServiceImpl implements RatingService {
     private final MessageSource messageSource;
     private final RatingContainerMapper ratingContainerMapper;
     private final Validator validator;
+    private final KafkaSender kafkaSender;
 
     @Override
     @Transactional(readOnly = true)
@@ -80,7 +87,10 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional
     public void deleteRating(Long id) {
-        ratingRepository.delete(findRatingById(id));
+        Rating rating = findRatingById(id);
+        ratingRepository.delete(rating);
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole());
+        sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
     }
 
     @Override
@@ -91,6 +101,8 @@ public class RatingServiceImpl implements RatingService {
         validator.checkIfExistRide(rating.getRideId());
         validator.checkIfExistRatingByRideIdAndRole(rating.getRideId(), rating.getUserRole());
         ratingRepository.save(rating);
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole());
+        sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
         return ratingMapper.toDto(rating);
     }
 
@@ -101,7 +113,40 @@ public class RatingServiceImpl implements RatingService {
         rating.setRating(ratingUpdateDto.rating());
         rating.setComment(ratingUpdateDto.comment());
         ratingRepository.save(rating);
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole());
+        sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
         return ratingMapper.toDto(rating);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AvgRatingUserResponse calculateRating(Long id, String userRole) {
+        UserRole role = UserRole.valueOf(userRole.toUpperCase());
+        validator.checkIfExistUser(id, role);
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(id, role);
+        sendUserAvgRating(avgRatingUserResponse, role);
+        return avgRatingUserResponse;
+    }
+
+    private AvgRatingUserResponse calculateAvgRating(Long id, UserRole userRole) {
+        List<Rating> userRatings = ratingRepository.findAllByUserIdAndUserRole(id, userRole);
+        if (userRatings.isEmpty()) {
+            throw new EmptyListException(messageSource.getMessage(LIST_EMPTY_MESSAGE,
+                    new Object[]{RATING}, LocaleContextHolder.getLocale()));
+        }
+        double avgRating = userRatings.stream()
+                .mapToInt(Rating::getRating)
+                .average()
+                .orElse(0);
+
+        return new AvgRatingUserResponse(id.intValue(), avgRating);
+    }
+
+    private void sendUserAvgRating(AvgRatingUserResponse avgRatingUserResponse, UserRole userRole) {
+        switch (userRole) {
+            case DRIVER -> kafkaSender.sendAvgRatingDriver(avgRatingUserResponse);
+            case PASSENGER -> kafkaSender.sendAvgRatingPassenger(avgRatingUserResponse);
+        }
     }
 
     private Rating findRatingById(Long id) {

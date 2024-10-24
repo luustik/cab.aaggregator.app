@@ -40,4 +40,7 @@ public class Driver {
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
+
+    @Column(name = "avg_grade")
+    private Double avgGrade;
 }

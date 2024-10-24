@@ -2,6 +2,7 @@ package cab.aggregator.app.ratingservice.exception.handler;
 
 import cab.aggregator.app.ratingservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.ratingservice.dto.exception.MultiException;
+import cab.aggregator.app.ratingservice.exception.EmptyListException;
 import cab.aggregator.app.ratingservice.exception.ExternalClientException;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
 import cab.aggregator.app.ratingservice.exception.ResourceAlreadyExistException;
@@ -53,7 +54,7 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler(IllegalStateException.class)
+    @ExceptionHandler({IllegalStateException.class, EmptyListException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionDto handleBadRequest(RuntimeException e) {
         return ExceptionDto.builder()
@@ -94,6 +95,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDto handleException(Exception e) {
+        e.printStackTrace();
         return ExceptionDto.builder()
                 .message(messageSource.getMessage(DEFAULT_EXCEPTION_MESSAGE, null, LocaleContextHolder.getLocale()))
                 .build();

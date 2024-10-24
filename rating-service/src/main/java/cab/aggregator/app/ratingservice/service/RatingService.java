@@ -1,5 +1,6 @@
 package cab.aggregator.app.ratingservice.service;
 
+import cab.aggregator.app.ratingservice.dto.kafka.AvgRatingUserResponse;
 import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
 import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
@@ -22,4 +23,6 @@ public interface RatingService {
     RatingResponse createRating(RatingRequest ratingRequest);
 
     RatingResponse updateRating(Long id, RatingUpdateDto ratingUpdateDto);
+
+    AvgRatingUserResponse calculateRating(Long id, String userRole);
 }

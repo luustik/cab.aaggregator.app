@@ -33,11 +33,13 @@
 
             <column name="deleted" type="boolean" defaultValueBoolean="false">
             </column>
+
         </createTable>
 
         <rollback>
             <dropTable tableName="driver"/>
         </rollback>
+
     </changeSet>
 
 </databaseChangeLog>
