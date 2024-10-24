@@ -20,8 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Locale;
 
-import static cab.aggregator.app.driverservice.utility.Constants.*;
-
+import static cab.aggregator.app.driverservice.utility.Constants.DRIVER;
+import static cab.aggregator.app.driverservice.utility.Constants.ENTITY_NOT_FOUND_MESSAGE;
+import static cab.aggregator.app.driverservice.utility.Constants.RESOURCE_ALREADY_EXIST_MESSAGE;
 
 @Service
 @RequiredArgsConstructor

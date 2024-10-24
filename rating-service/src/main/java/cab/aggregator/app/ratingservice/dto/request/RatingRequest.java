@@ -1,7 +1,6 @@
 package cab.aggregator.app.ratingservice.dto.request;
 
 import cab.aggregator.app.ratingservice.dto.validation.OnCreate;
-import cab.aggregator.app.ratingservice.dto.validation.OnUpdate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.NotNull;

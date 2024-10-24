@@ -11,13 +11,19 @@ import static cab.aggregator.app.ratingservice.kafka.util.Constants.PASSENGER_TO
 @Configuration
 public class KafkaTopic {
 
+    private final int partitionCount = 3;
+
     @Bean
     public NewTopic driverAvgRatingTopic() {
-        return TopicBuilder.name(DRIVER_TOPIC).partitions(3).build();
+        return TopicBuilder.name(DRIVER_TOPIC)
+                .partitions(partitionCount)
+                .build();
     }
 
     @Bean
     public NewTopic passengerAvgRatingTopic() {
-        return TopicBuilder.name(PASSENGER_TOPIC).partitions(3).build();
+        return TopicBuilder.name(PASSENGER_TOPIC)
+                .partitions(partitionCount)
+                .build();
     }
 }

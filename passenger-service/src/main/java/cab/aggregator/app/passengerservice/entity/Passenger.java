@@ -35,5 +35,5 @@ public class Passenger {
     private boolean deleted;
 
     @Column(name = "avg_grade")
-    private double avgGrade;
+    private Double avgGrade;
 }

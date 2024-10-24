@@ -89,7 +89,7 @@ public class RatingServiceImpl implements RatingService {
     public void deleteRating(Long id) {
         Rating rating = findRatingById(id);
         ratingRepository.delete(rating);
-        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole().name());
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole());
         sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
     }
 
@@ -101,7 +101,7 @@ public class RatingServiceImpl implements RatingService {
         validator.checkIfExistRide(rating.getRideId());
         validator.checkIfExistRatingByRideIdAndRole(rating.getRideId(), rating.getUserRole());
         ratingRepository.save(rating);
-        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole().name());
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole());
         sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
         return ratingMapper.toDto(rating);
     }
@@ -113,7 +113,7 @@ public class RatingServiceImpl implements RatingService {
         rating.setRating(ratingUpdateDto.rating());
         rating.setComment(ratingUpdateDto.comment());
         ratingRepository.save(rating);
-        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole().name());
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole());
         sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
         return ratingMapper.toDto(rating);
     }
@@ -121,15 +121,16 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional(readOnly = true)
     public AvgRatingUserResponse calculateRating(Long id, String userRole) {
-        validator.checkIfExistUser(id, UserRole.valueOf(userRole.toUpperCase()));
-        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(id, userRole);
-        sendUserAvgRating(avgRatingUserResponse, UserRole.valueOf(userRole.toUpperCase()));
+        UserRole role = UserRole.valueOf(userRole.toUpperCase());
+        validator.checkIfExistUser(id, role);
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(id, role);
+        sendUserAvgRating(avgRatingUserResponse, role);
         return avgRatingUserResponse;
     }
 
-    private AvgRatingUserResponse calculateAvgRating (Long id, String userRole) {
-        List<Rating> userRatings = ratingRepository.findAllByUserIdAndUserRole(id, UserRole.valueOf(userRole.toUpperCase()));
-        if(userRatings == null || userRatings.isEmpty()){
+    private AvgRatingUserResponse calculateAvgRating(Long id, UserRole userRole) {
+        List<Rating> userRatings = ratingRepository.findAllByUserIdAndUserRole(id, userRole);
+        if (userRatings.isEmpty()) {
             throw new EmptyListException(messageSource.getMessage(LIST_EMPTY_MESSAGE,
                     new Object[]{RATING}, LocaleContextHolder.getLocale()));
         }

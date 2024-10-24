@@ -60,6 +60,6 @@ public interface RatingAPI {
 
     @Operation(summary = "Calculate average rating for User")
     AvgRatingUserResponse calculateAvgRatingUser(Long id, @Valid @Validated
-                                                          @Pattern(regexp = REGEXP_ROLE, message = "{role.user.pattern}")
-                                                          String role);
+    @Pattern(regexp = REGEXP_ROLE, message = "{role.user.pattern}")
+    String role);
 }

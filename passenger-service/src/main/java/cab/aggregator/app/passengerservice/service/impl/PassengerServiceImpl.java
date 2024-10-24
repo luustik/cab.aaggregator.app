@@ -140,21 +140,21 @@ public class PassengerServiceImpl implements PassengerService {
     private Passenger findPassengerById(int id) {
         return passengerRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(
-                () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, id}, Locale.getDefault()))
-        );
+                        () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_ID_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, id}, Locale.getDefault()))
+                );
     }
 
     private Passenger findPassengerByPhone(String phone) {
         return passengerRepository.findByPhoneAndDeletedFalse(phone)
                 .orElseThrow(
-                () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_RESOURCE_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, phone}, Locale.getDefault()))
-        );
+                        () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_RESOURCE_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, phone}, Locale.getDefault()))
+                );
     }
 
     private Passenger findPassengerByEmail(String email) {
         return passengerRepository.findByEmailAndDeletedFalse(email)
                 .orElseThrow(
-                () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_RESOURCE_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, email}, Locale.getDefault()))
-        );
+                        () -> new EntityNotFoundException(messageSource.getMessage(ENTITY_WITH_RESOURCE_NOT_FOUND_MESSAGE, new Object[]{PASSENGER, email}, Locale.getDefault()))
+                );
     }
 }

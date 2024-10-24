@@ -5,8 +5,6 @@ import cab.aggregator.app.ratingservice.dto.request.RatingRequest;
 import cab.aggregator.app.ratingservice.dto.request.RatingUpdateDto;
 import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
-import cab.aggregator.app.ratingservice.entity.enums.UserRole;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface RatingService {
 

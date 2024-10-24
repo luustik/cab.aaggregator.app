@@ -11,8 +11,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-
 import static cab.aggregator.app.driverservice.kafka.util.Constants.CONTAINER_FACTORY;
 import static cab.aggregator.app.driverservice.kafka.util.Constants.DRIVER_TOPIC;
 import static cab.aggregator.app.driverservice.kafka.util.Constants.GROUP_DRIVER;
