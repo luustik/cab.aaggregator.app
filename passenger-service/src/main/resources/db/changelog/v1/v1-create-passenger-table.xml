@@ -29,6 +29,8 @@
 
             <column name="deleted" type="boolean" defaultValueBoolean="false">
             </column>
+
+            <column name="avg_grade" type = "double" defaultValue="0"/>
         </createTable>
 
         <rollback>

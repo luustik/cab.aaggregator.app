@@ -58,6 +58,7 @@ public interface RatingAPI {
     @Operation(summary = "Update rating by ID")
     public RatingResponse updateRating(Long id, @Valid @Validated(OnUpdate.class) RatingUpdateDto ratingUpdateDto);
 
+    @Operation(summary = "Calculate average rating for User")
     AvgRatingUserResponse calculateAvgRatingUser(Long id, @Valid @Validated
                                                           @Pattern(regexp = REGEXP_ROLE, message = "{role.user.pattern}")
                                                           String role);

@@ -34,4 +34,6 @@ public class Passenger {
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
 
+    @Column(name = "avg_grade")
+    private double avgGrade;
 }

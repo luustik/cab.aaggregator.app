@@ -14,13 +14,19 @@ import static cab.aggregator.app.ratingservice.kafka.util.Constants.PASSENGER_TO
 @Slf4j
 public class KafkaSender {
 
-    private final KafkaTemplate<String, AvgRatingUserResponse> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendAvgRatingPassenger(AvgRatingUserResponse passengerAvgRating) {
         kafkaTemplate.send(PASSENGER_TOPIC, passengerAvgRating);
+        logger(passengerAvgRating);
     }
 
     public void sendAvgRatingDriver(AvgRatingUserResponse driverAvgRating) {
         kafkaTemplate.send(DRIVER_TOPIC, driverAvgRating);
+        logger(driverAvgRating);
+    }
+
+    private void logger(AvgRatingUserResponse avgRatingUserResponse) {
+        log.info("Send message{}", avgRatingUserResponse);
     }
 }

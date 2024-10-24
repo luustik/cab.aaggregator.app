@@ -87,7 +87,10 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional
     public void deleteRating(Long id) {
-        ratingRepository.delete(findRatingById(id));
+        Rating rating = findRatingById(id);
+        ratingRepository.delete(rating);
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole().name());
+        sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
     }
 
     @Override
@@ -98,6 +101,8 @@ public class RatingServiceImpl implements RatingService {
         validator.checkIfExistRide(rating.getRideId());
         validator.checkIfExistRatingByRideIdAndRole(rating.getRideId(), rating.getUserRole());
         ratingRepository.save(rating);
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole().name());
+        sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
         return ratingMapper.toDto(rating);
     }
 
@@ -108,6 +113,8 @@ public class RatingServiceImpl implements RatingService {
         rating.setRating(ratingUpdateDto.rating());
         rating.setComment(ratingUpdateDto.comment());
         ratingRepository.save(rating);
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole().name());
+        sendUserAvgRating(avgRatingUserResponse, rating.getUserRole());
         return ratingMapper.toDto(rating);
     }
 
@@ -115,10 +122,23 @@ public class RatingServiceImpl implements RatingService {
     @Transactional(readOnly = true)
     public AvgRatingUserResponse calculateRating(Long id, String userRole) {
         validator.checkIfExistUser(id, UserRole.valueOf(userRole.toUpperCase()));
-        List<Rating> userRatings = ratingRepository.findAllByUserIdAndUserRole(id, UserRole.valueOf(userRole.toUpperCase()));
-        AvgRatingUserResponse avgRatingUserResponse = new AvgRatingUserResponse(id.intValue(), calculateAvgRating(userRatings));
+        AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(id, userRole);
         sendUserAvgRating(avgRatingUserResponse, UserRole.valueOf(userRole.toUpperCase()));
         return avgRatingUserResponse;
+    }
+
+    private AvgRatingUserResponse calculateAvgRating (Long id, String userRole) {
+        List<Rating> userRatings = ratingRepository.findAllByUserIdAndUserRole(id, UserRole.valueOf(userRole.toUpperCase()));
+        if(userRatings == null || userRatings.isEmpty()){
+            throw new EmptyListException(messageSource.getMessage(LIST_EMPTY_MESSAGE,
+                    new Object[]{RATING}, LocaleContextHolder.getLocale()));
+        }
+        double avgRating = userRatings.stream()
+                .mapToInt(Rating::getRating)
+                .average()
+                .orElse(0);
+
+        return new AvgRatingUserResponse(id.intValue(), avgRating);
     }
 
     private void sendUserAvgRating(AvgRatingUserResponse avgRatingUserResponse, UserRole userRole) {
@@ -126,17 +146,6 @@ public class RatingServiceImpl implements RatingService {
             case DRIVER -> kafkaSender.sendAvgRatingDriver(avgRatingUserResponse);
             case PASSENGER -> kafkaSender.sendAvgRatingPassenger(avgRatingUserResponse);
         }
-    }
-
-    private double calculateAvgRating (List<Rating> userRatings) {
-        if(userRatings == null || userRatings.isEmpty()){
-            throw new EmptyListException(messageSource.getMessage(LIST_EMPTY_MESSAGE,
-                    new Object[]{RATING}, LocaleContextHolder.getLocale()));
-        }
-        return userRatings.stream()
-                .mapToInt(Rating::getRating)
-                .average()
-                .orElse(0);
     }
 
     private Rating findRatingById(Long id) {

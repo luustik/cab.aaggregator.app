@@ -36,6 +36,11 @@
 
             <column name="avg_grade" type = "double" defaultValue="0"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="driver"/>
+        </rollback>
+
     </changeSet>
 
 </databaseChangeLog>

@@ -9,6 +9,8 @@ public record PassengerResponse(
 
         String phone,
 
-        boolean deleted
+        boolean deleted,
+
+        double avgGrade
 ) {
 }
