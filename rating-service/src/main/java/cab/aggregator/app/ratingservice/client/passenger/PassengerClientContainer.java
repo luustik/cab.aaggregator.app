@@ -1,6 +1,7 @@
 package cab.aggregator.app.ratingservice.client.passenger;
 
 import cab.aggregator.app.ratingservice.dto.client.PassengerResponse;
+import cab.aggregator.app.ratingservice.dto.exception.ExceptionDto;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +19,8 @@ public class PassengerClientContainer {
         return passengerClient.getPassengerById(id);
     }
 
-    private void fallback(Exception ex) throws Exception {
-        log.warn(ex.getMessage(), ex);
-        throw  ex;
+    private PassengerResponse fallback(int id, Throwable ex) throws Throwable {
+        log.warn("Fallback triggered for ID: {}, Exception: {}", id, ex.getMessage(), ex);
+        throw ex;
     }
 }

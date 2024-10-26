@@ -18,8 +18,8 @@ public class RideClientContainer {
         return rideClient.getRideById(id);
     }
 
-    private void fallback(Exception ex) throws Exception {
-        log.warn(ex.getMessage(), ex);
-        throw  ex;
+    private RideResponse fallback(long id, Throwable ex) throws Throwable {
+        log.warn("Fallback triggered for ID: {}, Exception: {}", id, ex.getMessage(), ex);
+        throw ex;
     }
 }

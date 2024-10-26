@@ -18,8 +18,8 @@ public class DriverClientContainer {
         return driverClient.getDriverById(id);
     }
 
-    private void fallback(Exception ex) throws Exception {
-        log.warn(ex.getMessage(), ex);
+    private DriverResponse fallback(int id, Throwable ex) throws Throwable {
+        log.warn("Fallback triggered for ID: {}, Exception: {}", id, ex.getMessage(), ex);
         throw ex;
     }
 }
