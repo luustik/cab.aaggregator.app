@@ -13,7 +13,7 @@ public class PassengerClientContainer {
 
     private final PassengerClient passengerClient;
 
-    @CircuitBreaker(name = "circuit-breaker", fallbackMethod = "fallback")
+    @CircuitBreaker(name = "passenger-service-circuit-breaker", fallbackMethod = "fallback")
     public PassengerResponse getById(int id) {
         return passengerClient.getPassengerById(id);
     }
