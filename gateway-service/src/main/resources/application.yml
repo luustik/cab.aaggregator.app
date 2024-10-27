@@ -3,6 +3,9 @@ spring:
     name: gateway-service
   config:
     import: 'configserver:'
+    activate:
+      on-profile: default
   cloud:
     config:
       uri: http://localhost:8000
+      fail-fast: true
