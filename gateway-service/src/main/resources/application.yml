@@ -1,3 +1,14 @@
+server:
+  port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+
 spring:
   application:
     name: gateway-service
@@ -27,11 +38,3 @@ spring:
           uri: lb://rating-service
           predicates:
             - Path=/api/v1/ratings/**
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-
-server:
-  port: 8888
