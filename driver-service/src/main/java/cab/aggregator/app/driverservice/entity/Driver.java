@@ -1,7 +1,9 @@
 package cab.aggregator.app.driverservice.entity;
 
 import cab.aggregator.app.driverservice.entity.enums.Gender;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import jakarta.persistence.EnumType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "driver")
@@ -43,4 +47,7 @@ public class Driver {
 
     @Column(name = "avg_grade")
     private Double avgGrade;
+
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Car> cars;
 }

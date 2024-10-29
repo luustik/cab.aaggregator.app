@@ -1,11 +1,18 @@
 spring:
   application:
     name: gateway-service
+
   config:
     import: 'configserver:'
     activate:
       on-profile: default
+
   cloud:
+    discovery:
+      enabled: true
+
     config:
-      uri: http://localhost:8000
+      discovery:
+        enabled: true
+        service-id: config-server
       fail-fast: true

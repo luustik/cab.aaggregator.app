@@ -27,6 +27,6 @@ public class KafkaSender {
     }
 
     private void logger(AvgRatingUserResponse avgRatingUserResponse) {
-        log.info("Send message{}", avgRatingUserResponse);
+        log.info("Send to topic message{}", avgRatingUserResponse);
     }
 }
