@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -33,9 +32,9 @@ public final class PassengerConstants {
     public static final PassengerRequest PASSENGER_REQUEST = createPassengerRequest();
     public static final PassengerResponse PASSENGER_RESPONSE = createPassengerResponse();
 
-    public static final List<Passenger> PASSENGER_LIST = createPassengerList();
+    public static final List<Passenger> PASSENGER_LIST = List.of(PASSENGER);
     public static final Page<Passenger> PASSENGER_PAGE = new PageImpl<>(PASSENGER_LIST, PageRequest.of(OFFSET, LIMIT), PASSENGER_LIST.size());
-    public static final List<PassengerResponse> PASSENGER_RESPONSE_LIST = createPassengerResponseList();
+    public static final List<PassengerResponse> PASSENGER_RESPONSE_LIST = List.of(PASSENGER_RESPONSE);
     public static final Page<PassengerResponse> PASSENGER_RESPONSE_PAGE = new PageImpl<>(PASSENGER_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), PASSENGER_RESPONSE_LIST.size());
     public static final PassengerContainerResponse PASSENGER_CONTAINER_RESPONSE = createPassengerContainerResponse();
 
@@ -60,18 +59,6 @@ public final class PassengerConstants {
 
     private static PassengerRequest createPassengerUpdatedRequest() {
         return new PassengerRequest("Kirill", PASSENGER_UPDATED_EMAIL, PASSENGER_UPDATED_PHONE);
-    }
-
-    private static List<Passenger> createPassengerList() {
-        List<Passenger> passengerList = new ArrayList<>();
-        passengerList.add(PASSENGER);
-        return passengerList;
-    }
-
-    private static List<PassengerResponse> createPassengerResponseList() {
-        List<PassengerResponse> passengerList = new ArrayList<>();
-        passengerList.add(PASSENGER_RESPONSE);
-        return passengerList;
     }
 
     private static PassengerContainerResponse createPassengerContainerResponse() {

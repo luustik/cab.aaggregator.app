@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static cab.aggregator.app.driverservice.service.utils.DriverConstants.DRIVER;
@@ -29,9 +28,9 @@ public final class CarConstants {
     public static final String CAR_NUMBER = "7930AB-7";
     public static final String CAR_RESOURCE = "Car";
 
-    public static final List<Car> CAR_LIST = createCarList();
+    public static final List<Car> CAR_LIST = List.of(CAR);
     public static final Page<Car> CAR_PAGE = new PageImpl<>(CAR_LIST, PageRequest.of(OFFSET, LIMIT), CAR_LIST.size());
-    public static final List<CarResponse> CAR_RESPONSE_LIST = createCarResponseList();
+    public static final List<CarResponse> CAR_RESPONSE_LIST = List.of(CAR_RESPONSE);
     public static final Page<CarResponse> CAR_RESPONSE_PAGE = new PageImpl<>(CAR_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), CAR_RESPONSE_LIST.size());
     public static final CarContainerResponse CAR_CONTAINER_RESPONSE = createCarContainerResponse();
 
@@ -43,18 +42,6 @@ public final class CarConstants {
         car.setCarNumber(CAR_NUMBER);
         car.setDriver(DRIVER);
         return car;
-    }
-
-    private static List<Car> createCarList() {
-        List<Car> carList = new ArrayList<>();
-        carList.add(CAR);
-        return carList;
-    }
-
-    private static List<CarResponse> createCarResponseList() {
-        List<CarResponse> carList = new ArrayList<>();
-        carList.add(CAR_RESPONSE);
-        return carList;
     }
 
     private static CarContainerResponse createCarContainerResponse() {

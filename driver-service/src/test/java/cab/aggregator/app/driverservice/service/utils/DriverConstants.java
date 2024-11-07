@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -35,9 +34,9 @@ public final class DriverConstants {
     public static final DriverRequest DRIVER_REQUEST = createDriverRequest();
     public static final DriverResponse DRIVER_RESPONSE = createDriverResponse();
 
-    public static final List<Driver> DRIVER_LIST = createDriverList();
+    public static final List<Driver> DRIVER_LIST = List.of(DRIVER);
     public static final Page<Driver> DRIVER_PAGE = new PageImpl<>(DRIVER_LIST, PageRequest.of(OFFSET, LIMIT), DRIVER_LIST.size());
-    public static final List<DriverResponse> DRIVER_RESPONSE_LIST = createDriverResponseList();
+    public static final List<DriverResponse> DRIVER_RESPONSE_LIST = List.of(DRIVER_RESPONSE);
     public static final Page<DriverResponse> DRIVER_RESPONSE_PAGE = new PageImpl<>(DRIVER_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), DRIVER_RESPONSE_LIST.size());
     public static final DriverContainerResponse DRIVER_CONTAINER_RESPONSE = createDriverContainerResponse();
 
@@ -63,18 +62,6 @@ public final class DriverConstants {
 
     private static DriverRequest createDriverUpdatedRequest() {
         return new DriverRequest("Pasha", DRIVER_UPDATED_EMAIL, DRIVER_UPDATED_PHONE_NUMBER, DRIVER_GENDER);
-    }
-
-    private static List<Driver> createDriverList() {
-        List<Driver> driverList = new ArrayList<>();
-        driverList.add(DRIVER);
-        return driverList;
-    }
-
-    private static List<DriverResponse> createDriverResponseList() {
-        List<DriverResponse> driverList = new ArrayList<>();
-        driverList.add(DRIVER_RESPONSE);
-        return driverList;
     }
 
     private static DriverContainerResponse createDriverContainerResponse() {
