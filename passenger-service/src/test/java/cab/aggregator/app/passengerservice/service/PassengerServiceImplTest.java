@@ -19,7 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.Locale;
 import java.util.Optional;
 
-import static cab.aggregator.app.passengerservice.service.utils.PassengerConstants.*;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -202,7 +202,7 @@ public class PassengerServiceImplTest {
 
     @Test
     public void createPassenger_whenPassengerDeleted_thenReturnPassengerResponse() {
-        when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(),PASSENGER_EMAIL,PASSENGER_PHONE))
+        when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerRepository.save(PASSENGER))
                 .thenReturn(PASSENGER);
@@ -212,7 +212,7 @@ public class PassengerServiceImplTest {
         PassengerResponse actualPassengerResponse = passengerService.createPassenger(PASSENGER_REQUEST);
 
         assertEquals(PASSENGER_RESPONSE, actualPassengerResponse);
-        verify(passengerRepository).findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(),PASSENGER_EMAIL,PASSENGER_PHONE);
+        verify(passengerRepository).findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE);
         verify(passengerRepository).save(PASSENGER);
         verify(passengerMapper).toDto(PASSENGER);
         verify(passengerMapper, never()).toEntity(PASSENGER_REQUEST);
@@ -220,7 +220,7 @@ public class PassengerServiceImplTest {
 
     @Test
     public void createPassenger_whenPassengerNotDeletedAndEmailExists_throwResourceAlreadyExistsException() {
-        when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(),PASSENGER_EMAIL,PASSENGER_PHONE))
+        when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE))
                 .thenReturn(Optional.empty());
         when(passengerRepository.existsByEmail(PASSENGER_EMAIL))
                 .thenReturn(TRUE);
@@ -231,7 +231,7 @@ public class PassengerServiceImplTest {
                 () -> passengerService.createPassenger(PASSENGER_REQUEST));
         assertEquals(String.format(RESOURCE_ALREADY_EXISTS, PASSENGER_RESOURCE, PASSENGER_EMAIL), ex.getMessage());
 
-        verify(passengerRepository).findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(),PASSENGER_EMAIL,PASSENGER_PHONE);
+        verify(passengerRepository).findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE);
         verify(passengerRepository).existsByEmail(PASSENGER_EMAIL);
         verify(messageSource).getMessage(any(String.class), any(Object[].class), any(Locale.class));
         verify(passengerRepository, never()).save(PASSENGER);
@@ -239,7 +239,7 @@ public class PassengerServiceImplTest {
 
     @Test
     public void createPassenger_whenPassengerNotDeletedAndEmailNotExistsAndPhoneExists_throwResourceAlreadyExistsException() {
-        when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(),PASSENGER_EMAIL,PASSENGER_PHONE))
+        when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE))
                 .thenReturn(Optional.empty());
         when(passengerRepository.existsByEmail(PASSENGER_EMAIL))
                 .thenReturn(FALSE);
@@ -251,7 +251,7 @@ public class PassengerServiceImplTest {
         ResourceAlreadyExistsException ex = assertThrows(ResourceAlreadyExistsException.class,
                 () -> passengerService.createPassenger(PASSENGER_REQUEST));
         assertEquals(String.format(RESOURCE_ALREADY_EXISTS, PASSENGER_RESOURCE, PASSENGER_PHONE), ex.getMessage());
-        verify(passengerRepository).findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(),PASSENGER_EMAIL,PASSENGER_PHONE);
+        verify(passengerRepository).findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE);
         verify(passengerRepository).existsByEmail(PASSENGER_EMAIL);
         verify(passengerRepository).existsByPhone(PASSENGER_PHONE);
         verify(messageSource).getMessage(any(String.class), any(Object[].class), any(Locale.class));
@@ -260,7 +260,7 @@ public class PassengerServiceImplTest {
 
     @Test
     public void createPassenger_whenPassengerNotDeletedAndEmailNotExistsAndPhoneNotExists_returnPassengerResponse() {
-        when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(),PASSENGER_EMAIL,PASSENGER_PHONE))
+        when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE))
                 .thenReturn(Optional.empty());
         when(passengerRepository.existsByEmail(PASSENGER_EMAIL))
                 .thenReturn(FALSE);
@@ -276,7 +276,7 @@ public class PassengerServiceImplTest {
         PassengerResponse actualPassengerResponse = passengerService.createPassenger(PASSENGER_REQUEST);
 
         assertEquals(PASSENGER_RESPONSE, actualPassengerResponse);
-        verify(passengerRepository).findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(),PASSENGER_EMAIL,PASSENGER_PHONE);
+        verify(passengerRepository).findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE);
         verify(passengerRepository).existsByEmail(PASSENGER_EMAIL);
         verify(passengerRepository).existsByPhone(PASSENGER_PHONE);
         verify(passengerMapper).toEntity(PASSENGER_REQUEST);

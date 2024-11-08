@@ -17,15 +17,15 @@ import org.springframework.context.MessageSource;
 
 import java.util.Locale;
 
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.DRIVER_RESPONSE;
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.DRIVER_ROLE;
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.PASSENGER_RESPONSE;
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.RATING_RESOURCE;
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.RESOURCE_ALREADY_EXIST;
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.RIDE_ID;
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.RIDE_RESOURCE;
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.RIDE_RESPONSE;
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.USER_ID;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.DRIVER_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.DRIVER_ROLE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.PASSENGER_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_RESOURCE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RESOURCE_ALREADY_EXIST;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RIDE_ID;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RIDE_RESOURCE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RIDE_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.USER_ID;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;

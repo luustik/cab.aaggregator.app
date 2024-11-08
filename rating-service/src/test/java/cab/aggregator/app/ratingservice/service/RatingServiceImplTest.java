@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
 
-import static cab.aggregator.app.ratingservice.service.utils.RatingConstants.*;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -131,7 +131,7 @@ public class RatingServiceImplTest {
     @Test
     public void getAllByUserIdAndRole_returnRatingContainerResponse() {
 
-        when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER,PageRequest.of(OFFSET, LIMIT)))
+        when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RATING_DRIVER_PAGE);
         when(ratingMapper.toDto(RATING_DRIVER))
                 .thenReturn(RATING_DRIVER_RESPONSE);
@@ -140,7 +140,7 @@ public class RatingServiceImplTest {
 
         RatingContainerResponse actualRatingContainerResponse = ratingService.getAllByUserIdAndRole(USER_ID, DRIVER_ROLE, OFFSET, LIMIT);
 
-        verify(ratingRepository).findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER,PageRequest.of(OFFSET, LIMIT));
+        verify(ratingRepository).findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER, PageRequest.of(OFFSET, LIMIT));
         verify(ratingMapper).toDto(RATING_DRIVER);
         verify(ratingContainerResponseMapper).toContainer(RATING_DRIVER_RESPONSE_PAGE);
         assertEquals(RATING_DRIVER_CONTAINER_RESPONSE, actualRatingContainerResponse);
@@ -149,7 +149,7 @@ public class RatingServiceImplTest {
     @Test
     public void getAllByRole_returnRatingContainerResponse() {
 
-        when(ratingRepository.findAllByUserRole(UserRole.DRIVER,PageRequest.of(OFFSET, LIMIT)))
+        when(ratingRepository.findAllByUserRole(UserRole.DRIVER, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RATING_DRIVER_PAGE);
         when(ratingMapper.toDto(RATING_DRIVER))
                 .thenReturn(RATING_DRIVER_RESPONSE);
@@ -158,7 +158,7 @@ public class RatingServiceImplTest {
 
         RatingContainerResponse actualRatingContainerResponse = ratingService.getAllByRole(DRIVER_ROLE, OFFSET, LIMIT);
 
-        verify(ratingRepository).findAllByUserRole(UserRole.DRIVER,PageRequest.of(OFFSET, LIMIT));
+        verify(ratingRepository).findAllByUserRole(UserRole.DRIVER, PageRequest.of(OFFSET, LIMIT));
         verify(ratingMapper).toDto(RATING_DRIVER);
         verify(ratingContainerResponseMapper).toContainer(RATING_DRIVER_RESPONSE_PAGE);
         assertEquals(RATING_DRIVER_CONTAINER_RESPONSE, actualRatingContainerResponse);

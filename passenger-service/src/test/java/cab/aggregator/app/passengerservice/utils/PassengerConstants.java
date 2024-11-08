@@ -1,4 +1,4 @@
-package cab.aggregator.app.passengerservice.service.utils;
+package cab.aggregator.app.passengerservice.utils;
 
 import cab.aggregator.app.passengerservice.dto.request.PassengerRequest;
 import cab.aggregator.app.passengerservice.dto.response.PassengerContainerResponse;
@@ -27,8 +27,11 @@ public final class PassengerConstants {
     public static final String PASSENGER_PHONE = "+375(44)5567853";
     public static final String PASSENGER_UPDATED_EMAIL = "11r@kfjbn.snb";
     public static final String PASSENGER_UPDATED_PHONE = "+375(29)1111111";
+    public static final String PASSENGER_INVALID_PHONE = "qwe123";
+    public static final String PASSENGER_INVALID_EMAIL = "qwe123";
 
     public static final PassengerRequest PASSENGER_UPDATED_REQUEST = createPassengerUpdatedRequest();
+    public static final PassengerRequest PASSENGER_INVALID_REQUEST = new PassengerRequest("Kirill", PASSENGER_INVALID_PHONE, PASSENGER_INVALID_EMAIL);
     public static final PassengerRequest PASSENGER_REQUEST = createPassengerRequest();
     public static final PassengerResponse PASSENGER_RESPONSE = createPassengerResponse();
 
@@ -37,6 +40,13 @@ public final class PassengerConstants {
     public static final List<PassengerResponse> PASSENGER_RESPONSE_LIST = List.of(PASSENGER_RESPONSE);
     public static final Page<PassengerResponse> PASSENGER_RESPONSE_PAGE = new PageImpl<>(PASSENGER_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), PASSENGER_RESPONSE_LIST.size());
     public static final PassengerContainerResponse PASSENGER_CONTAINER_RESPONSE = createPassengerContainerResponse();
+
+    public static final String PASSENGERS_ID_URL = "/api/v1/passengers/{id}";
+    public static final String PASSENGERS_PHONE_URL = "/api/v1/passengers/phone/{phone}";
+    public static final String PASSENGERS_EMAIL_URL = "/api/v1/passengers/email/{email}";
+    public static final String PASSENGERS_URL = "/api/v1/passengers";
+    public static final String PASSENGERS_SAFE_ID_URL = "/api/v1/passengers/soft/{id}";
+    public static final String PASSENGERS_ADMIN_URL = "/api/v1/passengers/admin";
 
     private static Passenger createPassenger() {
         Passenger driver = new Passenger();

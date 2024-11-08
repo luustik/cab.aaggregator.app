@@ -32,7 +32,7 @@ public class CalculationCostTest {
         for (int i = 0; i < CYCLES; i++) {
             BigDecimal cost = calculationCost.generatePrice();
             assertEquals(SCALE, cost.scale());
-            assertTrue(cost.precision()<=PRECISION);
+            assertTrue(cost.precision() <= PRECISION);
             assertTrue(cost.compareTo(BigDecimal.ZERO) >= 0);
         }
     }

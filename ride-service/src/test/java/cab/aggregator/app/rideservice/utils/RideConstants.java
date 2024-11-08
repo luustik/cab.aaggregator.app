@@ -1,4 +1,4 @@
-package cab.aggregator.app.rideservice.service.utils;
+package cab.aggregator.app.rideservice.utils;
 
 import cab.aggregator.app.rideservice.dto.client.DriverResponse;
 import cab.aggregator.app.rideservice.dto.client.PassengerResponse;
@@ -28,12 +28,15 @@ public final class RideConstants {
     public static final Long DRIVER_ID = 1L;
     public static final Long PASSENGER_ID = 1L;
     public static final String RIDE_STATUS = "CREATED";
+    public static final String RIDE_INVALID_STATUS = "INVALID_STATUS";
     public static final BigDecimal RIDE_COST = BigDecimal.valueOf(100);
     public static final LocalDateTime RIDE_TIME = LocalDateTime.of(2024, 10, 15, 19, 0, 0);
     public static final LocalDateTime RIDE_START_RANGE_TIME = LocalDateTime.of(2024, 10, 1, 19, 0);
     public static final String RIDE_START_RANGE_TIME_STR = "2024-10-01 19:00";
+    public static final String RIDE_START_RANGE_TIME_INVALID_STR = "qwe123";
     public static final LocalDateTime RIDE_END_RANGE_TIME = LocalDateTime.of(2024, 10, 30, 19, 0);
     public static final String RIDE_END_RANGE_TIME_STR = "2024-10-30 19:00";
+    public static final String RIDE_END_RANGE_TIME_INVALID_STR = "qwe123";
 
     public static final Ride RIDE = createRide();
 
@@ -46,10 +49,17 @@ public final class RideConstants {
     public static final Page<RideResponse> RIDE_RESPONSE_PAGE = new PageImpl<>(RIDE_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), RIDE_RESPONSE_LIST.size());
     public static final RideContainerResponse RIDE_CONTAINER_RESPONSE = createRideContainerResponse();
 
-    public static final PassengerResponse PASSENGER_RESPONSE = new PassengerResponse(PASSENGER_ID.intValue(), "Kirill","123@qwe.123", "+375(29)2587413", false);
-    public static final DriverResponse DRIVER_RESPONSE = new DriverResponse(PASSENGER_ID.intValue(), "Kirill","123@qwe.123", "+375(29)2587413", "MALE", false);
+    public static final PassengerResponse PASSENGER_RESPONSE = new PassengerResponse(PASSENGER_ID.intValue(), "Kirill", "123@qwe.123", "+375(29)2587413", false);
+    public static final DriverResponse DRIVER_RESPONSE = new DriverResponse(PASSENGER_ID.intValue(), "Kirill", "123@qwe.123", "+375(29)2587413", "MALE", false);
 
     public static final String IMPOSSIBLE_STATUS = "Impossible status";
+
+    public static final String RIDES_ID_URL = "/api/v1/rides/{id}";
+    public static final String RIDES_URL = "/api/v1/rides";
+    public static final String RIDES_DRIVER_URL = "/api/v1/rides/driver-id/{driverId}";
+    public static final String RIDES_PASSENGER_URL = "/api/v1/rides/passenger-id/{passengerId}";
+    public static final String RIDES_STATUS_URL = "/api/v1/rides/status/{status}";
+    public static final String RIDES_DATE_TIME_URL = "/api/v1/rides/ride-between-date-time/";
 
     private static Ride createRide() {
         Ride ride = new Ride();
@@ -66,20 +76,20 @@ public final class RideConstants {
 
     private static RideResponse createRideResponse() {
         return new RideResponse(RIDE_ID,
-                                DRIVER_ID,
-                                PASSENGER_ID,
-                 "departure address",
-                    "arrival address",
-                                RIDE_STATUS,
-                                RIDE_TIME,
-                                RIDE_COST);
+                DRIVER_ID,
+                PASSENGER_ID,
+                "departure address",
+                "arrival address",
+                RIDE_STATUS,
+                RIDE_TIME,
+                RIDE_COST);
     }
 
     private static RideRequest createRideRequest() {
         return new RideRequest(DRIVER_ID,
-                               PASSENGER_ID,
+                PASSENGER_ID,
                 "departure address",
-                   "arrival address");
+                "arrival address");
     }
 
     private static RideContainerResponse createRideContainerResponse() {

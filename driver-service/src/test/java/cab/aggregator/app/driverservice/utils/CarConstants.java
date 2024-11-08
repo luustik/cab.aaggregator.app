@@ -1,4 +1,4 @@
-package cab.aggregator.app.driverservice.service.utils;
+package cab.aggregator.app.driverservice.utils;
 
 import cab.aggregator.app.driverservice.dto.request.CarRequest;
 import cab.aggregator.app.driverservice.dto.response.CarContainerResponse;
@@ -12,16 +12,17 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
-import static cab.aggregator.app.driverservice.service.utils.DriverConstants.DRIVER;
-import static cab.aggregator.app.driverservice.service.utils.DriverConstants.DRIVER_ID;
-import static cab.aggregator.app.driverservice.service.utils.DriverConstants.LIMIT;
-import static cab.aggregator.app.driverservice.service.utils.DriverConstants.OFFSET;
+import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER;
+import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_ID;
+import static cab.aggregator.app.driverservice.utils.DriverConstants.LIMIT;
+import static cab.aggregator.app.driverservice.utils.DriverConstants.OFFSET;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CarConstants {
 
     public static final Car CAR = createCar();
     public static final CarRequest CAR_REQUEST = createCarRequest();
+    public static final CarRequest CAR_INVALID_REQUEST = new CarRequest("audi", "7930AB7", "red", DRIVER_ID);
     public static final CarRequest CAR_UPDATED_REQUEST = createCarAnotherRequest();
     public static final CarResponse CAR_RESPONSE = createCarResponse();
     public static final int CAR_ID = 1;
@@ -33,6 +34,11 @@ public final class CarConstants {
     public static final List<CarResponse> CAR_RESPONSE_LIST = List.of(CAR_RESPONSE);
     public static final Page<CarResponse> CAR_RESPONSE_PAGE = new PageImpl<>(CAR_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), CAR_RESPONSE_LIST.size());
     public static final CarContainerResponse CAR_CONTAINER_RESPONSE = createCarContainerResponse();
+
+    public static final String CARS_ID_URL = "/api/v1/cars/{id}";
+    public static final String CARS_URL = "/api/v1/cars";
+    public static final String CARS_BY_NUMBER_URL = "/api/v1/cars/car-by-number/{carNumber}";
+    public static final String CARS_DRIVER_URL = "/api/v1/cars/cars-driver/{driverId}";
 
     private static Car createCar() {
         Car car = new Car();

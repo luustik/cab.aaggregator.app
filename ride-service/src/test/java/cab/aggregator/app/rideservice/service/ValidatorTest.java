@@ -10,10 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static cab.aggregator.app.rideservice.service.utils.RideConstants.DRIVER_ID;
-import static cab.aggregator.app.rideservice.service.utils.RideConstants.DRIVER_RESPONSE;
-import static cab.aggregator.app.rideservice.service.utils.RideConstants.PASSENGER_ID;
-import static cab.aggregator.app.rideservice.service.utils.RideConstants.PASSENGER_RESPONSE;
+import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVER_ID;
+import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVER_RESPONSE;
+import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGER_ID;
+import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGER_RESPONSE;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

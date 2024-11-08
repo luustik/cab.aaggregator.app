@@ -18,7 +18,7 @@ import static cab.aggregator.app.rideservice.entity.enums.Status.COMPLETED;
 import static cab.aggregator.app.rideservice.entity.enums.Status.CREATED;
 import static cab.aggregator.app.rideservice.entity.enums.Status.WAY_TO_DESTINATION;
 import static cab.aggregator.app.rideservice.entity.enums.Status.WAY_TO_PASSENGER;
-import static cab.aggregator.app.rideservice.service.utils.RideConstants.IMPOSSIBLE_STATUS;
+import static cab.aggregator.app.rideservice.utils.RideConstants.IMPOSSIBLE_STATUS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

@@ -1,4 +1,4 @@
-package cab.aggregator.app.ratingservice.service.utils;
+package cab.aggregator.app.ratingservice.utils;
 
 import cab.aggregator.app.ratingservice.dto.client.DriverResponse;
 import cab.aggregator.app.ratingservice.dto.client.PassengerResponse;
@@ -66,6 +66,13 @@ public final class RatingConstants {
     public static final Page<RatingResponse> RATING_DRIVER_RESPONSE_PAGE = new PageImpl<>(List.of(RATING_DRIVER_RESPONSE), PageRequest.of(OFFSET, LIMIT), PAGE_SIZE);
     public static final RatingContainerResponse RATING_DRIVER_CONTAINER_RESPONSE = createRatingContainerResponse(RATING_DRIVER_RESPONSE_PAGE);
     public static final RatingContainerResponse RATING_CONTAINER_RESPONSE = createRatingContainerResponse(RATING_RESPONSE_PAGE);
+
+    public static final String RATINGS_ID_URL = "/api/v1/ratings/{id}";
+    public static final String RATINGS_URL = "/api/v1/ratings";
+    public static final String RATINGS_RIDE_ROLE_URL = "/api/v1/ratings/ride/{role}/{rideId}";
+    public static final String RATINGS_ROLE_URL = "/api/v1/ratings/role/{role}";
+    public static final String RATINGS_USER_URL = "/api/v1/ratings/user/{role}/{userId}";
+    public static final String RATINGS_AVG_RATING_URL = "/api/v1/ratings/avg-rating/{role}/{id}";
 
     private static Rating createRating(UserRole role) {
         Rating rating = new Rating();

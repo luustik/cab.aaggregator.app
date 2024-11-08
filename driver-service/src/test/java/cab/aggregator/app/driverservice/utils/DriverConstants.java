@@ -1,4 +1,4 @@
-package cab.aggregator.app.driverservice.service.utils;
+package cab.aggregator.app.driverservice.utils;
 
 import cab.aggregator.app.driverservice.dto.request.DriverRequest;
 import cab.aggregator.app.driverservice.dto.response.DriverContainerResponse;
@@ -31,6 +31,7 @@ public final class DriverConstants {
     public static final String DRIVER_UPDATED_PHONE_NUMBER = "+375(29)1111111";
 
     public static final DriverRequest DRIVER_UPDATED_REQUEST = createDriverUpdatedRequest();
+    public static final DriverRequest DRIVER_INVALID_REQUEST = new DriverRequest("Pasha", "qwe123", "qwe123", DRIVER_GENDER);
     public static final DriverRequest DRIVER_REQUEST = createDriverRequest();
     public static final DriverResponse DRIVER_RESPONSE = createDriverResponse();
 
@@ -39,6 +40,12 @@ public final class DriverConstants {
     public static final List<DriverResponse> DRIVER_RESPONSE_LIST = List.of(DRIVER_RESPONSE);
     public static final Page<DriverResponse> DRIVER_RESPONSE_PAGE = new PageImpl<>(DRIVER_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), DRIVER_RESPONSE_LIST.size());
     public static final DriverContainerResponse DRIVER_CONTAINER_RESPONSE = createDriverContainerResponse();
+
+    public static final String DRIVERS_ID_URL = "/api/v1/drivers/{id}";
+    public static final String DRIVERS_URL = "/api/v1/drivers";
+    public static final String DRIVERS_SAFE_ID_URL = "/api/v1/drivers/safe/{id}";
+    public static final String DRIVERS_ADMIN_URL = "/api/v1/drivers/admin";
+    public static final String DRIVERS_GENDER_URL = "/api/v1/drivers/driver-by-gender/{gender}";
 
     private static Driver createDriver() {
         Driver driver = new Driver();

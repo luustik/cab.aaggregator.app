@@ -21,7 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.Optional;
 
 import static cab.aggregator.app.rideservice.entity.enums.Status.CREATED;
-import static cab.aggregator.app.rideservice.service.utils.RideConstants.*;
+import static cab.aggregator.app.rideservice.utils.RideConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.never;
@@ -99,7 +99,7 @@ public class RideServiceImplTest {
 
     @Test
     public void getAllRidesByDriverId_returnRideContainerResponse() {
-        when(rideRepository.findAllByDriverId(DRIVER_ID,PageRequest.of(OFFSET, LIMIT)))
+        when(rideRepository.findAllByDriverId(DRIVER_ID, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RIDE_PAGE);
         when(rideMapper.toDto(RIDE))
                 .thenReturn(RIDE_RESPONSE);
@@ -108,7 +108,7 @@ public class RideServiceImplTest {
 
         RideContainerResponse actualRideContainerResponse = rideService.getAllRidesByDriverId(DRIVER_ID, OFFSET, LIMIT);
 
-        verify(rideRepository).findAllByDriverId(DRIVER_ID,PageRequest.of(OFFSET, LIMIT));
+        verify(rideRepository).findAllByDriverId(DRIVER_ID, PageRequest.of(OFFSET, LIMIT));
         verify(rideMapper).toDto(RIDE);
         verify(rideContainerMapper).toContainer(RIDE_RESPONSE_PAGE);
         assertEquals(RIDE_CONTAINER_RESPONSE, actualRideContainerResponse);
@@ -116,7 +116,7 @@ public class RideServiceImplTest {
 
     @Test
     public void getAllRidesByPassengerId_returnRideContainerResponse() {
-        when(rideRepository.findAllByPassengerId(PASSENGER_ID,PageRequest.of(OFFSET, LIMIT)))
+        when(rideRepository.findAllByPassengerId(PASSENGER_ID, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RIDE_PAGE);
         when(rideMapper.toDto(RIDE))
                 .thenReturn(RIDE_RESPONSE);
@@ -125,7 +125,7 @@ public class RideServiceImplTest {
 
         RideContainerResponse actualRideContainerResponse = rideService.getAllRidesByPassengerId(PASSENGER_ID, OFFSET, LIMIT);
 
-        verify(rideRepository).findAllByPassengerId(PASSENGER_ID,PageRequest.of(OFFSET, LIMIT));
+        verify(rideRepository).findAllByPassengerId(PASSENGER_ID, PageRequest.of(OFFSET, LIMIT));
         verify(rideMapper).toDto(RIDE);
         verify(rideContainerMapper).toContainer(RIDE_RESPONSE_PAGE);
         assertEquals(RIDE_CONTAINER_RESPONSE, actualRideContainerResponse);
@@ -133,7 +133,7 @@ public class RideServiceImplTest {
 
     @Test
     public void getAllRidesByStatus_returnRideContainerResponse() {
-        when(rideRepository.findAllByStatus(CREATED,PageRequest.of(OFFSET, LIMIT)))
+        when(rideRepository.findAllByStatus(CREATED, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RIDE_PAGE);
         when(rideMapper.toDto(RIDE))
                 .thenReturn(RIDE_RESPONSE);
@@ -142,7 +142,7 @@ public class RideServiceImplTest {
 
         RideContainerResponse actualRideContainerResponse = rideService.getAllRidesByStatus(RIDE_STATUS, OFFSET, LIMIT);
 
-        verify(rideRepository).findAllByStatus(CREATED,PageRequest.of(OFFSET, LIMIT));
+        verify(rideRepository).findAllByStatus(CREATED, PageRequest.of(OFFSET, LIMIT));
         verify(rideMapper).toDto(RIDE);
         verify(rideContainerMapper).toContainer(RIDE_RESPONSE_PAGE);
         assertEquals(RIDE_CONTAINER_RESPONSE, actualRideContainerResponse);
@@ -220,7 +220,7 @@ public class RideServiceImplTest {
         when(rideMapper.toDto(RIDE))
                 .thenReturn(RIDE_RESPONSE);
 
-        RideResponse actual = rideService.updateRide(RIDE_ID,RIDE_REQUEST);
+        RideResponse actual = rideService.updateRide(RIDE_ID, RIDE_REQUEST);
 
         assertEquals(RIDE_RESPONSE, actual);
         verify(rideRepository).findById(RIDE_ID);
@@ -237,7 +237,7 @@ public class RideServiceImplTest {
                 .thenThrow(EntityNotFoundException.class);
 
         assertThrows(EntityNotFoundException.class,
-                () -> rideService.updateRide(RIDE_ID,RIDE_REQUEST));
+                () -> rideService.updateRide(RIDE_ID, RIDE_REQUEST));
         verify(rideRepository).findById(RIDE_ID);
         verify(validator, never()).checkIfExistDriver(DRIVER_ID);
         verify(validator, never()).checkIfExistPassenger(PASSENGER_ID);

@@ -92,7 +92,6 @@ public class RideControllerImpl implements RideController {
         return rideService.getAllBetweenOrderDateTime(start, end, offset, limit);
     }
 
-
     @Override
     @DeleteMapping("/{id}")
     public void deleteRideById(@PathVariable Long id) {
