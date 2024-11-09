@@ -26,6 +26,7 @@ import static cab.aggregator.app.ratingservice.entity.enums.UserRole.PASSENGER;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RatingConstants {
 
+    public static final int COUNT_CALLS_METHOD = 1;
     public static final int OFFSET = 0;
     public static final int LIMIT = 20;
     public static final int PAGE_SIZE = 1;

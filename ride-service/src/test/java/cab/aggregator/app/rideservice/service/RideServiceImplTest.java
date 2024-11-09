@@ -21,7 +21,23 @@ import org.springframework.data.domain.PageRequest;
 import java.util.Optional;
 
 import static cab.aggregator.app.rideservice.entity.enums.Status.CREATED;
-import static cab.aggregator.app.rideservice.utils.RideConstants.*;
+import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVER_ID;
+import static cab.aggregator.app.rideservice.utils.RideConstants.LIMIT;
+import static cab.aggregator.app.rideservice.utils.RideConstants.OFFSET;
+import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGER_ID;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_CONTAINER_RESPONSE;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_COST;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_END_RANGE_TIME;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_END_RANGE_TIME_STR;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_ID;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_PAGE;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_REQUEST;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_RESPONSE;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_RESPONSE_PAGE;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_START_RANGE_TIME;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_START_RANGE_TIME_STR;
+import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_STATUS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.never;
@@ -29,7 +45,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class RideServiceImplTest {
+class RideServiceImplTest {
 
     @Mock
     private RideRepository rideRepository;
@@ -56,7 +72,7 @@ public class RideServiceImplTest {
     private RideServiceImpl rideService;
 
     @Test
-    public void getRideById_whenRideExists_returnRideResponse() {
+    void getRideById_whenRideExists_returnRideResponse() {
         when(rideRepository.findById(RIDE_ID))
                 .thenReturn(Optional.of(RIDE));
         when(rideMapper.toDto(RIDE))
@@ -70,7 +86,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void getRideById_whenRideNotExists_throwEntityNotFoundException() {
+    void getRideById_whenRideNotExists_throwEntityNotFoundException() {
         when(rideRepository.findById(RIDE_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -81,7 +97,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void getAllRides_returnRideContainerResponse() {
+    void getAllRides_returnRideContainerResponse() {
         when(rideRepository.findAll(PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RIDE_PAGE);
         when(rideMapper.toDto(RIDE))
@@ -98,7 +114,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void getAllRidesByDriverId_returnRideContainerResponse() {
+    void getAllRidesByDriverId_returnRideContainerResponse() {
         when(rideRepository.findAllByDriverId(DRIVER_ID, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RIDE_PAGE);
         when(rideMapper.toDto(RIDE))
@@ -115,7 +131,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void getAllRidesByPassengerId_returnRideContainerResponse() {
+    void getAllRidesByPassengerId_returnRideContainerResponse() {
         when(rideRepository.findAllByPassengerId(PASSENGER_ID, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RIDE_PAGE);
         when(rideMapper.toDto(RIDE))
@@ -132,7 +148,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void getAllRidesByStatus_returnRideContainerResponse() {
+    void getAllRidesByStatus_returnRideContainerResponse() {
         when(rideRepository.findAllByStatus(CREATED, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RIDE_PAGE);
         when(rideMapper.toDto(RIDE))
@@ -149,7 +165,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void getAllBetweenOrderDateTime_returnRideContainerResponse() {
+    void getAllBetweenOrderDateTime_returnRideContainerResponse() {
         when(rideRepository.findAllByOrderDateTimeBetween(RIDE_START_RANGE_TIME, RIDE_END_RANGE_TIME, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RIDE_PAGE);
         when(rideMapper.toDto(RIDE))
@@ -166,7 +182,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void deleteRide_whenRideExists_thenSuccessDelete() {
+    void deleteRide_whenRideExists_thenSuccessDelete() {
 
         when(rideRepository.findById(RIDE_ID))
                 .thenReturn(Optional.of(RIDE));
@@ -178,7 +194,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void deleteRide_whenRideNotExists_throwEntityNotFoundException() {
+    void deleteRide_whenRideNotExists_throwEntityNotFoundException() {
 
         when(rideRepository.findById(RIDE_ID))
                 .thenThrow(EntityNotFoundException.class);
@@ -189,7 +205,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void createRide_returnRideResponse() {
+    void createRide_returnRideResponse() {
 
         when(rideMapper.toEntity(RIDE_REQUEST))
                 .thenReturn(RIDE);
@@ -212,7 +228,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void updateRide_whenRideExists_returnRideResponse() {
+    void updateRide_whenRideExists_returnRideResponse() {
         when(rideRepository.findById(RIDE_ID))
                 .thenReturn(Optional.of(RIDE));
         when(rideRepository.save(RIDE))
@@ -232,7 +248,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void updateRide_whenRideNotExists_throwEntityNotFoundException() {
+    void updateRide_whenRideNotExists_throwEntityNotFoundException() {
         when(rideRepository.findById(RIDE_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -247,7 +263,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void updateRideStatus_whenRideNotExists_throwEntityNotFoundException() {
+    void updateRideStatus_whenRideNotExists_throwEntityNotFoundException() {
         when(rideRepository.findById(RIDE_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -260,7 +276,7 @@ public class RideServiceImplTest {
     }
 
     @Test
-    public void updateRideStatus_whenRideExists_returnRideResponse() {
+    void updateRideStatus_whenRideExists_returnRideResponse() {
         when(rideRepository.findById(RIDE_ID))
                 .thenReturn(Optional.of(RIDE));
         when(validationStatusService.validateStatus(CREATED, CREATED))

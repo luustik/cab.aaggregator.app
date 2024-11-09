@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DriverConstants {
 
+    public static final int COUNT_CALLS_METHOD = 1;
     public static final int OFFSET = 0;
     public static final int LIMIT = 20;
 

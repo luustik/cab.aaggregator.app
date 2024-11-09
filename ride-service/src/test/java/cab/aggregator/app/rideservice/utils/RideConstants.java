@@ -21,6 +21,7 @@ import static cab.aggregator.app.rideservice.entity.enums.Status.CREATED;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RideConstants {
 
+    public static final int COUNT_CALLS_METHOD = 1;
     public static final int OFFSET = 0;
     public static final int LIMIT = 20;
 

@@ -19,7 +19,22 @@ import org.springframework.data.domain.PageRequest;
 import java.util.Locale;
 import java.util.Optional;
 
-import static cab.aggregator.app.passengerservice.utils.PassengerConstants.*;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.LIMIT;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.OFFSET;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_CONTAINER_RESPONSE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_EMAIL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_ID;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_PAGE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_PHONE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_REQUEST;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_RESOURCE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_RESPONSE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_RESPONSE_PAGE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_UPDATED_EMAIL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.RESOURCE_ALREADY_EXISTS;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_UPDATED_REQUEST;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_UPDATED_PHONE;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +45,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PassengerServiceImplTest {
+class PassengerServiceImplTest {
     @Mock
     private PassengerRepository passengerRepository;
 
@@ -47,7 +62,7 @@ public class PassengerServiceImplTest {
     private PassengerServiceImpl passengerService;
 
     @Test
-    public void getPassengerById_whenPassengerExists_returnPassengerResponse() {
+    void getPassengerById_whenPassengerExists_returnPassengerResponse() {
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerMapper.toDto(PASSENGER))
@@ -61,7 +76,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void getPassengerById_whenPassengerNotExists_throwEntityNotFoundException() {
+    void getPassengerById_whenPassengerNotExists_throwEntityNotFoundException() {
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -71,7 +86,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void getAllPassengersAdmin_returnPassengerContainerResponse() {
+    void getAllPassengersAdmin_returnPassengerContainerResponse() {
         when(passengerRepository.findAll(PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(PASSENGER_PAGE);
         when(passengerMapper.toDto(PASSENGER))
@@ -88,7 +103,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void getAllPassenger_returnPassengerContainerResponse() {
+    void getAllPassenger_returnPassengerContainerResponse() {
         when(passengerRepository.findByDeletedFalse(PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(PASSENGER_PAGE);
         when(passengerMapper.toDto(PASSENGER))
@@ -105,7 +120,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void getPassengerByPhone_whenPassengerExists_returnPassengerResponse() {
+    void getPassengerByPhone_whenPassengerExists_returnPassengerResponse() {
         when(passengerRepository.findByPhoneAndDeletedFalse(PASSENGER_PHONE))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerMapper.toDto(PASSENGER))
@@ -119,7 +134,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void getPassengerByPhone_whenPassengerNotExists_throwEntityNotFoundException() {
+    void getPassengerByPhone_whenPassengerNotExists_throwEntityNotFoundException() {
         when(passengerRepository.findByPhoneAndDeletedFalse(PASSENGER_PHONE))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -129,7 +144,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void getPassengerByEmail_whenPassengerExists_returnPassengerResponse() {
+    void getPassengerByEmail_whenPassengerExists_returnPassengerResponse() {
         when(passengerRepository.findByEmailAndDeletedFalse(PASSENGER_EMAIL))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerMapper.toDto(PASSENGER))
@@ -143,7 +158,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void getPassengerByEmail_whenPassengerNotExists_throwEntityNotFoundException() {
+    void getPassengerByEmail_whenPassengerNotExists_throwEntityNotFoundException() {
         when(passengerRepository.findByEmailAndDeletedFalse(PASSENGER_EMAIL))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -153,7 +168,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void softDeletePassenger_whenPassengerExists_thenSetDeletedToPassenger() {
+    void softDeletePassenger_whenPassengerExists_thenSetDeletedToPassenger() {
 
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenReturn(Optional.of(PASSENGER));
@@ -167,7 +182,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void safeDeleteDriver_whenDriverNotExists_throwEntityNotFoundException() {
+    void safeDeleteDriver_whenDriverNotExists_throwEntityNotFoundException() {
 
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenThrow(EntityNotFoundException.class);
@@ -178,7 +193,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void deletePassenger_whenPassengerExists_thenSuccessDelete() {
+    void deletePassenger_whenPassengerExists_thenSuccessDelete() {
 
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenReturn(Optional.of(PASSENGER));
@@ -190,7 +205,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void deletePassenger_whenPassengerNotExists_throwEntityNotFoundException() {
+    void deletePassenger_whenPassengerNotExists_throwEntityNotFoundException() {
 
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenThrow(EntityNotFoundException.class);
@@ -201,7 +216,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void createPassenger_whenPassengerDeleted_thenReturnPassengerResponse() {
+    void createPassenger_whenPassengerDeleted_thenReturnPassengerResponse() {
         when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerRepository.save(PASSENGER))
@@ -219,7 +234,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void createPassenger_whenPassengerNotDeletedAndEmailExists_throwResourceAlreadyExistsException() {
+    void createPassenger_whenPassengerNotDeletedAndEmailExists_throwResourceAlreadyExistsException() {
         when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE))
                 .thenReturn(Optional.empty());
         when(passengerRepository.existsByEmail(PASSENGER_EMAIL))
@@ -238,7 +253,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void createPassenger_whenPassengerNotDeletedAndEmailNotExistsAndPhoneExists_throwResourceAlreadyExistsException() {
+    void createPassenger_whenPassengerNotDeletedAndEmailNotExistsAndPhoneExists_throwResourceAlreadyExistsException() {
         when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE))
                 .thenReturn(Optional.empty());
         when(passengerRepository.existsByEmail(PASSENGER_EMAIL))
@@ -259,7 +274,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void createPassenger_whenPassengerNotDeletedAndEmailNotExistsAndPhoneNotExists_returnPassengerResponse() {
+    void createPassenger_whenPassengerNotDeletedAndEmailNotExistsAndPhoneNotExists_returnPassengerResponse() {
         when(passengerRepository.findByNameAndEmailAndPhoneAndDeletedIsTrue(PASSENGER_REQUEST.name(), PASSENGER_EMAIL, PASSENGER_PHONE))
                 .thenReturn(Optional.empty());
         when(passengerRepository.existsByEmail(PASSENGER_EMAIL))
@@ -285,7 +300,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void updatePassenger_whenPassengerNotFound_throwEntityNotFoundException() {
+    void updatePassenger_whenPassengerNotFound_throwEntityNotFoundException() {
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -295,7 +310,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void updatePassenger_whenPassengerExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailExists_throwResourceAlreadyExistsException() {
+    void updatePassenger_whenPassengerExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailExists_throwResourceAlreadyExistsException() {
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerRepository.existsByEmail(PASSENGER_UPDATED_EMAIL))
@@ -313,7 +328,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void updatePassenger_whenPassengerExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsNotUpdatedPhoneAndUpdatedPhoneExists_throwResourceAlreadyExistsException() {
+    void updatePassenger_whenPassengerExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsNotUpdatedPhoneAndUpdatedPhoneExists_throwResourceAlreadyExistsException() {
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerRepository.existsByEmail(PASSENGER_UPDATED_EMAIL))
@@ -334,7 +349,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void updatePassenger_whenPassengerExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsNotUpdatedPhoneAndUpdatedPhoneNotExists_returnPassengerResponse() {
+    void updatePassenger_whenPassengerExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsNotUpdatedPhoneAndUpdatedPhoneNotExists_returnPassengerResponse() {
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerRepository.existsByEmail(PASSENGER_UPDATED_EMAIL))
@@ -357,7 +372,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void updatePassenger_whenPassengerExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsUpdatedPhone_returnPassengerResponse() {
+    void updatePassenger_whenPassengerExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsUpdatedPhone_returnPassengerResponse() {
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerRepository.existsByEmail(PASSENGER_UPDATED_EMAIL))
@@ -377,7 +392,7 @@ public class PassengerServiceImplTest {
     }
 
     @Test
-    public void updatePassenger_whenPassengerExistsAndCurrentEmailIsUpdatedEmailAndCurrentPhoneIsUpdatedPhone_returnPassengerResponse() {
+    void updatePassenger_whenPassengerExistsAndCurrentEmailIsUpdatedEmailAndCurrentPhoneIsUpdatedPhone_returnPassengerResponse() {
         when(passengerRepository.findByIdAndDeletedFalse(PASSENGER_ID))
                 .thenReturn(Optional.of(PASSENGER));
         when(passengerRepository.save(PASSENGER))

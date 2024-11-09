@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidatorTest {
+class ValidatorTest {
 
     @Mock
     private DriverClientContainer driverClientContainer;
@@ -31,8 +31,7 @@ public class ValidatorTest {
     private Validator validator;
 
     @Test
-    public void checkIfExistsPassenger_whenPassengerExists_thenSuccess() {
-
+    void checkIfExistsPassenger_whenPassengerExists_thenSuccess() {
         when(passengerClientContainer.getById(PASSENGER_ID.intValue()))
                 .thenReturn(PASSENGER_RESPONSE);
 
@@ -42,8 +41,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistsPassenger_whenPassengerNotExists_throwExternalClientException() {
-
+    void checkIfExistsPassenger_whenPassengerNotExists_throwExternalClientException() {
         when(passengerClientContainer.getById(PASSENGER_ID.intValue()))
                 .thenThrow(ExternalClientException.class);
 
@@ -52,8 +50,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistsDriver_whenDriverExists_thenSuccess() {
-
+    void checkIfExistsDriver_whenDriverExists_thenSuccess() {
         when(driverClientContainer.getById(DRIVER_ID.intValue()))
                 .thenReturn(DRIVER_RESPONSE);
 
@@ -63,8 +60,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistsDiver_whenDriverNotExists_throwExternalClientException() {
-
+    void checkIfExistsDiver_whenDriverNotExists_throwExternalClientException() {
         when(driverClientContainer.getById(DRIVER_ID.intValue()))
                 .thenThrow(ExternalClientException.class);
 

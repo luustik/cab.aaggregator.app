@@ -35,7 +35,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidatorTest {
+class ValidatorTest {
 
     @Mock
     private DriverClientContainer driverClientContainer;
@@ -56,7 +56,7 @@ public class ValidatorTest {
     private Validator validator;
 
     @Test
-    public void checkIfExistUser_whenUserIsDriverAndUserExists_thenSuccess() {
+    void checkIfExistUser_whenUserIsDriverAndUserExists_thenSuccess() {
         when(driverClientContainer.getById(USER_ID.intValue())).thenReturn(DRIVER_RESPONSE);
 
         validator.checkIfExistUser(USER_ID, UserRole.DRIVER);
@@ -65,7 +65,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistUser_whenUserIsDriverAndUserNotExists_throwExternalClientException() {
+    void checkIfExistUser_whenUserIsDriverAndUserNotExists_throwExternalClientException() {
         when(driverClientContainer.getById(USER_ID.intValue())).thenThrow(ExternalClientException.class);
 
         assertThrows(ExternalClientException.class, () -> validator.checkIfExistUser(USER_ID, UserRole.DRIVER));
@@ -73,7 +73,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistUser_whenUserIsPassengerAndUserExists_thenSuccess() {
+    void checkIfExistUser_whenUserIsPassengerAndUserExists_thenSuccess() {
         when(passengerClientContainer.getById(USER_ID.intValue())).thenReturn(PASSENGER_RESPONSE);
 
         validator.checkIfExistUser(USER_ID, UserRole.PASSENGER);
@@ -82,7 +82,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistUser_whenUserIsPassengerAndUserNotExists_throwExternalClientException() {
+    void checkIfExistUser_whenUserIsPassengerAndUserNotExists_throwExternalClientException() {
         when(passengerClientContainer.getById(USER_ID.intValue())).thenThrow(ExternalClientException.class);
 
         assertThrows(ExternalClientException.class, () -> validator.checkIfExistUser(USER_ID, UserRole.PASSENGER));
@@ -90,7 +90,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistRide_whenRideExists_thenSuccess() {
+    void checkIfExistRide_whenRideExists_thenSuccess() {
         when(rideClientContainer.getById(RIDE_ID)).thenReturn(RIDE_RESPONSE);
 
         validator.checkIfExistRide(RIDE_ID);
@@ -99,7 +99,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistRide_whenRideNotExists_throwExternalClientException() {
+    void checkIfExistRide_whenRideNotExists_throwExternalClientException() {
         when(rideClientContainer.getById(RIDE_ID)).thenThrow(ExternalClientException.class);
 
         assertThrows(ExternalClientException.class, () -> validator.checkIfExistRide(RIDE_ID));
@@ -107,7 +107,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistRatingByRideIdAndRole_whenRatingNotExist_thenSuccess() {
+    void checkIfExistRatingByRideIdAndRole_whenRatingNotExist_thenSuccess() {
         when(ratingRepository.existsByRideIdAndUserRole(RIDE_ID, UserRole.DRIVER))
                 .thenReturn(FALSE);
 
@@ -117,7 +117,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkIfExistRatingByRideIdAndRole_whenRatingExist_throwResourceAlreadyExistException() {
+    void checkIfExistRatingByRideIdAndRole_whenRatingExist_throwResourceAlreadyExistException() {
         when(ratingRepository.existsByRideIdAndUserRole(RIDE_ID, UserRole.DRIVER))
                 .thenReturn(TRUE);
         when(messageSource.getMessage(any(String.class), any(Object[].class), any(Locale.class)))

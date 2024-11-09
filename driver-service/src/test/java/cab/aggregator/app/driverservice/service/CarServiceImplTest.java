@@ -45,7 +45,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CarServiceImplTest {
+class CarServiceImplTest {
 
     @Mock
     private CarRepository carRepository;
@@ -66,7 +66,7 @@ public class CarServiceImplTest {
     private CarServiceImpl carService;
 
     @Test
-    public void getAllCars_returnCarContainerResponse() {
+    void getAllCars_returnCarContainerResponse() {
         when(carRepository.findAll(PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(CAR_PAGE);
         when(carMapper.toDto(CAR))
@@ -83,7 +83,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void getAllCarsByDriverId_returnCarContainerResponse() {
+    void getAllCarsByDriverId_returnCarContainerResponse() {
         when(carRepository.findAllByDriverId(DRIVER_ID, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(CAR_PAGE);
         when(carMapper.toDto(CAR))
@@ -101,7 +101,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void getCarById_whenCarExists_returnCarResponse() {
+    void getCarById_whenCarExists_returnCarResponse() {
         when(carRepository.findById(CAR_ID))
                 .thenReturn(Optional.of(CAR));
         when(carMapper.toDto(CAR))
@@ -115,7 +115,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void getCarById_whenCarNotExists_throwEntityNotFoundException() {
+    void getCarById_whenCarNotExists_throwEntityNotFoundException() {
         when(carRepository.findById(CAR_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -125,7 +125,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void getCarByCarNumber_whenCarExists_returnCarResponse() {
+    void getCarByCarNumber_whenCarExists_returnCarResponse() {
         when(carRepository.findByCarNumber(CAR_NUMBER))
                 .thenReturn(Optional.of(CAR));
         when(carMapper.toDto(CAR))
@@ -139,7 +139,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void getCarByCarNumber_whenCarNotExists_throwEntityNotFoundException() {
+    void getCarByCarNumber_whenCarNotExists_throwEntityNotFoundException() {
         when(carRepository.findByCarNumber(CAR_NUMBER))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -149,7 +149,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void createCar_whenNewCarNotExistsAndExistsDriver_returnCarResponse() {
+    void createCar_whenNewCarNotExistsAndExistsDriver_returnCarResponse() {
         when(carRepository.existsByCarNumber(CAR_NUMBER))
                 .thenReturn(FALSE);
         when(carMapper.toEntity(CAR_REQUEST))
@@ -172,7 +172,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void createCar_whenNewCarAlreadyExists_throwResourceAlreadyExistsException() {
+    void createCar_whenNewCarAlreadyExists_throwResourceAlreadyExistsException() {
         when(carRepository.existsByCarNumber(CAR_NUMBER))
                 .thenReturn(TRUE);
         when(messageSource.getMessage(any(String.class), any(Object[].class), any(Locale.class)))
@@ -186,7 +186,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void createCar_whenNewCarNotExistsAndNotExistsDriver_throwEntityNotFoundException() {
+    void createCar_whenNewCarNotExistsAndNotExistsDriver_throwEntityNotFoundException() {
         when(carRepository.existsByCarNumber(CAR_NUMBER))
                 .thenReturn(FALSE);
         when(carMapper.toEntity(CAR_REQUEST))
@@ -203,7 +203,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void deleteCar_whenCarExists_thenSuccessDelete() {
+    void deleteCar_whenCarExists_thenSuccessDelete() {
         when(carRepository.findById(CAR_ID))
                 .thenReturn(Optional.of(CAR));
 
@@ -212,7 +212,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void deleteCar_whenCarNotExists_throwEntityNotFoundException() {
+    void deleteCar_whenCarNotExists_throwEntityNotFoundException() {
         when(carRepository.findById(CAR_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -221,7 +221,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void updateCar_whenCarIdFoundAndCurrentCarIsFutureCarAndDriverFound_returnCarResponse() {
+    void updateCar_whenCarIdFoundAndCurrentCarIsFutureCarAndDriverFound_returnCarResponse() {
         when(carRepository.findById(CAR_ID))
                 .thenReturn(Optional.of(CAR));
         when(driverRepository.findById(DRIVER_ID))
@@ -243,7 +243,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void updateCar_whenCarIdFoundAndCurrentCarIsFutureCarAndDriverNotFound_throwEntityNotFoundException() {
+    void updateCar_whenCarIdFoundAndCurrentCarIsFutureCarAndDriverNotFound_throwEntityNotFoundException() {
         when(carRepository.findById(CAR_ID))
                 .thenReturn(Optional.of(CAR));
         when(driverRepository.findById(DRIVER_ID))
@@ -259,7 +259,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void updateCar_whenCarIdFoundAndCurrentCarIsNotFutureCarAndUpdatedCarNotExistsAndUpdatedDriverFound_returnCarResponse() {
+    void updateCar_whenCarIdFoundAndCurrentCarIsNotFutureCarAndUpdatedCarNotExistsAndUpdatedDriverFound_returnCarResponse() {
         when(carRepository.findById(CAR_ID))
                 .thenReturn(Optional.of(CAR));
         when(carRepository.existsByCarNumber(CAR_UPDATED_REQUEST.carNumber()))
@@ -283,7 +283,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void updateCar_whenCarIdFoundAndCurrentCarIsNotFutureCarAndUpdatedCarNotExistsAndUpdatedDriverNotExists_throwEntityNotFoundException() {
+    void updateCar_whenCarIdFoundAndCurrentCarIsNotFutureCarAndUpdatedCarNotExistsAndUpdatedDriverNotExists_throwEntityNotFoundException() {
         when(carRepository.findById(CAR_ID))
                 .thenReturn(Optional.of(CAR));
         when(carRepository.existsByCarNumber(CAR_UPDATED_REQUEST.carNumber()))
@@ -301,7 +301,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void updateCar_whenCarIdFoundAndCurrentCarIsNotFutureCarAndUpdatedCarExists_throwResourceAlreadyExistsException() {
+    void updateCar_whenCarIdFoundAndCurrentCarIsNotFutureCarAndUpdatedCarExists_throwResourceAlreadyExistsException() {
         when(carRepository.findById(CAR_ID))
                 .thenReturn(Optional.of(CAR));
         when(carRepository.existsByCarNumber(CAR_UPDATED_REQUEST.carNumber()))
@@ -322,7 +322,7 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void updateCar_whenCarIdNotFound_throwEntityNotFoundException() {
+    void updateCar_whenCarIdNotFound_throwEntityNotFoundException() {
         when(carRepository.findById(CAR_ID)).thenThrow(EntityNotFoundException.class);
 
         assertThrows(EntityNotFoundException.class, () -> carService.updateCar(CAR_ID, CAR_REQUEST));

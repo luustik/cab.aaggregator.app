@@ -1,5 +1,6 @@
 package cab.aggregator.app.passengerservice.controller;
 
+import cab.aggregator.app.passengerservice.dto.request.PassengerRequest;
 import cab.aggregator.app.passengerservice.exception.EntityNotFoundException;
 import cab.aggregator.app.passengerservice.service.PassengerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,9 +12,32 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import static cab.aggregator.app.passengerservice.utils.PassengerConstants.*;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.COUNT_CALLS_METHOD;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.LIMIT;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.OFFSET;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_ADMIN_URL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_EMAIL_URL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_ID_URL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_PHONE_URL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_URL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_CONTAINER_RESPONSE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_EMAIL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_ID;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_INVALID_EMAIL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_INVALID_PHONE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_PHONE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_RESPONSE;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_SAFE_ID_URL;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_INVALID_REQUEST;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_REQUEST;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PassengerControllerImpl.class)
-public class PassengerControllerImplTest {
+class PassengerControllerImplTest {
 
     @MockBean
     private PassengerService passengerService;
@@ -35,8 +59,7 @@ public class PassengerControllerImplTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void getPassengerById_whenPassengerExist_returnPassengerResponseAndStatusOk() throws Exception {
-
+    void getPassengerById_whenPassengerExist_returnPassengerResponseAndStatusOk() throws Exception {
         when(passengerService.getPassengerById(PASSENGER_ID)).thenReturn(PASSENGER_RESPONSE);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_ID_URL, PASSENGER_ID);
@@ -49,11 +72,11 @@ public class PassengerControllerImplTest {
                 .andExpect(content()
                         .json(objectMapper
                                 .writeValueAsString(PASSENGER_RESPONSE)));
+        verify(passengerService, times(COUNT_CALLS_METHOD)).getPassengerById(PASSENGER_ID);
     }
 
     @Test
-    public void getPassengerById_whenPassengerNotExist_returnStatusNotFound() throws Exception {
-
+    void getPassengerById_whenPassengerNotExist_returnStatusNotFound() throws Exception {
         when(passengerService.getPassengerById(PASSENGER_ID)).thenThrow(EntityNotFoundException.class);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_ID_URL, PASSENGER_ID);
@@ -61,11 +84,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isNotFound());
+        verify(passengerService, times(COUNT_CALLS_METHOD)).getPassengerById(PASSENGER_ID);
     }
 
     @Test
-    public void getPassengerByPhone_whenPassengerExist_returnPassengerResponseAndStatusOk() throws Exception {
-
+    void getPassengerByPhone_whenPassengerExist_returnPassengerResponseAndStatusOk() throws Exception {
         when(passengerService.getPassengerByPhone(PASSENGER_PHONE)).thenReturn(PASSENGER_RESPONSE);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_PHONE_URL, PASSENGER_PHONE);
@@ -78,11 +101,11 @@ public class PassengerControllerImplTest {
                 .andExpect(content()
                         .json(objectMapper
                                 .writeValueAsString(PASSENGER_RESPONSE)));
+        verify(passengerService, times(COUNT_CALLS_METHOD)).getPassengerByPhone(PASSENGER_PHONE);
     }
 
     @Test
-    public void getPassengerByPhone_whenPassengerNotExist_returnStatusNotFound() throws Exception {
-
+    void getPassengerByPhone_whenPassengerNotExist_returnStatusNotFound() throws Exception {
         when(passengerService.getPassengerByPhone(PASSENGER_PHONE)).thenThrow(EntityNotFoundException.class);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_PHONE_URL, PASSENGER_PHONE);
@@ -90,13 +113,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isNotFound());
+        verify(passengerService, times(COUNT_CALLS_METHOD)).getPassengerByPhone(PASSENGER_PHONE);
     }
 
     @Test
-    public void getPassengerByPhone_whenPhoneNotValid_returnStatusBadRequest() throws Exception {
-
-        when(passengerService.getPassengerByPhone(PASSENGER_INVALID_PHONE)).thenReturn(PASSENGER_RESPONSE);
-
+    void getPassengerByPhone_whenPhoneNotValid_returnStatusBadRequest() throws Exception {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_PHONE_URL, PASSENGER_INVALID_PHONE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(PASSENGER_INVALID_PHONE));
@@ -104,11 +125,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isBadRequest());
+        verify(passengerService, never()).getPassengerByPhone(anyString());
     }
 
     @Test
-    public void getPassengerByEmail_whenPassengerExist_returnPassengerResponseAndStatusOk() throws Exception {
-
+    void getPassengerByEmail_whenPassengerExist_returnPassengerResponseAndStatusOk() throws Exception {
         when(passengerService.getPassengerByEmail(PASSENGER_EMAIL)).thenReturn(PASSENGER_RESPONSE);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_EMAIL_URL, PASSENGER_EMAIL);
@@ -121,11 +142,11 @@ public class PassengerControllerImplTest {
                 .andExpect(content()
                         .json(objectMapper
                                 .writeValueAsString(PASSENGER_RESPONSE)));
+        verify(passengerService, times(COUNT_CALLS_METHOD)).getPassengerByEmail(PASSENGER_EMAIL);
     }
 
     @Test
-    public void getPassengerByEmail_whenPassengerNotExist_returnStatusNotFound() throws Exception {
-
+    void getPassengerByEmail_whenPassengerNotExist_returnStatusNotFound() throws Exception {
         when(passengerService.getPassengerByEmail(PASSENGER_EMAIL)).thenThrow(EntityNotFoundException.class);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_EMAIL_URL, PASSENGER_EMAIL);
@@ -133,13 +154,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isNotFound());
+        verify(passengerService, times(COUNT_CALLS_METHOD)).getPassengerByEmail(PASSENGER_EMAIL);
     }
 
     @Test
-    public void getPassengerByEmail_whenEmailNotValid_returnStatusBadRequest() throws Exception {
-
-        when(passengerService.getPassengerByEmail(PASSENGER_INVALID_EMAIL)).thenReturn(PASSENGER_RESPONSE);
-
+    void getPassengerByEmail_whenEmailNotValid_returnStatusBadRequest() throws Exception {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_EMAIL_URL, PASSENGER_INVALID_EMAIL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(PASSENGER_INVALID_EMAIL));
@@ -147,11 +166,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isBadRequest());
+        verify(passengerService, never()).getPassengerByEmail(anyString());
     }
 
     @Test
-    public void getAllPassengersAdmin_returnPassengerContainerResponseAndStatusOk() throws Exception {
-
+    void getAllPassengersAdmin_returnPassengerContainerResponseAndStatusOk() throws Exception {
         when(passengerService.getAllPassengersAdmin(OFFSET, LIMIT)).thenReturn(PASSENGER_CONTAINER_RESPONSE);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_ADMIN_URL);
@@ -164,11 +183,11 @@ public class PassengerControllerImplTest {
                 .andExpect(content()
                         .json(objectMapper
                                 .writeValueAsString(PASSENGER_CONTAINER_RESPONSE)));
+        verify(passengerService, times(COUNT_CALLS_METHOD)).getAllPassengersAdmin(OFFSET, LIMIT);
     }
 
     @Test
-    public void getAllPassengers_returnPassengerContainerResponseAndStatusOk() throws Exception {
-
+    void getAllPassengers_returnPassengerContainerResponseAndStatusOk() throws Exception {
         when(passengerService.getAllPassengers(OFFSET, LIMIT)).thenReturn(PASSENGER_CONTAINER_RESPONSE);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get(PASSENGERS_URL);
@@ -181,11 +200,11 @@ public class PassengerControllerImplTest {
                 .andExpect(content()
                         .json(objectMapper
                                 .writeValueAsString(PASSENGER_CONTAINER_RESPONSE)));
+        verify(passengerService, times(COUNT_CALLS_METHOD)).getAllPassengers(OFFSET, LIMIT);
     }
 
     @Test
-    public void softDeletePassengerById_whenPassengerExist_returnStatusOk() throws Exception {
-
+    void softDeletePassengerById_whenPassengerExist_returnStatusOk() throws Exception {
         doNothing().when(passengerService).softDeletePassenger(PASSENGER_ID);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = delete(PASSENGERS_SAFE_ID_URL, PASSENGER_ID);
@@ -193,11 +212,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isOk());
+        verify(passengerService, times(COUNT_CALLS_METHOD)).softDeletePassenger(PASSENGER_ID);
     }
 
     @Test
-    public void softDeletePassengerById_whenPassengerNotExist_returnStatusNotfound() throws Exception {
-
+    void softDeletePassengerById_whenPassengerNotExist_returnStatusNotfound() throws Exception {
         doThrow(EntityNotFoundException.class).when(passengerService).softDeletePassenger(PASSENGER_ID);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = delete(PASSENGERS_SAFE_ID_URL, PASSENGER_ID);
@@ -205,11 +224,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isNotFound());
+        verify(passengerService, times(COUNT_CALLS_METHOD)).softDeletePassenger(PASSENGER_ID);
     }
 
     @Test
-    public void hardDeletePassengerById_whenPassengerExist_returnStatusOk() throws Exception {
-
+    void hardDeletePassengerById_whenPassengerExist_returnStatusOk() throws Exception {
         doNothing().when(passengerService).hardDeletePassenger(PASSENGER_ID);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = delete(PASSENGERS_ID_URL, PASSENGER_ID);
@@ -217,11 +236,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isOk());
+        verify(passengerService, times(COUNT_CALLS_METHOD)).hardDeletePassenger(PASSENGER_ID);
     }
 
     @Test
-    public void hardDeletePassengerById_whenPassengerNotExist_returnStatusNotfound() throws Exception {
-
+    void hardDeletePassengerById_whenPassengerNotExist_returnStatusNotfound() throws Exception {
         doThrow(EntityNotFoundException.class).when(passengerService).hardDeletePassenger(PASSENGER_ID);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = delete(PASSENGERS_ID_URL, PASSENGER_ID);
@@ -229,11 +248,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isNotFound());
+        verify(passengerService, times(COUNT_CALLS_METHOD)).hardDeletePassenger(PASSENGER_ID);
     }
 
     @Test
-    public void createPassenger_whenPassengerRequestValid_returnPassengerResponseAndStatusCreated() throws Exception {
-
+    void createPassenger_whenPassengerRequestValid_returnPassengerResponseAndStatusCreated() throws Exception {
         when(passengerService.createPassenger(PASSENGER_REQUEST)).thenReturn(PASSENGER_RESPONSE);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = post(PASSENGERS_URL)
@@ -247,13 +266,11 @@ public class PassengerControllerImplTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content()
                         .json(objectMapper.writeValueAsString(PASSENGER_RESPONSE)));
+        verify(passengerService, times(COUNT_CALLS_METHOD)).createPassenger(PASSENGER_REQUEST);
     }
 
     @Test
-    public void createPassenger_whenPassengerRequestNotValid_returnStatusBadRequest() throws Exception {
-
-        when(passengerService.createPassenger(PASSENGER_INVALID_REQUEST)).thenReturn(PASSENGER_RESPONSE);
-
+    void createPassenger_whenPassengerEmailAndPhoneNotValid_returnStatusBadRequest() throws Exception {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = post(PASSENGERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(PASSENGER_INVALID_REQUEST));
@@ -261,11 +278,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isBadRequest());
+        verify(passengerService, never()).createPassenger(any(PassengerRequest.class));
     }
 
     @Test
-    public void updatePassenger_whenPassengerExistAndPassengerRequestValid_returnPassengerResponseAndStatusOk() throws Exception {
-
+    void updatePassenger_whenPassengerExistAndPassengerRequestValid_returnPassengerResponseAndStatusOk() throws Exception {
         when(passengerService.updatePassenger(PASSENGER_ID, PASSENGER_REQUEST)).thenReturn(PASSENGER_RESPONSE);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = put(PASSENGERS_ID_URL, PASSENGER_ID)
@@ -279,11 +296,11 @@ public class PassengerControllerImplTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content()
                         .json(objectMapper.writeValueAsString(PASSENGER_RESPONSE)));
+        verify(passengerService, times(COUNT_CALLS_METHOD)).updatePassenger(PASSENGER_ID, PASSENGER_REQUEST);
     }
 
     @Test
-    public void updatePassenger_whenPassengerNotExistAndPassengerRequestValid_returnStatusNotFound() throws Exception {
-
+    void updatePassenger_whenPassengerNotExistAndPassengerRequestValid_returnStatusNotFound() throws Exception {
         when(passengerService.updatePassenger(PASSENGER_ID, PASSENGER_REQUEST)).thenThrow(EntityNotFoundException.class);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = put(PASSENGERS_ID_URL, PASSENGER_ID)
@@ -293,13 +310,11 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isNotFound());
+        verify(passengerService, times(COUNT_CALLS_METHOD)).updatePassenger(PASSENGER_ID, PASSENGER_REQUEST);
     }
 
     @Test
-    public void updatePassenger_whenPassengerRequestNotValid_returnStatusBadRequest() throws Exception {
-
-        when(passengerService.updatePassenger(PASSENGER_ID, PASSENGER_INVALID_REQUEST)).thenReturn(PASSENGER_RESPONSE);
-
+    void updatePassenger_whenPassengerEmailAndPhoneNotValid_returnStatusBadRequest() throws Exception {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = put(PASSENGERS_ID_URL, PASSENGER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(PASSENGER_INVALID_REQUEST));
@@ -307,5 +322,6 @@ public class PassengerControllerImplTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status()
                         .isBadRequest());
+        verify(passengerService, never()).updatePassenger(anyInt(), any(PassengerRequest.class));
     }
 }

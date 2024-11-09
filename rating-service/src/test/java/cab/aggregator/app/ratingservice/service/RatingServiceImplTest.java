@@ -24,7 +24,30 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
 
-import static cab.aggregator.app.ratingservice.utils.RatingConstants.*;
+
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.AVG_RATING_USER_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.DRIVER_ROLE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.LIMIT;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.LIST_EMPTY;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.OFFSET;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_CONTAINER_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_DRIVER;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_DRIVER_CONTAINER_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_DRIVER_LIST;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_DRIVER_PAGE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_DRIVER_REQUEST;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_DRIVER_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_DRIVER_RESPONSE_PAGE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_DRIVER_UPDATED_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_ID;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_PAGE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_PASSENGER;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_PASSENGER_RESPONSE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_RESOURCE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_RESPONSE_PAGE;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RATING_UPDATE_DTO;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.RIDE_ID;
+import static cab.aggregator.app.ratingservice.utils.RatingConstants.USER_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,7 +56,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class RatingServiceImplTest {
+class RatingServiceImplTest {
 
     @Mock
     private RatingRepository ratingRepository;
@@ -57,7 +80,7 @@ public class RatingServiceImplTest {
     private RatingServiceImpl ratingService;
 
     @Test
-    public void getRatingById_whenRatingExists_returnRatingResponse() {
+    void getRatingById_whenRatingExists_returnRatingResponse() {
         when(ratingRepository.findById(RATING_ID))
                 .thenReturn(Optional.of(RATING_DRIVER));
         when(ratingMapper.toDto(RATING_DRIVER))
@@ -71,7 +94,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void getRatingById_whenRatingNotExists_throwEntityNotFoundException() {
+    void getRatingById_whenRatingNotExists_throwEntityNotFoundException() {
         when(ratingRepository.findById(RATING_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -82,7 +105,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void getRatingByRideAndRole_whenRatingExists_returnRatingResponse() {
+    void getRatingByRideAndRole_whenRatingExists_returnRatingResponse() {
         when(ratingRepository.findByRideIdAndUserRole(RIDE_ID, UserRole.DRIVER))
                 .thenReturn(Optional.of(RATING_DRIVER));
         when(ratingMapper.toDto(RATING_DRIVER))
@@ -97,7 +120,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void getRatingByRideAndRole_whenRatingNotExists_throwEntityNotFoundException() {
+    void getRatingByRideAndRole_whenRatingNotExists_throwEntityNotFoundException() {
         when(ratingRepository.findByRideIdAndUserRole(RIDE_ID, UserRole.DRIVER))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -109,7 +132,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void getAllRatings_returnRatingContainerResponse() {
+    void getAllRatings_returnRatingContainerResponse() {
         when(ratingRepository.findAll(PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RATING_PAGE);
         when(ratingMapper.toDto(RATING_DRIVER))
@@ -129,8 +152,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void getAllByUserIdAndRole_returnRatingContainerResponse() {
-
+    void getAllByUserIdAndRole_returnRatingContainerResponse() {
         when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RATING_DRIVER_PAGE);
         when(ratingMapper.toDto(RATING_DRIVER))
@@ -147,8 +169,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void getAllByRole_returnRatingContainerResponse() {
-
+    void getAllByRole_returnRatingContainerResponse() {
         when(ratingRepository.findAllByUserRole(UserRole.DRIVER, PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(RATING_DRIVER_PAGE);
         when(ratingMapper.toDto(RATING_DRIVER))
@@ -165,8 +186,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void deleteRating_whenRatingExistsAndListRatingsNotEmpty_thenSuccessDelete() {
-
+    void deleteRating_whenRatingExistsAndListRatingsNotEmpty_thenSuccessDelete() {
         when(ratingRepository.findById(RATING_ID))
                 .thenReturn(Optional.of(RATING_DRIVER));
         when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER))
@@ -181,8 +201,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void deleteRating_whenRatingExistsAndListRatingsEmpty_throwEmptyListException() {
-
+    void deleteRating_whenRatingExistsAndListRatingsEmpty_throwEmptyListException() {
         when(ratingRepository.findById(RATING_ID))
                 .thenReturn(Optional.of(RATING_DRIVER));
         when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER))
@@ -200,8 +219,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void deleteRating_whenRatingNotExists_throwEntityNotFoundException() {
-
+    void deleteRating_whenRatingNotExists_throwEntityNotFoundException() {
         when(ratingRepository.findById(RATING_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -213,8 +231,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void calculateRating_whenListRatingsNotEmpty_returnAvgRatingResponse() {
-
+    void calculateRating_whenListRatingsNotEmpty_returnAvgRatingResponse() {
         when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER))
                 .thenReturn(RATING_DRIVER_LIST);
 
@@ -227,8 +244,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void updateRating_whenRatingExistsAndListRatingEmpty_throwEmptyListException() {
-
+    void updateRating_whenRatingExistsAndListRatingEmpty_throwEmptyListException() {
         when(ratingRepository.findById(RATING_ID)).thenReturn(Optional.of(RATING_DRIVER));
         when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER)).thenReturn(Collections.emptyList());
         when(messageSource.getMessage(any(String.class), any(Object[].class), any(Locale.class))).thenReturn(String.format(LIST_EMPTY, RATING_RESOURCE));
@@ -243,8 +259,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void updateRating_whenRatingExistsAndListRatingsNotEmpty_returnRatingResponse() {
-
+    void updateRating_whenRatingExistsAndListRatingsNotEmpty_returnRatingResponse() {
         when(ratingRepository.findById(RATING_ID))
                 .thenReturn(Optional.of(RATING_DRIVER));
         when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER))
@@ -262,7 +277,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void createRating_whenListRatingsNotEmpty_returnRatingResponse() {
+    void createRating_whenListRatingsNotEmpty_returnRatingResponse() {
         when(ratingMapper.toEntity(RATING_DRIVER_REQUEST))
                 .thenReturn(RATING_DRIVER);
         when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER))
@@ -282,7 +297,7 @@ public class RatingServiceImplTest {
     }
 
     @Test
-    public void createRating_whenListRatingsEmpty_throwEmptyListException() {
+    void createRating_whenListRatingsEmpty_throwEmptyListException() {
         when(ratingMapper.toEntity(RATING_DRIVER_REQUEST))
                 .thenReturn(RATING_DRIVER);
         when(ratingRepository.findAllByUserIdAndUserRole(USER_ID, UserRole.DRIVER))

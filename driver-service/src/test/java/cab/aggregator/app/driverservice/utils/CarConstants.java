@@ -20,6 +20,7 @@ import static cab.aggregator.app.driverservice.utils.DriverConstants.OFFSET;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CarConstants {
 
+    public static final int COUNT_CALLS_METHOD = 1;
     public static final Car CAR = createCar();
     public static final CarRequest CAR_REQUEST = createCarRequest();
     public static final CarRequest CAR_INVALID_REQUEST = new CarRequest("audi", "7930AB7", "red", DRIVER_ID);

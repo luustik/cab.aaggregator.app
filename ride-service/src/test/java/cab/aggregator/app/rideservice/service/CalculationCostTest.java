@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CalculationCostTest {
+class CalculationCostTest {
 
     private final CalculationCost calculationCost = new CalculationCost();
     private static final int PRECISION = 5;
     private static final int SCALE = 2;
-    public static final int CYCLES = 1000;
+    private static final int CYCLES = 1000;
 
     @Test
     void generatePrice_testRandomness() {

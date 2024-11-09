@@ -49,7 +49,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DriverServiceImplTest {
+class DriverServiceImplTest {
     @Mock
     private DriverRepository driverRepository;
 
@@ -66,7 +66,7 @@ public class DriverServiceImplTest {
     private DriverServiceImpl driverService;
 
     @Test
-    public void getDriverById_whenDriverExists_returnDriverResponse() {
+    void getDriverById_whenDriverExists_returnDriverResponse() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenReturn(Optional.of(DRIVER));
         when(driverMapper.toDto(DRIVER))
@@ -80,7 +80,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void getDriverById_whenDriverNotExists_throwEntityNotFoundException() {
+    void getDriverById_whenDriverNotExists_throwEntityNotFoundException() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -90,7 +90,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void getAllDriversAdmin_returnDriverContainerResponse() {
+    void getAllDriversAdmin_returnDriverContainerResponse() {
         when(driverRepository.findAll(PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(DRIVER_PAGE);
         when(driverMapper.toDto(DRIVER))
@@ -107,7 +107,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void getAllDrivers_returnDriverContainerResponse() {
+    void getAllDrivers_returnDriverContainerResponse() {
         when(driverRepository.findByDeletedFalse(PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(DRIVER_PAGE);
         when(driverMapper.toDto(DRIVER))
@@ -124,7 +124,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void getDriversByGender_returnDriverContainerResponse() {
+    void getDriversByGender_returnDriverContainerResponse() {
         when(driverRepository.findAllByGenderAndDeletedFalse(Gender.valueOf(DRIVER_GENDER), PageRequest.of(OFFSET, LIMIT)))
                 .thenReturn(DRIVER_PAGE);
         when(driverMapper.toDto(DRIVER))
@@ -141,8 +141,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void safeDeleteDriver_whenDriverExists_thenSetDeletedToDriver() {
-
+    void safeDeleteDriver_whenDriverExists_thenSetDeletedToDriver() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenReturn(Optional.of(DRIVER));
         when(driverRepository.save(DRIVER))
@@ -155,8 +154,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void safeDeleteDriver_whenDriverNotExists_throwEntityNotFoundException() {
-
+    void safeDeleteDriver_whenDriverNotExists_throwEntityNotFoundException() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -166,8 +164,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void deleteDriver_whenDriverExists_thenSuccessDelete() {
-
+    void deleteDriver_whenDriverExists_thenSuccessDelete() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenReturn(Optional.of(DRIVER));
 
@@ -178,8 +175,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void deleteDriver_whenDriverNotExists_throwEntityNotFoundException() {
-
+    void deleteDriver_whenDriverNotExists_throwEntityNotFoundException() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -189,7 +185,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void createDriver_whenDriverDeleted_thenReturnDriverResponse() {
+    void createDriver_whenDriverDeleted_thenReturnDriverResponse() {
         when(driverRepository.findByDeletedTrue())
                 .thenReturn(DRIVER_LIST);
         when(driverRepository.save(DRIVER))
@@ -207,7 +203,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void createDriver_whenDriverNotDeletedAndEmailExists_throwResourceAlreadyExistsException() {
+    void createDriver_whenDriverNotDeletedAndEmailExists_throwResourceAlreadyExistsException() {
         when(driverRepository.findByDeletedTrue())
                 .thenReturn(Collections.emptyList());
         when(driverRepository.existsByEmail(DRIVER_EMAIL))
@@ -226,7 +222,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void createDriver_whenDriverNotDeletedAndEmailNotExistsAndPhoneNumberExists_throwResourceAlreadyExistsException() {
+    void createDriver_whenDriverNotDeletedAndEmailNotExistsAndPhoneNumberExists_throwResourceAlreadyExistsException() {
         when(driverRepository.findByDeletedTrue())
                 .thenReturn(Collections.emptyList());
         when(driverRepository.existsByEmail(DRIVER_EMAIL))
@@ -247,7 +243,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void createDriver_whenDriverNotDeletedAndEmailNotExistsAndPhoneNumberNotExists_returnDriverResponse() {
+    void createDriver_whenDriverNotDeletedAndEmailNotExistsAndPhoneNumberNotExists_returnDriverResponse() {
         when(driverRepository.findByDeletedTrue())
                 .thenReturn(Collections.emptyList());
         when(driverRepository.existsByEmail(DRIVER_EMAIL))
@@ -273,7 +269,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void updateDriver_whenDriverNotFound_throwEntityNotFoundException() {
+    void updateDriver_whenDriverNotFound_throwEntityNotFoundException() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -283,7 +279,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void updateDriver_whenDriverExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailExists_throwResourceAlreadyExistsException() {
+    void updateDriver_whenDriverExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailExists_throwResourceAlreadyExistsException() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenReturn(Optional.of(DRIVER));
         when(driverRepository.existsByEmail(DRIVER_UPDATED_EMAIL))
@@ -301,7 +297,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void updateDriver_whenDriverExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsNotUpdatedPhoneAndUpdatedPhoneExists_throwResourceAlreadyExistsException() {
+    void updateDriver_whenDriverExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsNotUpdatedPhoneAndUpdatedPhoneExists_throwResourceAlreadyExistsException() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenReturn(Optional.of(DRIVER));
         when(driverRepository.existsByEmail(DRIVER_UPDATED_EMAIL))
@@ -322,7 +318,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void updateDriver_whenDriverExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsNotUpdatedPhoneAndUpdatedPhoneNotExists_returnDriverResponse() {
+    void updateDriver_whenDriverExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsNotUpdatedPhoneAndUpdatedPhoneNotExists_returnDriverResponse() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenReturn(Optional.of(DRIVER));
         when(driverRepository.existsByEmail(DRIVER_UPDATED_EMAIL))
@@ -345,7 +341,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void updateDriver_whenDriverExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsUpdatedPhone_returnDriverResponse() {
+    void updateDriver_whenDriverExistsAndCurrentEmailIsNotUpdatedEmailAndUpdatedEmailNotExistsAndCurrentPhoneIsUpdatedPhone_returnDriverResponse() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenReturn(Optional.of(DRIVER));
         when(driverRepository.existsByEmail(DRIVER_UPDATED_EMAIL))
@@ -365,7 +361,7 @@ public class DriverServiceImplTest {
     }
 
     @Test
-    public void updateDriver_whenDriverExistsAndCurrentEmailIsUpdatedEmailAndCurrentPhoneIsUpdatedPhone_returnDriverResponse() {
+    void updateDriver_whenDriverExistsAndCurrentEmailIsUpdatedEmailAndCurrentPhoneIsUpdatedPhone_returnDriverResponse() {
         when(driverRepository.findByIdAndDeletedFalse(DRIVER_ID))
                 .thenReturn(Optional.of(DRIVER));
         when(driverRepository.save(DRIVER))
