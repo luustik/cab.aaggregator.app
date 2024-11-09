@@ -45,7 +45,7 @@ public class ValidationStatusService {
         return currentStatus;
     }
 
-    public void throwExceptionValidStatus(Status substituteStatus) {
+    private void throwExceptionValidStatus(Status substituteStatus) {
         throw new ImpossibleStatusException(messageSource
                 .getMessage(VALIDATION_STATUS_FAILED_MESSAGE,
                         new Object[]{substituteStatus},
