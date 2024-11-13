@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DriverConstants {
@@ -25,6 +26,7 @@ public final class DriverConstants {
 
     public static final Driver DRIVER = createDriver();
     public static final int DRIVER_ID = 1;
+    public static final int DRIVER_NOT_EXISTS_ID = -1;
     public static final String DRIVER_EMAIL = "kkbhe@kfjbn.snb";
     public static final String DRIVER_PHONE_NUMBER = "+375(29)1234567";
     public static final String DRIVER_GENDER = "MALE";
@@ -47,6 +49,16 @@ public final class DriverConstants {
     public static final String DRIVERS_SAFE_ID_URL = "/api/v1/drivers/safe/{id}";
     public static final String DRIVERS_ADMIN_URL = "/api/v1/drivers/admin";
     public static final String DRIVERS_GENDER_URL = "/api/v1/drivers/driver-by-gender/{gender}";
+
+    public static final String POSTGRESQL_CONTAINER = "postgres:15.1-alpine";
+    public static final String ALTER_DRIVER_SEQ = "ALTER SEQUENCE driver_id_seq RESTART WITH 1";
+
+    public static final String MESSAGE_FIELD = "message";
+    public static final String ENTITY_NOT_FOUND_MESSAGE = "The %s with %s not found";
+
+    public static Map<String, String> getNotFoundMessageMap(String resource, Object value) {
+        return Map.of(MESSAGE_FIELD, String.format(ENTITY_NOT_FOUND_MESSAGE, resource, value));
+    }
 
     private static Driver createDriver() {
         Driver driver = new Driver();

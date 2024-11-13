@@ -11,9 +11,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_ID;
+import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_NOT_EXISTS_ID;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.LIMIT;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.OFFSET;
 
@@ -21,14 +23,32 @@ import static cab.aggregator.app.driverservice.utils.DriverConstants.OFFSET;
 public final class CarConstants {
 
     public static final int COUNT_CALLS_METHOD = 1;
-    public static final Car CAR = createCar();
-    public static final CarRequest CAR_REQUEST = createCarRequest();
-    public static final CarRequest CAR_INVALID_REQUEST = new CarRequest("audi", "7930AB7", "red", DRIVER_ID);
-    public static final CarRequest CAR_UPDATED_REQUEST = createCarAnotherRequest();
-    public static final CarResponse CAR_RESPONSE = createCarResponse();
     public static final int CAR_ID = 1;
+    public static final int CAR_NOT_EXISTS_ID = -1;
+
     public static final String CAR_NUMBER = "7930AB-7";
+    public static final String CAR_NOT_EXISTS_NUMBER = "1111AB-7";
+    public static final String INVALID_CAR_NUMBER = "qwe123";
     public static final String CAR_RESOURCE = "Car";
+
+    public static final String MESSAGE_FIELD = "message";
+    public static final String ENTITY_NOT_FOUND_MESSAGE = "The %s with %s not found";
+
+    public static final String CARS_ID_URL = "/api/v1/cars/{id}";
+    public static final String CARS_URL = "/api/v1/cars";
+    public static final String CARS_BY_NUMBER_URL = "/api/v1/cars/car-by-number/{carNumber}";
+    public static final String CARS_DRIVER_URL = "/api/v1/cars/cars-driver/{driverId}";
+
+    public static final String POSTGRESQL_CONTAINER = "postgres:15.1-alpine";
+    public static final String ALTER_CAR_SEQ = "ALTER SEQUENCE car_id_seq RESTART WITH 1";
+
+    public static final Car CAR = createCar();
+
+    public static final CarRequest CAR_REQUEST = createCarRequest(CAR_NUMBER, DRIVER_ID);
+    public static final CarRequest CAR_UPDATED_REQUEST = createCarRequest("1111AA-1", DRIVER_ID);
+    public static final CarRequest CAR_INVALID_REQUEST = createCarRequest(INVALID_CAR_NUMBER, DRIVER_NOT_EXISTS_ID);
+
+    public static final CarResponse CAR_RESPONSE = createCarResponse();
 
     public static final List<Car> CAR_LIST = List.of(CAR);
     public static final Page<Car> CAR_PAGE = new PageImpl<>(CAR_LIST, PageRequest.of(OFFSET, LIMIT), CAR_LIST.size());
@@ -36,10 +56,9 @@ public final class CarConstants {
     public static final Page<CarResponse> CAR_RESPONSE_PAGE = new PageImpl<>(CAR_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), CAR_RESPONSE_LIST.size());
     public static final CarContainerResponse CAR_CONTAINER_RESPONSE = createCarContainerResponse();
 
-    public static final String CARS_ID_URL = "/api/v1/cars/{id}";
-    public static final String CARS_URL = "/api/v1/cars";
-    public static final String CARS_BY_NUMBER_URL = "/api/v1/cars/car-by-number/{carNumber}";
-    public static final String CARS_DRIVER_URL = "/api/v1/cars/cars-driver/{driverId}";
+    public static Map<String, String> getNotFoundMessageMap(String resource, Object value) {
+        return Map.of(MESSAGE_FIELD, String.format(ENTITY_NOT_FOUND_MESSAGE, resource, value));
+    }
 
     private static Car createCar() {
         Car car = new Car();
@@ -65,11 +84,7 @@ public final class CarConstants {
         return new CarResponse(CAR_ID, "red", "audi", CAR_NUMBER, DRIVER_ID);
     }
 
-    private static CarRequest createCarAnotherRequest() {
-        return new CarRequest("audi", "1111AA-1", "red", DRIVER_ID);
-    }
-
-    private static CarRequest createCarRequest() {
-        return new CarRequest("audi", CAR_NUMBER, "red", DRIVER_ID);
+    private static CarRequest createCarRequest(String carNumber, int driverId) {
+        return new CarRequest("audi", carNumber, "red", driverId);
     }
 }

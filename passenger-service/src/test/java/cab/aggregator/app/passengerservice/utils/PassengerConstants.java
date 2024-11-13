@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PassengerConstants {
@@ -24,6 +25,7 @@ public final class PassengerConstants {
 
     public static final Passenger PASSENGER = createPassenger();
     public static final int PASSENGER_ID = 1;
+    public static final int PASSENGER_NOT_EXISTS_ID = -1;
     public static final String PASSENGER_EMAIL = "osfbeobneo@knbeo.vneojb";
     public static final String PASSENGER_PHONE = "+375(44)5567853";
     public static final String PASSENGER_UPDATED_EMAIL = "11r@kfjbn.snb";
@@ -49,10 +51,25 @@ public final class PassengerConstants {
     public static final String PASSENGERS_SAFE_ID_URL = "/api/v1/passengers/soft/{id}";
     public static final String PASSENGERS_ADMIN_URL = "/api/v1/passengers/admin";
 
+    public static final String POSTGRESQL_CONTAINER = "postgres:15.1-alpine";
+    public static final String ALTER_PASSENGER_SEQ = "ALTER SEQUENCE passenger_id_seq RESTART WITH 1";
+
+    public static final String MESSAGE_FIELD = "message";
+    public static final String ENTITY_NOT_FOUND_BY_ID_MESSAGE = "The %s with id %s not found";
+    public static final String ENTITY_NOT_FOUND_MESSAGE = "The %s with %s not found";
+
+    public static Map<String, String> getNotFoundMessageMap(String resource, Object value) {
+        return Map.of(MESSAGE_FIELD, String.format(ENTITY_NOT_FOUND_MESSAGE, resource, value));
+    }
+
+    public static Map<String, String> getNotFoundByIdMessageMap(String resource, Object value) {
+        return Map.of(MESSAGE_FIELD, String.format(ENTITY_NOT_FOUND_BY_ID_MESSAGE, resource, value));
+    }
+
     private static Passenger createPassenger() {
         Passenger driver = new Passenger();
         driver.setId(PASSENGER_ID);
-        driver.setName("Pasha");
+        driver.setName("Kirill");
         driver.setEmail(PASSENGER_EMAIL);
         driver.setPhone(PASSENGER_PHONE);
         driver.setDeleted(false);
