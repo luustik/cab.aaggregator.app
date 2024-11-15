@@ -1,5 +1,7 @@
 package cab.aggregator.app.driverservice.integration;
 
+import cab.aggregator.app.driverservice.kafka.KafkaConsumerConfig;
+import cab.aggregator.app.driverservice.kafka.KafkaListenerService;
 import cab.aggregator.app.driverservice.repository.DriverRepository;
 import cab.aggregator.app.driverservice.utils.CarConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpStatus;
@@ -39,7 +42,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DriverControllerIT {
+@MockBean({KafkaConsumerConfig.class, KafkaListenerService.class})
+public class DriverControllerIntegrationTest {
 
     @LocalServerPort
     private int port;

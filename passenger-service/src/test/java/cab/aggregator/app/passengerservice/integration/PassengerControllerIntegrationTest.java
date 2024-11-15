@@ -1,5 +1,7 @@
 package cab.aggregator.app.passengerservice.integration;
 
+import cab.aggregator.app.passengerservice.kafka.KafkaConsumerConfig;
+import cab.aggregator.app.passengerservice.kafka.KafkaListenerService;
 import cab.aggregator.app.passengerservice.repository.PassengerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpStatus;
@@ -45,7 +48,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PassengerControllerIT {
+@MockBean({KafkaConsumerConfig.class, KafkaListenerService.class})
+public class PassengerControllerIntegrationTest {
 
     @LocalServerPort
     private int port;
