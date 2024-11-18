@@ -52,6 +52,9 @@ public final class DriverConstants {
 
     public static final String POSTGRESQL_CONTAINER = "postgres:15.1-alpine";
     public static final String ALTER_DRIVER_SEQ = "ALTER SEQUENCE driver_id_seq RESTART WITH 1";
+    public static final String TRUNCATE_DRIVER = "TRUNCATE TABLE driver CASCADE";
+    public static final String INSERT_NEW_DRIVER = "INSERT INTO driver (id, name, email, phone_number, gender, deleted, avg_grade) " +
+            "VALUES (nextval('driver_id_seq'), 'Pasha', 'kkbhe@kfjbn.snb', '+375(29)1234567', 'MALE', false, 0)";
 
     public static final String MESSAGE_FIELD = "message";
     public static final String ENTITY_NOT_FOUND_MESSAGE = "The %s with %s not found";

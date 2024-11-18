@@ -2,7 +2,6 @@ package cab.aggregator.app.passengerservice.integration;
 
 import cab.aggregator.app.passengerservice.kafka.KafkaConsumerConfig;
 import cab.aggregator.app.passengerservice.kafka.KafkaListenerService;
-import cab.aggregator.app.passengerservice.repository.PassengerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,12 +14,13 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.ALTER_PASSENGER_SEQ;
-import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.INSERT_NEW_PASSENGER;
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_ADMIN_URL;
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_EMAIL_URL;
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGERS_ID_URL;
@@ -41,6 +41,7 @@ import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSE
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_UPDATED_EMAIL;
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.PASSENGER_UPDATED_PHONE;
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.POSTGRESQL_CONTAINER;
+import static cab.aggregator.app.passengerservice.utils.PassengerConstants.TRUNCATE_PASSENGER;
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.getNotFoundByIdMessageMap;
 import static cab.aggregator.app.passengerservice.utils.PassengerConstants.getNotFoundMessageMap;
 import static io.restassured.RestAssured.given;
@@ -49,6 +50,14 @@ import static org.hamcrest.Matchers.equalTo;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @MockBean({KafkaConsumerConfig.class, KafkaListenerService.class})
+@Sql(
+        statements = {
+                TRUNCATE_PASSENGER,
+                ALTER_PASSENGER_SEQ,
+                INSERT_NEW_PASSENGER
+        },
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+)
 public class PassengerControllerIntegrationTest {
 
     @LocalServerPort
@@ -62,17 +71,11 @@ public class PassengerControllerIntegrationTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    private PassengerRepository passengerRepository;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = this.port;
-        passengerRepository.deleteAll();
-        jdbcTemplate.execute(ALTER_PASSENGER_SEQ);
-        passengerRepository.save(PASSENGER);
     }
 
     @Test
@@ -223,7 +226,7 @@ public class PassengerControllerIntegrationTest {
 
     @Test
     void createPassenger_whenPassengerRequestValid_returnPassengerResponseAndStatusCreated() throws Exception {
-        passengerRepository.deleteAll();
+        jdbcTemplate.execute(TRUNCATE_PASSENGER);
         jdbcTemplate.execute(ALTER_PASSENGER_SEQ);
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

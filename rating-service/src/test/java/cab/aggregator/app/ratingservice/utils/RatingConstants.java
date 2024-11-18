@@ -10,7 +10,6 @@ import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 import cab.aggregator.app.ratingservice.entity.Rating;
 import cab.aggregator.app.ratingservice.entity.enums.UserRole;
-import liquibase.sqlgenerator.core.UpdateChangeSetChecksumGenerator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -90,6 +89,9 @@ public final class RatingConstants {
 
     public static final String POSTGRESQL_CONTAINER = "postgres:15.1-alpine";
     public static final String ALTER_RATING_SEQ = "ALTER SEQUENCE rating_id_seq RESTART WITH 1";
+    public static final String TRUNCATE_RATING = "TRUNCATE TABLE rating";
+    public static final String INSERT_NEW_RATING = "INSERT INTO rating (id, ride_id, user_id, rating, comment, role_user) " +
+            "VALUES (nextval('rating_id_seq'), 1, 1, 10, 'Good', 'DRIVER')";
 
     public static final String MESSAGE_FIELD = "message";
     public static final String ENTITY_NOT_FOUND_BY_ID_MESSAGE = "The %s with id %s not found";

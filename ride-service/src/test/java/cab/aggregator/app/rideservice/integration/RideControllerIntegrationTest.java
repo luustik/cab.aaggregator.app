@@ -1,10 +1,8 @@
 package cab.aggregator.app.rideservice.integration;
 
 import cab.aggregator.app.rideservice.dto.response.RideResponse;
-import cab.aggregator.app.rideservice.repository.RideRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
@@ -14,31 +12,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static cab.aggregator.app.rideservice.integration.WireMockUtilityStub.stubForUserWhenUserExists;
+import static cab.aggregator.app.rideservice.integration.WireMockUtilityStub.stubForUserWhenUserNotExists;
 import static cab.aggregator.app.rideservice.utils.RideConstants.ALTER_RIDE_SEQ;
 import static cab.aggregator.app.rideservice.utils.RideConstants.COST_FIELD;
-import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVERS_ID_URL;
 import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVER_ID;
 import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVER_RESOURCE;
-import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVER_RESPONSE;
 import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVER_ROLE;
 import static cab.aggregator.app.rideservice.utils.RideConstants.DRIVER_WIRE_MOCK_SERVER_PORT;
 import static cab.aggregator.app.rideservice.utils.RideConstants.END_PARAM;
-import static cab.aggregator.app.rideservice.utils.RideConstants.NEW_RIDE;
+import static cab.aggregator.app.rideservice.utils.RideConstants.INSERT_NEW_RIDE;
 import static cab.aggregator.app.rideservice.utils.RideConstants.NEW_RIDE_STATUS;
 import static cab.aggregator.app.rideservice.utils.RideConstants.ORDER_DATE_TIME_FIELD;
-import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGERS_ID_URL;
 import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGER_ID;
 import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGER_RESOURCE;
-import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGER_RESPONSE;
 import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGER_ROLE;
 import static cab.aggregator.app.rideservice.utils.RideConstants.PASSENGER_WIRE_MOCK_SERVER_PORT;
 import static cab.aggregator.app.rideservice.utils.RideConstants.POSTGRESQL_CONTAINER;
@@ -62,13 +58,12 @@ import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_START_RANG
 import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_START_RANGE_TIME_STR;
 import static cab.aggregator.app.rideservice.utils.RideConstants.RIDE_STATUS;
 import static cab.aggregator.app.rideservice.utils.RideConstants.START_PARAM;
+import static cab.aggregator.app.rideservice.utils.RideConstants.TRUNCATE_RIDE;
 import static cab.aggregator.app.rideservice.utils.RideConstants.UPDATED_RIDE_RESPONSE;
 import static cab.aggregator.app.rideservice.utils.RideConstants.VALID_NOT_EXISTS_ID;
 import static cab.aggregator.app.rideservice.utils.RideConstants.getCannotSetStatusMessageMap;
 import static cab.aggregator.app.rideservice.utils.RideConstants.getNotFoundByIdMessageMap;
 import static cab.aggregator.app.rideservice.utils.RideConstants.getNotFoundMessageMap;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -76,6 +71,14 @@ import static org.hamcrest.Matchers.equalTo;
 @ActiveProfiles("test")
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(
+        statements = {
+                TRUNCATE_RIDE,
+                ALTER_RIDE_SEQ,
+                INSERT_NEW_RIDE
+        },
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+)
 public class RideControllerIntegrationTest {
 
     @LocalServerPort
@@ -89,9 +92,6 @@ public class RideControllerIntegrationTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    private RideRepository rideRepository;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private static final WireMockServer passengerWireMockServer = new WireMockServer(PASSENGER_WIRE_MOCK_SERVER_PORT);
@@ -100,9 +100,6 @@ public class RideControllerIntegrationTest {
     @BeforeEach
     void setUp() {
         RestAssured.port = this.port;
-        rideRepository.deleteAll();
-        jdbcTemplate.execute(ALTER_RIDE_SEQ);
-        rideRepository.save(NEW_RIDE);
         passengerWireMockServer.start();
         driverWireMockServer.start();
     }
@@ -148,7 +145,7 @@ public class RideControllerIntegrationTest {
 
     @Test
     void getAllRidesByDriverId_whenDriverExists_returnRideContainerResponseAndStatusOk() throws Exception {
-        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE);
+        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE, driverWireMockServer, objectMapper);
         given()
                 .when()
                 .get(RIDES_DRIVER_URL, DRIVER_ID)
@@ -160,7 +157,7 @@ public class RideControllerIntegrationTest {
 
     @Test
     void getAllRidesByDriverId_whenDriverNotExists_returnStatusNotFound() throws Exception {
-        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, DRIVER_ROLE);
+        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, DRIVER_ROLE, driverWireMockServer, objectMapper);
         given()
                 .when()
                 .get(RIDES_DRIVER_URL, VALID_NOT_EXISTS_ID)
@@ -172,7 +169,7 @@ public class RideControllerIntegrationTest {
 
     @Test
     void getAllRidesByPassengerId_whenPassengerExists_returnRideContainerResponseAndStatusOk() throws Exception {
-        stubForUserWhenUserExists(PASSENGER_ID, PASSENGER_ROLE);
+        stubForUserWhenUserExists(PASSENGER_ID, PASSENGER_ROLE, passengerWireMockServer, objectMapper);
         given()
                 .when()
                 .get(RIDES_PASSENGER_URL, PASSENGER_ID)
@@ -184,7 +181,7 @@ public class RideControllerIntegrationTest {
 
     @Test
     void getAllRidesByPassengerId_whenPassengerNotExists_returnStatusNotFound() throws Exception {
-        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, PASSENGER_ROLE);
+        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, PASSENGER_ROLE, passengerWireMockServer, objectMapper);
         given()
                 .when()
                 .get(RIDES_PASSENGER_URL, VALID_NOT_EXISTS_ID)
@@ -264,7 +261,7 @@ public class RideControllerIntegrationTest {
 
     @Test
     void createRide_whenDriverNotExists_returnStatusNotFound() throws Exception {
-        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, DRIVER_ROLE);
+        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, DRIVER_ROLE, driverWireMockServer, objectMapper);
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(RIDE_DRIVER_NOT_EXISTS_REQUEST)
@@ -278,8 +275,8 @@ public class RideControllerIntegrationTest {
 
     @Test
     void createRide_whenPassengerNotExists_returnStatusNotFound() throws Exception {
-        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE);
-        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, PASSENGER_ROLE);
+        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE, driverWireMockServer, objectMapper);
+        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, PASSENGER_ROLE, passengerWireMockServer, objectMapper);
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(RIDE_PASSENGER_NOT_EXISTS_REQUEST)
@@ -293,10 +290,10 @@ public class RideControllerIntegrationTest {
 
     @Test
     void createRide_returnRideResponseAndStatusCreated() throws Exception {
-        rideRepository.deleteAll();
+        jdbcTemplate.execute(TRUNCATE_RIDE);
         jdbcTemplate.execute(ALTER_RIDE_SEQ);
-        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE);
-        stubForUserWhenUserExists(PASSENGER_ID, PASSENGER_ROLE);
+        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE, driverWireMockServer, objectMapper);
+        stubForUserWhenUserExists(PASSENGER_ID, PASSENGER_ROLE, passengerWireMockServer, objectMapper);
         Response response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(RIDE_REQUEST)
@@ -316,7 +313,7 @@ public class RideControllerIntegrationTest {
 
     @Test
     void updateRide_whenRideExistAndDriverNotExist_returnStatusNotFound() throws Exception {
-        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, DRIVER_ROLE);
+        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, DRIVER_ROLE, driverWireMockServer, objectMapper);
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(RIDE_DRIVER_NOT_EXISTS_REQUEST)
@@ -330,8 +327,8 @@ public class RideControllerIntegrationTest {
 
     @Test
     void updateRide_whenRideExistAndPassengerNotExist_returnStatusNotFound() throws Exception {
-        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE);
-        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, PASSENGER_ROLE);
+        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE, driverWireMockServer, objectMapper);
+        stubForUserWhenUserNotExists(VALID_NOT_EXISTS_ID, PASSENGER_ROLE, passengerWireMockServer, objectMapper);
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(RIDE_PASSENGER_NOT_EXISTS_REQUEST)
@@ -345,8 +342,8 @@ public class RideControllerIntegrationTest {
 
     @Test
     void updateRide_returnStatusOkAndRideResponse() throws Exception {
-        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE);
-        stubForUserWhenUserExists(DRIVER_ID, PASSENGER_ROLE);
+        stubForUserWhenUserExists(DRIVER_ID, DRIVER_ROLE, driverWireMockServer, objectMapper);
+        stubForUserWhenUserExists(DRIVER_ID, PASSENGER_ROLE, passengerWireMockServer, objectMapper);
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(RIDE_REQUEST)
@@ -419,58 +416,5 @@ public class RideControllerIntegrationTest {
                 .patch(RIDES_ID_URL, RIDE_ID)
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
-    }
-
-    //User Stubs
-    private void stubForUserWhenUserExists(Long userId, String role) throws Exception {
-
-        switch (role) {
-            case DRIVER_ROLE -> stubForDriverService_whenDriverExists(userId);
-            case PASSENGER_ROLE -> stubForPassengerService_whenPassengerExists(userId);
-        }
-    }
-
-    private void stubForUserWhenUserNotExists(Long userId, String role) throws Exception {
-
-        switch (role) {
-            case DRIVER_ROLE -> stubForDriverService_whenDriverNotExists(userId);
-            case PASSENGER_ROLE -> stubForPassengerService_whenPassengerNotExists(userId);
-        }
-    }
-
-    //Passenger stubs
-    private void stubForPassengerService_whenPassengerExists(Long userId) throws Exception {
-        passengerWireMockServer.stubFor(WireMock.get(urlPathEqualTo(PASSENGERS_ID_URL + userId))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.OK.value())
-                        .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(objectMapper.writeValueAsString(PASSENGER_RESPONSE))));
-    }
-
-    private void stubForPassengerService_whenPassengerNotExists(Long userId) throws Exception {
-        passengerWireMockServer.stubFor(WireMock.get(urlPathEqualTo(PASSENGERS_ID_URL + userId))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.NOT_FOUND.value())
-                        .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(objectMapper
-                                .writeValueAsString(getNotFoundByIdMessageMap(PASSENGER_RESOURCE, userId)))));
-    }
-
-    //Driver Stubs
-    private void stubForDriverService_whenDriverExists(Long userId) throws Exception {
-        driverWireMockServer.stubFor(WireMock.get(urlPathEqualTo(DRIVERS_ID_URL + userId))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.OK.value())
-                        .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(objectMapper.writeValueAsString(DRIVER_RESPONSE))));
-    }
-
-    private void stubForDriverService_whenDriverNotExists(Long userId) throws Exception {
-        driverWireMockServer.stubFor(WireMock.get(urlPathEqualTo(DRIVERS_ID_URL + userId))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.NOT_FOUND.value())
-                        .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(objectMapper
-                                .writeValueAsString(getNotFoundMessageMap(DRIVER_RESOURCE, userId)))));
     }
 }

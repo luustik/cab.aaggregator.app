@@ -53,6 +53,9 @@ public final class PassengerConstants {
 
     public static final String POSTGRESQL_CONTAINER = "postgres:15.1-alpine";
     public static final String ALTER_PASSENGER_SEQ = "ALTER SEQUENCE passenger_id_seq RESTART WITH 1";
+    public static final String TRUNCATE_PASSENGER = "TRUNCATE TABLE passenger";
+    public static final String INSERT_NEW_PASSENGER = "INSERT INTO passenger (id, name, email, phone, deleted, avg_grade) " +
+            "VALUES (nextval('passenger_id_seq'), 'Kirill', 'osfbeobneo@knbeo.vneojb', '+375(44)5567853', false, 0)";
 
     public static final String MESSAGE_FIELD = "message";
     public static final String ENTITY_NOT_FOUND_BY_ID_MESSAGE = "The %s with id %s not found";

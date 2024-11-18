@@ -73,6 +73,9 @@ public final class RideConstants {
 
     public static final String POSTGRESQL_CONTAINER = "postgres:15.1-alpine";
     public static final String ALTER_RIDE_SEQ = "ALTER SEQUENCE ride_id_seq RESTART WITH 1";
+    public static final String TRUNCATE_RIDE = "TRUNCATE TABLE ride";
+    public static final String INSERT_NEW_RIDE = "INSERT INTO ride (id, driver_id, passenger_id, departure_address, arrival_address, status, order_date_time, cost) " +
+            "VALUES (nextval('ride_id_seq'), 1, 1, 'departure address', 'arrival address', 'CREATED', '2024-10-15 19:00', '100.00')";
     public static final String MESSAGE_FIELD = "message";
     public static final String ENTITY_NOT_FOUND_BY_ID_MESSAGE = "The %s with id %s not found";
     public static final String ENTITY_NOT_FOUND_MESSAGE = "The %s with %s not found";

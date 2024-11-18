@@ -2,7 +2,6 @@ package cab.aggregator.app.driverservice.integration;
 
 import cab.aggregator.app.driverservice.kafka.KafkaConsumerConfig;
 import cab.aggregator.app.driverservice.kafka.KafkaListenerService;
-import cab.aggregator.app.driverservice.repository.DriverRepository;
 import cab.aggregator.app.driverservice.utils.CarConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
@@ -16,6 +15,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -34,8 +34,9 @@ import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_NOT_
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_REQUEST;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_RESOURCE;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_RESPONSE;
+import static cab.aggregator.app.driverservice.utils.DriverConstants.INSERT_NEW_DRIVER;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.POSTGRESQL_CONTAINER;
-import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER;
+import static cab.aggregator.app.driverservice.utils.DriverConstants.TRUNCATE_DRIVER;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.getNotFoundMessageMap;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -43,6 +44,14 @@ import static org.hamcrest.Matchers.equalTo;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @MockBean({KafkaConsumerConfig.class, KafkaListenerService.class})
+@Sql(
+        statements = {
+                TRUNCATE_DRIVER,
+                ALTER_DRIVER_SEQ,
+                INSERT_NEW_DRIVER
+        },
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+)
 public class DriverControllerIntegrationTest {
 
     @LocalServerPort
@@ -56,17 +65,11 @@ public class DriverControllerIntegrationTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    private DriverRepository driverRepository;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = this.port;
-        driverRepository.deleteAll();
-        jdbcTemplate.execute(ALTER_DRIVER_SEQ);
-        driverRepository.save(DRIVER);
     }
 
     @Test
@@ -166,7 +169,7 @@ public class DriverControllerIntegrationTest {
 
     @Test
     void createDriver_whenDriverRequestValid_returnDriverResponseAndStatusCreated() throws Exception {
-        driverRepository.deleteAll();
+        jdbcTemplate.execute(TRUNCATE_DRIVER);
         jdbcTemplate.execute(ALTER_DRIVER_SEQ);
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

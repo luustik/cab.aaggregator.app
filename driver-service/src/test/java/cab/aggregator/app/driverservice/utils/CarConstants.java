@@ -41,6 +41,8 @@ public final class CarConstants {
 
     public static final String POSTGRESQL_CONTAINER = "postgres:15.1-alpine";
     public static final String ALTER_CAR_SEQ = "ALTER SEQUENCE car_id_seq RESTART WITH 1";
+    public static final String TRUNCATE_CAR = "TRUNCATE TABLE car";
+    public static final String INSERT_NEW_CAR = "INSERT INTO car (id, color, model, car_number, driver_id) VALUES (nextval('car_id_seq'), 'red', 'audi', '7930AB-7', 1)";
 
     public static final Car CAR = createCar();
 

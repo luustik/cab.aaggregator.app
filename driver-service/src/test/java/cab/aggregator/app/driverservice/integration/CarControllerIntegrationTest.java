@@ -2,7 +2,6 @@ package cab.aggregator.app.driverservice.integration;
 
 import cab.aggregator.app.driverservice.kafka.KafkaConsumerConfig;
 import cab.aggregator.app.driverservice.kafka.KafkaListenerService;
-import cab.aggregator.app.driverservice.repository.CarRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,12 +14,12 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static cab.aggregator.app.driverservice.utils.CarConstants.ALTER_CAR_SEQ;
-import static cab.aggregator.app.driverservice.utils.CarConstants.CAR;
 import static cab.aggregator.app.driverservice.utils.CarConstants.CARS_BY_NUMBER_URL;
 import static cab.aggregator.app.driverservice.utils.CarConstants.CARS_DRIVER_URL;
 import static cab.aggregator.app.driverservice.utils.CarConstants.CARS_ID_URL;
@@ -34,7 +33,9 @@ import static cab.aggregator.app.driverservice.utils.CarConstants.CAR_NUMBER;
 import static cab.aggregator.app.driverservice.utils.CarConstants.CAR_REQUEST;
 import static cab.aggregator.app.driverservice.utils.CarConstants.CAR_RESOURCE;
 import static cab.aggregator.app.driverservice.utils.CarConstants.CAR_RESPONSE;
+import static cab.aggregator.app.driverservice.utils.CarConstants.INSERT_NEW_CAR;
 import static cab.aggregator.app.driverservice.utils.CarConstants.POSTGRESQL_CONTAINER;
+import static cab.aggregator.app.driverservice.utils.CarConstants.TRUNCATE_CAR;
 import static cab.aggregator.app.driverservice.utils.CarConstants.getNotFoundMessageMap;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_ID;
 import static io.restassured.RestAssured.given;
@@ -43,6 +44,14 @@ import static org.hamcrest.Matchers.equalTo;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @MockBean({KafkaConsumerConfig.class, KafkaListenerService.class})
+@Sql(
+        statements = {
+                TRUNCATE_CAR,
+                ALTER_CAR_SEQ,
+                INSERT_NEW_CAR
+        },
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+)
 class CarControllerIntegrationTest {
 
     @LocalServerPort
@@ -56,17 +65,11 @@ class CarControllerIntegrationTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    private CarRepository carRepository;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = this.port;
-        carRepository.deleteAll();
-        jdbcTemplate.execute(ALTER_CAR_SEQ);
-        carRepository.save(CAR);
     }
 
     @Test
@@ -157,7 +160,7 @@ class CarControllerIntegrationTest {
 
     @Test
     void createCar_whenCarRequestValid_returnCarResponseAndStatusCreated() throws Exception {
-        carRepository.deleteAll();
+        jdbcTemplate.execute(TRUNCATE_CAR);
         jdbcTemplate.execute(ALTER_CAR_SEQ);
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
