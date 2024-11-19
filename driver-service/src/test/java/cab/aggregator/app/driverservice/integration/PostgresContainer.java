@@ -4,7 +4,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import static cab.aggregator.app.driverservice.utils.DriverConstants.POSTGRESQL_CONTAINER;
 
-public class PostgresContainer extends PostgreSQLContainer<PostgresContainer>{
+public class PostgresContainer extends PostgreSQLContainer<PostgresContainer> {
 
     private static PostgresContainer container;
 
