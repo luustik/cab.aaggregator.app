@@ -36,7 +36,6 @@ import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_REQU
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_RESOURCE;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_RESPONSE;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.INSERT_NEW_DRIVER;
-import static cab.aggregator.app.driverservice.utils.DriverConstants.POSTGRESQL_CONTAINER;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.TRUNCATE_DRIVER;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.getNotFoundMessageMap;
 import static io.restassured.RestAssured.given;
@@ -61,7 +60,7 @@ public class DriverControllerIntegrationTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(POSTGRESQL_CONTAINER);
+    static PostgreSQLContainer<?> postgreSQLContainer = PostgresContainer.getInstance();
 
     @Autowired
     ObjectMapper objectMapper;

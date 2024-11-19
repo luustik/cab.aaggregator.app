@@ -35,7 +35,6 @@ import static cab.aggregator.app.driverservice.utils.CarConstants.CAR_REQUEST;
 import static cab.aggregator.app.driverservice.utils.CarConstants.CAR_RESOURCE;
 import static cab.aggregator.app.driverservice.utils.CarConstants.CAR_RESPONSE;
 import static cab.aggregator.app.driverservice.utils.CarConstants.INSERT_NEW_CAR;
-import static cab.aggregator.app.driverservice.utils.CarConstants.POSTGRESQL_CONTAINER;
 import static cab.aggregator.app.driverservice.utils.CarConstants.TRUNCATE_CAR;
 import static cab.aggregator.app.driverservice.utils.CarConstants.getNotFoundMessageMap;
 import static cab.aggregator.app.driverservice.utils.DriverConstants.DRIVER_ID;
@@ -61,7 +60,7 @@ class CarControllerIntegrationTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(POSTGRESQL_CONTAINER);
+    static PostgreSQLContainer<?> postgreSQLContainer = PostgresContainer.getInstance();
 
     @Autowired
     ObjectMapper objectMapper;
