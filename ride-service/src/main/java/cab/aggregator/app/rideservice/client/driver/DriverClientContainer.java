@@ -13,13 +13,8 @@ public class DriverClientContainer {
 
     private final DriverClient driverClient;
 
-    @CircuitBreaker(name = "driver-service-circuit-breaker", fallbackMethod = "fallback")
+    @CircuitBreaker(name = "driver-service-circuit-breaker")
     public DriverResponse getById(int id) {
         return driverClient.getDriverById(id);
-    }
-
-    private void fallback(Exception ex) throws Exception {
-        log.warn(ex.getMessage(), ex);
-        throw  ex;
     }
 }
