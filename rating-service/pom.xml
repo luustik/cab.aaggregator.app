@@ -34,6 +34,7 @@
         <liquibase.username>${env.DB_USERNAME}</liquibase.username>
         <liquibase.password>${env.DB_PASSWORD}</liquibase.password>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <cucumber.version>7.11.0</cucumber.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -166,17 +167,17 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>7.11.0</version>
+            <version>${cucumber.version}</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.11.0</version>
+            <version>${cucumber.version}</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>7.11.0</version>
+            <version>${cucumber.version}</version>
         </dependency>
     </dependencies>
 
