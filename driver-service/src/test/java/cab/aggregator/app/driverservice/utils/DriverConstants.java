@@ -44,6 +44,7 @@ public final class DriverConstants {
     public static final Page<DriverResponse> DRIVER_RESPONSE_PAGE = new PageImpl<>(DRIVER_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), DRIVER_RESPONSE_LIST.size());
     public static final DriverContainerResponse DRIVER_CONTAINER_RESPONSE = createDriverContainerResponse();
 
+    public static final String LOCALHOST_URL = "http://localhost:8888";
     public static final String DRIVERS_ID_URL = "/api/v1/drivers/{id}";
     public static final String DRIVERS_URL = "/api/v1/drivers";
     public static final String DRIVERS_SAFE_ID_URL = "/api/v1/drivers/safe/{id}";
