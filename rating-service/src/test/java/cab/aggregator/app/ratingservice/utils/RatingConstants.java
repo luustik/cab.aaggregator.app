@@ -73,6 +73,7 @@ public final class RatingConstants {
     public static final RatingContainerResponse RATING_DRIVER_CONTAINER_RESPONSE = createRatingContainerResponse(RATING_DRIVER_RESPONSE_PAGE);
     public static final RatingContainerResponse RATING_CONTAINER_RESPONSE = createRatingContainerResponse(RATING_RESPONSE_PAGE);
 
+    public static final String LOCALHOST_URL = "http://localhost:8888";
     public static final String RATINGS_ID_URL = "/api/v1/ratings/{id}";
     public static final String RATINGS_URL = "/api/v1/ratings";
     public static final String RATINGS_RIDE_ROLE_URL = "/api/v1/ratings/ride/{role}/{rideId}";

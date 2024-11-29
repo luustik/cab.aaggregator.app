@@ -34,6 +34,7 @@
         <liquibase.username>${env.DB_USERNAME}</liquibase.username>
         <liquibase.password>${env.DB_PASSWORD}</liquibase.password>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <cucumber.version>7.11.0</cucumber.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -149,6 +150,25 @@
             <groupId>org.wiremock</groupId>
             <artifactId>wiremock-standalone</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
     </dependencies>
 

@@ -61,6 +61,7 @@ public final class RideConstants {
 
     public static final String IMPOSSIBLE_STATUS = "Impossible status";
 
+    public static final String LOCALHOST_URL = "http://localhost:8888";
     public static final String RIDES_ID_URL = "/api/v1/rides/{id}";
     public static final String RIDES_URL = "/api/v1/rides";
     public static final String RIDES_DRIVER_URL = "/api/v1/rides/driver-id/{driverId}";

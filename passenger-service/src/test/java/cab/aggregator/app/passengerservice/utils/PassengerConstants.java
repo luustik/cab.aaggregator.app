@@ -44,6 +44,7 @@ public final class PassengerConstants {
     public static final Page<PassengerResponse> PASSENGER_RESPONSE_PAGE = new PageImpl<>(PASSENGER_RESPONSE_LIST, PageRequest.of(OFFSET, LIMIT), PASSENGER_RESPONSE_LIST.size());
     public static final PassengerContainerResponse PASSENGER_CONTAINER_RESPONSE = createPassengerContainerResponse();
 
+    public static final String LOCALHOST_URL = "http://localhost:8888";
     public static final String PASSENGERS_ID_URL = "/api/v1/passengers/{id}";
     public static final String PASSENGERS_PHONE_URL = "/api/v1/passengers/phone/{phone}";
     public static final String PASSENGERS_EMAIL_URL = "/api/v1/passengers/email/{email}";

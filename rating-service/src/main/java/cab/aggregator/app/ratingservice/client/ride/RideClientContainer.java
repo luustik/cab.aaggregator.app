@@ -13,13 +13,8 @@ public class RideClientContainer {
 
     private final RideClient rideClient;
 
-    @CircuitBreaker(name = "ride-service-circuit-breaker", fallbackMethod = "fallback")
+    @CircuitBreaker(name = "ride-service-circuit-breaker")
     public RideResponse getById(long id) {
         return rideClient.getRideById(id);
-    }
-
-    private RideResponse fallback(long id, Throwable ex) throws Throwable {
-        log.warn("Fallback triggered for ID: {}, Exception: {}", id, ex.getMessage(), ex);
-        throw ex;
     }
 }
