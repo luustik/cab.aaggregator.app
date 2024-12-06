@@ -17,6 +17,23 @@ services:
       - "8761:8761"
     networks:
       - cab-aggregator-app
+    depends_on:
+      ride_db:
+        condition: service_healthy
+      passenger_db:
+        condition: service_healthy
+      driver_db:
+        condition: service_healthy
+      rating_db:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://discovery-service:8761/actuator/health" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   config-server:
     image: config-server
@@ -27,8 +44,17 @@ services:
       - "8000:8000"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
+    depends_on:
+      discovery-service:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://config-server:8000/actuator/health" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   driver-service:
     image: driver-service:latest
@@ -43,8 +69,17 @@ services:
       - DB_PASSWORD=pass
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
       - KAFKA=kafka:29092
+    depends_on:
+      config-server:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://driver-service:8082/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
 
   passenger-service:
     image: passenger-service:latest
@@ -59,8 +94,17 @@ services:
       - DB_PASSWORD=pass
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
       - KAFKA=kafka:29092
+    depends_on:
+      config-server:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://passenger-service:8081/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
 
   rating-service:
     image: rating-service:latest
@@ -75,8 +119,17 @@ services:
       - DB_PASSWORD=pass
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
       - KAFKA=kafka:29092
+    depends_on:
+      config-server:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://rating-service:8084/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
 
   ride-service:
     image: ride-service:latest
@@ -90,8 +143,17 @@ services:
       - DB_USERNAME=user
       - DB_PASSWORD=pass
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
+    depends_on:
+      config-server:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://ride-service:8083/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
 
   gateway-service:
     image: gateway-service:latest
@@ -102,6 +164,15 @@ services:
       - "8888:8888"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
+    depends_on:
+      driver-service:
+        condition: service_healthy
+      passenger-service:
+        condition: service_healthy
+      rating-service:
+        condition: service_healthy
+      ride-service:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
 
@@ -114,6 +185,12 @@ services:
       - zookeeper_data:/wurstmeister/zookeeper
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "nc -z localhost 2181" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   kafka:
     image: wurstmeister/kafka
@@ -125,7 +202,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     ports:
       - "29092:29092"
       - "9092:9092"
@@ -133,6 +211,12 @@ services:
       - kafka_data:/wurstmeister/kafka
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "nc -z kafka 29092" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   passenger_db:
     image: postgres:15.1-alpine
@@ -147,6 +231,12 @@ services:
       - "5431:5432"
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   driver_db:
     image: postgres:15.1-alpine
@@ -161,6 +251,12 @@ services:
       - "5432:5432"
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   ride_db:
     image: postgres:15.1-alpine
@@ -175,6 +271,12 @@ services:
       - "5433:5432"
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   rating_db:
     image: postgres:15.1-alpine
@@ -189,6 +291,12 @@ services:
       - "5434:5432"
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
 networks:
   cab-aggregator-app:
