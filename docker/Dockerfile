@@ -11,9 +11,6 @@ FROM eclipse-temurin:17-jre AS builder
 
 ARG SERVICE_NAME
 
-RUN adduser --system ${SERVICE_NAME} && addgroup --system ${SERVICE_NAME} && adduser ${SERVICE_NAME} ${SERVICE_NAME}
-USER ${SERVICE_NAME}
-
 WORKDIR /app
 
 COPY --from=build target/*.jar ./application.jar
