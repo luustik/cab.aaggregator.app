@@ -11,8 +11,10 @@ services:
   discovery-service:
     image: discovery-service
     build:
-      context: ../discovery-service
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_NAME: discovery-service
     ports:
       - "8761:8761"
     networks:
@@ -38,8 +40,10 @@ services:
   config-server:
     image: config-server
     build:
-      context: ../config-server
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_NAME: config-server
     ports:
       - "8000:8000"
     environment:
@@ -59,8 +63,10 @@ services:
   driver-service:
     image: driver-service:latest
     build:
-      context: ../driver-service
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_NAME: driver-service
     ports:
       - "8082:8082"
     environment:
@@ -84,8 +90,10 @@ services:
   passenger-service:
     image: passenger-service:latest
     build:
-      context: ../passenger-service
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_NAME: passenger-service
     ports:
       - "8081:8081"
     environment:
@@ -109,8 +117,10 @@ services:
   rating-service:
     image: rating-service:latest
     build:
-      context: ../rating-service
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_NAME: rating-service
     ports:
       - "8084:8084"
     environment:
@@ -134,8 +144,10 @@ services:
   ride-service:
     image: ride-service:latest
     build:
-      context: ../ride-service
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_NAME: ride-service
     ports:
       - "8083:8083"
     environment:
@@ -158,8 +170,10 @@ services:
   gateway-service:
     image: gateway-service:latest
     build:
-      context: ../gateway-service
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_NAME: gateway-service
     ports:
       - "8888:8888"
     environment:
