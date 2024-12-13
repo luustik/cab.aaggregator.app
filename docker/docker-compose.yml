@@ -54,11 +54,11 @@ services:
     networks:
       - cab-aggregator-app
     healthcheck:
-      test: [ "CMD-SHELL", "curl --fail http://config-server:8000/actuator/health" ]
-      interval: 1s
+      test: ["CMD-SHELL", "curl --fail http://discovery-service:8761/eureka/apps/config-server || exit 1"]
+      interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 15s
 
   driver-service:
     image: driver-service:latest

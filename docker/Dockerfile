@@ -9,8 +9,6 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:17-jre AS builder
 
-ARG SERVICE_NAME
-
 WORKDIR /app
 
 COPY --from=build target/*.jar ./application.jar
