@@ -200,7 +200,7 @@ services:
     networks:
       - cab-aggregator-app
     healthcheck:
-      test: [ "CMD-SHELL", "nc -z localhost 2181" ]
+      test: ["CMD-SHELL", "echo", "ruok", "|", "nc", "localhost", "2181", "|", "grep", "imok"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -246,7 +246,7 @@ services:
     networks:
       - cab-aggregator-app
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -U user -d passenger_db" ]
       interval: 1s
       timeout: 5s
       retries: 5
@@ -266,7 +266,7 @@ services:
     networks:
       - cab-aggregator-app
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -U user -d driver_db" ]
       interval: 1s
       timeout: 5s
       retries: 5
@@ -286,7 +286,7 @@ services:
     networks:
       - cab-aggregator-app
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -U user -d ride_db" ]
       interval: 1s
       timeout: 5s
       retries: 5
@@ -306,7 +306,7 @@ services:
     networks:
       - cab-aggregator-app
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -U user -d rating_db" ]
       interval: 1s
       timeout: 5s
       retries: 5
