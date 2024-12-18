@@ -197,6 +197,12 @@ services:
         condition: service_healthy
     networks:
       - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://gateway-service:8888/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
 
   zookeeper:
     image: wurstmeister/zookeeper
@@ -408,13 +414,55 @@ services:
       filebeat:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5601/api/status"]
+      test: ["CMD", "curl", "-f", "http://localhost:5601/status"]
       interval: 5s
       retries: 5
       timeout: 15s
       start_period: 30s
     networks:
       - cab-aggregator-app
+
+  grafana:
+    container_name: grafana
+    build: './monitoring/grafana'
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./monitoring/grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    networks:
+      - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/-/healthy" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus:/prometheus
+    depends_on:
+      gateway-service:
+        condition: service_healthy
+    networks:
+      - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:9090/-/healthy" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
 
 networks:
   cab-aggregator-app:
