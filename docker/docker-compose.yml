@@ -11,6 +11,7 @@ services:
 
   discovery-service:
     image: discovery-service
+    container_name: discovery-service
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -40,6 +41,7 @@ services:
 
   config-server:
     image: config-server
+    container_name: config-server
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -63,6 +65,7 @@ services:
 
   driver-service:
     image: driver-service:latest
+    container_name: driver-service
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -90,6 +93,7 @@ services:
 
   passenger-service:
     image: passenger-service:latest
+    container_name: passenger-service
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -117,6 +121,7 @@ services:
 
   rating-service:
     image: rating-service:latest
+    container_name: rating-service
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -144,6 +149,7 @@ services:
 
   ride-service:
     image: ride-service:latest
+    container_name: ride-service
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -170,6 +176,7 @@ services:
 
   gateway-service:
     image: gateway-service:latest
+    container_name: gateway-service
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -371,7 +378,7 @@ services:
   filebeat:
     image: elastic/filebeat:7.14.0
     container_name: filebeat
-    command: ["--strict.perms=false"]
+    command: ["filebeat", "-e", "--strict.perms=false"]
     user: root
     volumes:
       - ./monitoring/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
@@ -381,6 +388,12 @@ services:
     depends_on:
       logstash:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep filebeat || exit 1"]
+      interval: 5s
+      retries: 5
+      timeout: 15s
+      start_period: 30s
     networks:
       - cab-aggregator-app
 
@@ -392,9 +405,7 @@ services:
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
     depends_on:
-      elasticsearch:
-        condition: service_healthy
-      logstash:
+      filebeat:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5601/api/status"]
