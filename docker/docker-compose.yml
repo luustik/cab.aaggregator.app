@@ -223,9 +223,9 @@ services:
       - zookeeper_data:/wurstmeister/zookeeper
     networks:
       - cab-aggregator-app
-#    depends_on:
-#      kibana:
-#        condition: service_healthy
+    depends_on:
+      kibana:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "echo", "ruok", "|", "nc", "localhost", "2181", "|", "grep", "imok"]
       interval: 5s
@@ -272,9 +272,9 @@ services:
       - "5431:5432"
     networks:
       - cab-aggregator-app
-#    depends_on:
-#      kibana:
-#        condition: service_healthy
+    depends_on:
+      kibana:
+        condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U user -d passenger_db" ]
       interval: 1s
@@ -295,9 +295,9 @@ services:
       - "5432:5432"
     networks:
       - cab-aggregator-app
-#    depends_on:
-#      kibana:
-#        condition: service_healthy
+    depends_on:
+      kibana:
+        condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U user -d driver_db" ]
       interval: 1s
@@ -316,9 +316,9 @@ services:
       - pg_ride:/var/lib/postgresql/data
     ports:
       - "5433:5432"
-#    depends_on:
-#      kibana:
-#        condition: service_healthy
+    depends_on:
+      kibana:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
     healthcheck:
@@ -339,9 +339,9 @@ services:
       - pg_rating:/var/lib/postgresql/data
     ports:
       - "5434:5432"
-#    depends_on:
-#      kibana:
-#        condition: service_healthy
+    depends_on:
+      kibana:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
     healthcheck:
@@ -351,86 +351,86 @@ services:
       retries: 5
       start_period: 5s
 
-#  elasticsearch:
-#    image: elasticsearch:7.14.0
-#    container_name: elasticsearch
-#    ports:
-#      - "9200:9200"
-#    volumes:
-#      - elastic_data:/usr/share/elasticsearch/data/
-#    environment:
-#      - discovery.type=single-node
-#      - xpack.security.enabled=false
-#      - xpack.monitoring.enabled=false
-#      - bootstrap.memory_lock=true
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
-#      interval: 5s
-#      retries: 5
-#      timeout: 15s
-#      start_period: 30s
-#    networks:
-#      - cab-aggregator-app
-#
-#  logstash:
-#    image: logstash:7.14.0
-#    container_name: logstash
-#    ports:
-#      - "5044:5044"
-#    volumes:
-#      - ./monitoring/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-#    depends_on:
-#      elasticsearch:
-#        condition: service_healthy
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://localhost:9600/_node/stats" ]
-#      interval: 5s
-#      retries: 5
-#      timeout: 15s
-#      start_period: 30s
-#    networks:
-#      - cab-aggregator-app
-#
-#  filebeat:
-#    image: elastic/filebeat:7.14.0
-#    container_name: filebeat
-#    command: ["filebeat", "-e", "--strict.perms=false"]
-#    user: root
-#    volumes:
-#      - ./monitoring/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-#      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-#      - /var/log:/var/log:ro
-#      - /var/run/docker.sock:/var/run/docker.sock:ro
-#    depends_on:
-#      logstash:
-#        condition: service_healthy
-#    healthcheck:
-#      test: ["CMD-SHELL", "pgrep filebeat || exit 1"]
-#      interval: 5s
-#      retries: 5
-#      timeout: 15s
-#      start_period: 30s
-#    networks:
-#      - cab-aggregator-app
-#
-#  kibana:
-#    image: kibana:7.14.0
-#    container_name: kibana
-#    ports:
-#      - "5601:5601"
-#    environment:
-#      ELASTICSEARCH_URL: http://elasticsearch:9200
-#    depends_on:
-#      filebeat:
-#        condition: service_healthy
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:5601/status"]
-#      interval: 5s
-#      retries: 5
-#      timeout: 15s
-#      start_period: 30s
-#    networks:
-#      - cab-aggregator-app
+  elasticsearch:
+    image: elasticsearch:7.14.0
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data/
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - bootstrap.memory_lock=true
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
+      interval: 5s
+      retries: 5
+      timeout: 15s
+      start_period: 30s
+    networks:
+      - cab-aggregator-app
+
+  logstash:
+    image: logstash:7.14.0
+    container_name: logstash
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./monitoring/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9600/_node/stats" ]
+      interval: 5s
+      retries: 5
+      timeout: 15s
+      start_period: 30s
+    networks:
+      - cab-aggregator-app
+
+  filebeat:
+    image: elastic/filebeat:7.14.0
+    container_name: filebeat
+    command: ["filebeat", "-e", "--strict.perms=false"]
+    user: root
+    volumes:
+      - ./monitoring/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/log:/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      logstash:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep filebeat || exit 1"]
+      interval: 5s
+      retries: 5
+      timeout: 15s
+      start_period: 30s
+    networks:
+      - cab-aggregator-app
+
+  kibana:
+    image: kibana:7.14.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    depends_on:
+      filebeat:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5601/status"]
+      interval: 5s
+      retries: 5
+      timeout: 15s
+      start_period: 30s
+    networks:
+      - cab-aggregator-app
 
   grafana:
     container_name: grafana
