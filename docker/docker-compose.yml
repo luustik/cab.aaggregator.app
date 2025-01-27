@@ -66,7 +66,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 15s
+      start_period: 25s
 
   driver-service:
     image: driver-service:latest
@@ -261,7 +261,7 @@ services:
 
   passenger_db:
     image: postgres:15.1-alpine
-    container_name: passenger
+    container_name: passenger-db
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
@@ -284,7 +284,7 @@ services:
 
   driver_db:
     image: postgres:15.1-alpine
-    container_name: driver
+    container_name: driver-db
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
@@ -307,7 +307,7 @@ services:
 
   ride_db:
     image: postgres:15.1-alpine
-    container_name: ride
+    container_name: ride-db
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
@@ -330,7 +330,7 @@ services:
 
   rating_db:
     image: postgres:15.1-alpine
-    container_name: rating
+    container_name: rating-db
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
@@ -363,6 +363,7 @@ services:
       - xpack.security.enabled=false
       - xpack.monitoring.enabled=false
       - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
       interval: 5s
