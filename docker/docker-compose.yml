@@ -3,6 +3,7 @@ volumes:
   pg_driver:
   pg_rating:
   pg_ride:
+  pg_keycloak:
   kafka_data:
   zookeeper_data:
   elastic_data:
@@ -20,7 +21,7 @@ services:
     ports:
       - "8761:8761"
     environment:
-      - ZIPKIN=http://zipkin:9411/api/v2/spans
+      - ZIPKIN=${ZIPKIN}
     networks:
       - cab-aggregator-app
     depends_on:
@@ -35,6 +36,8 @@ services:
       kafka:
         condition: service_healthy
       zipkin:
+        condition: service_healthy
+      keycloak:
         condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "curl --fail http://discovery-service:8761/actuator/health" ]
@@ -54,8 +57,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
-      - ZIPKIN=http://zipkin:9411/api/v2/spans
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
+      - ZIPKIN=${ZIPKIN}
     depends_on:
       discovery-service:
         condition: service_healthy
@@ -79,12 +82,12 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - DB_URL=jdbc:postgresql://driver_db:5432/driver_db
-      - DB_USERNAME=user
-      - DB_PASSWORD=pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
-      - KAFKA=kafka:29092
-      - ZIPKIN=http://zipkin:9411/api/v2/spans
+      - DB_URL=${DRIVER_DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
+      - KAFKA=${KAFKA}
+      - ZIPKIN=${ZIPKIN}
     depends_on:
       config-server:
         condition: service_healthy
@@ -108,12 +111,12 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - DB_URL=jdbc:postgresql://passenger_db:5432/passenger_db
-      - DB_USERNAME=user
-      - DB_PASSWORD=pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
-      - KAFKA=kafka:29092
-      - ZIPKIN=http://zipkin:9411/api/v2/spans
+      - DB_URL=${PASSENGER_DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
+      - KAFKA=${KAFKA}
+      - ZIPKIN=${ZIPKIN}
     depends_on:
       config-server:
         condition: service_healthy
@@ -137,12 +140,12 @@ services:
     ports:
       - "8084:8084"
     environment:
-      - DB_URL=jdbc:postgresql://rating_db:5432/rating_db
-      - DB_USERNAME=user
-      - DB_PASSWORD=pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
-      - KAFKA=kafka:29092
-      - ZIPKIN=http://zipkin:9411/api/v2/spans
+      - DB_URL=${RATING_DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
+      - KAFKA=${KAFKA}
+      - ZIPKIN=${ZIPKIN}
     depends_on:
       config-server:
         condition: service_healthy
@@ -166,11 +169,11 @@ services:
     ports:
       - "8083:8083"
     environment:
-      - DB_URL=jdbc:postgresql://ride_db:5432/ride_db
-      - DB_USERNAME=user
-      - DB_PASSWORD=pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
-      - ZIPKIN=http://zipkin:9411/api/v2/spans
+      - DB_URL=${RIDE_DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
+      - ZIPKIN=${ZIPKIN}
     depends_on:
       config-server:
         condition: service_healthy
@@ -194,8 +197,8 @@ services:
     ports:
       - "8888:8888"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
-      - ZIPKIN=http://zipkin:9411/api/v2/spans
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
+      - ZIPKIN=${ZIPKIN}
     depends_on:
       driver-service:
         condition: service_healthy
@@ -263,8 +266,8 @@ services:
     image: postgres:15.1-alpine
     container_name: passenger-db
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=passenger_db
     volumes:
       - pg_passenger:/var/lib/postgresql/data
@@ -286,8 +289,8 @@ services:
     image: postgres:15.1-alpine
     container_name: driver-db
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=driver_db
     volumes:
       - pg_driver:/var/lib/postgresql/data
@@ -309,8 +312,8 @@ services:
     image: postgres:15.1-alpine
     container_name: ride-db
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=ride_db
     volumes:
       - pg_ride:/var/lib/postgresql/data
@@ -332,8 +335,8 @@ services:
     image: postgres:15.1-alpine
     container_name: rating-db
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=rating_db
     volumes:
       - pg_rating:/var/lib/postgresql/data
@@ -350,6 +353,56 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
+
+  keycloak_db:
+    image: postgres:15.1-alpine
+    container_name: keycloak-db
+    environment:
+      POSTGRES_DB: keycloak_db
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pg_keycloak:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    depends_on:
+      kibana:
+        condition: service_healthy
+    networks:
+      - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d keycloak_db" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: keycloak
+    command: [ "start-dev", "--http-port=7000", "--import-realm" ]
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: ${KEYCLOAK_DB_URL}
+      KC_DB_USERNAME: ${DB_USERNAME}
+      KC_DB_PASSWORD: ${DB_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    volumes:
+      - ./keycloak/realms:/opt/keycloak/data/import
+    ports:
+      - "7000:7000"
+    depends_on:
+      keycloak_db:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:7000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - cab-aggregator-app
 
   elasticsearch:
     image: elasticsearch:7.14.0
@@ -420,7 +473,7 @@ services:
     ports:
       - "5601:5601"
     environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_URL: ${ELASTICSEARCH_URL}
     depends_on:
       filebeat:
         condition: service_healthy
@@ -441,8 +494,8 @@ services:
     volumes:
       - ./monitoring/grafana:/var/lib/grafana
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
     depends_on:
       prometheus:
         condition: service_healthy
