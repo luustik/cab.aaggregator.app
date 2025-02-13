@@ -71,6 +71,37 @@ services:
       retries: 5
       start_period: 25s
 
+  auth-service:
+    image: auth-service:latest
+    container_name: auth-service
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_NAME: auth-service
+    ports:
+      - "8085:8085"
+    environment:
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - KEYCLOAK_ADMIN_CLIENT_USERNAME=${KEYCLOAK_ADMIN_CLIENT_USERNAME}
+      - KEYCLOAK_ADMIN_CLIENT_PASSWORD=${KEYCLOAK_ADMIN_CLIENT_PASSWORD}
+      - KEYCLOAK_ADMIN_CLIENT_URL=${KEYCLOAK_ADMIN_CLIENT_URL}
+      - CLIENT_ID_FOR_AUTH_KC=${CLIENT_ID_FOR_AUTH_KC}
+      - KC_REALM=${KC_REALM}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
+    depends_on:
+      config-server:
+        condition: service_healthy
+    networks:
+      - cab-aggregator-app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://auth-service:8085/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
   driver-service:
     image: driver-service:latest
     container_name: driver-service
@@ -365,9 +396,9 @@ services:
       - pg_keycloak:/var/lib/postgresql/data
     ports:
       - "5435:5432"
-    depends_on:
-      kibana:
-        condition: service_healthy
+#    depends_on:
+#      kibana:
+#        condition: service_healthy
     networks:
       - cab-aggregator-app
     healthcheck:
@@ -400,7 +431,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 15s
     networks:
       - cab-aggregator-app
 
