@@ -84,12 +84,12 @@ services:
     environment:
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
-      - KEYCLOAK_ADMIN_CLIENT_USERNAME=${KEYCLOAK_ADMIN_CLIENT_USERNAME}
-      - KEYCLOAK_ADMIN_CLIENT_PASSWORD=${KEYCLOAK_ADMIN_CLIENT_PASSWORD}
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
       - KEYCLOAK_ADMIN_CLIENT_URL=${KEYCLOAK_ADMIN_CLIENT_URL}
       - CLIENT_ID_FOR_AUTH_KC=${CLIENT_ID_FOR_AUTH_KC}
       - KC_REALM=${KC_REALM}
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
+      - EUREKA_URL=${EUREKA_URL}
     depends_on:
       config-server:
         condition: service_healthy
@@ -431,7 +431,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 15s
+      start_period: 45s
     networks:
       - cab-aggregator-app
 
