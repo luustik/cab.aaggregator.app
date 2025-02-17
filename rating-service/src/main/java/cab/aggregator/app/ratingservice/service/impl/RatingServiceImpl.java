@@ -7,7 +7,6 @@ import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 import cab.aggregator.app.ratingservice.entity.Rating;
 import cab.aggregator.app.ratingservice.entity.enums.UserRole;
-import cab.aggregator.app.ratingservice.exception.EmptyListException;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
 import cab.aggregator.app.ratingservice.kafka.KafkaSender;
 import cab.aggregator.app.ratingservice.mapper.RatingContainerMapper;
@@ -28,7 +27,6 @@ import java.util.List;
 
 import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_RESOURCE_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_WITH_ID_NOT_FOUND_MESSAGE;
-import static cab.aggregator.app.ratingservice.utility.Constants.LIST_EMPTY_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.RATING;
 import static cab.aggregator.app.ratingservice.utility.Constants.RIDE;
 
@@ -139,10 +137,10 @@ public class RatingServiceImpl implements RatingService {
 
     private AvgRatingUserResponse calculateAvgRating(Long id, UserRole userRole) {
         List<Rating> userRatings = ratingRepository.findAllByUserIdAndUserRole(id, userRole);
-        if (userRatings.isEmpty()) {
-            throw new EmptyListException(messageSource.getMessage(LIST_EMPTY_MESSAGE,
-                    new Object[]{RATING}, LocaleContextHolder.getLocale()));
-        }
+//        if (userRatings.isEmpty()) {
+//            throw new EmptyListException(messageSource.getMessage(LIST_EMPTY_MESSAGE,
+//                    new Object[]{RATING}, LocaleContextHolder.getLocale()));
+//        }
         double avgRating = userRatings.stream()
                 .mapToInt(Rating::getRating)
                 .average()
