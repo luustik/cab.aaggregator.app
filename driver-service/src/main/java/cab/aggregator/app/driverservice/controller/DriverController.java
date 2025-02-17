@@ -13,6 +13,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +44,7 @@ public class DriverController implements DriverAPI {
 
     @Override
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public DriverContainerResponse getAllDriversAdmin(@RequestParam(value = "offset", defaultValue = "0") @Min(0) int offset,
                                                       @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) int limit) {
         return driverService.getAllDriversAdmin(offset, limit);
@@ -66,18 +69,21 @@ public class DriverController implements DriverAPI {
 
     @Override
     @DeleteMapping("/safe/{id}")
-    public void safeDeleteDriverById(@PathVariable int id) {
-        driverService.safeDeleteDriver(id);
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
+    public void safeDeleteDriverById(@PathVariable int id, JwtAuthenticationToken jwtAuthenticationToken) {
+        driverService.safeDeleteDriver(id, jwtAuthenticationToken);
     }
 
     @Override
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteDriverById(@PathVariable int id) {
         driverService.deleteDriver(id);
     }
 
     @Override
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<DriverResponse> createDriver(@Valid @Validated(OnCreate.class)
                                                        @RequestBody DriverRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -86,8 +92,10 @@ public class DriverController implements DriverAPI {
 
     @Override
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     public DriverResponse updateDriver(@PathVariable int id,
-                                       @Valid @Validated(OnUpdate.class) @RequestBody DriverRequest request) {
-        return driverService.updateDriver(id, request);
+                                       @Valid @Validated(OnUpdate.class) @RequestBody DriverRequest request,
+                                       JwtAuthenticationToken jwtAuthenticationToken) {
+        return driverService.updateDriver(id, request, jwtAuthenticationToken);
     }
 }

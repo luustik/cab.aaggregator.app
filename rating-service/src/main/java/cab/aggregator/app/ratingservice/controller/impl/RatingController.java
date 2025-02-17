@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -78,11 +79,13 @@ public class RatingController implements RatingAPI {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteRatingById(@PathVariable Long id) {
         ratingService.deleteRating(id);
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER', 'PASSENGER')")
     public ResponseEntity<RatingResponse> createRating(@Valid @Validated(OnCreate.class) @RequestBody RatingRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ratingService
@@ -90,6 +93,7 @@ public class RatingController implements RatingAPI {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RatingResponse updateRating(@PathVariable Long id,
                                        @Valid @Validated(OnUpdate.class)
                                        @RequestBody RatingUpdateDto ratingUpdateDto) {

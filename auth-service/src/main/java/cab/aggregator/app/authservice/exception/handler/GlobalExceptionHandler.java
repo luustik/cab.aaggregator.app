@@ -7,6 +7,7 @@ import cab.aggregator.app.authservice.exception.ExternalClientException;
 import cab.aggregator.app.authservice.exception.KeycloakException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.Map;
 import static cab.aggregator.app.authservice.util.Constants.DEFAULT_EXCEPTION_MESSAGE;
 import static cab.aggregator.app.authservice.util.Constants.VALIDATION_FAILED_MESSAGE;
 
+@Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
@@ -86,6 +88,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDto handleException(Exception e) {
+        log.error(e.getMessage(), e);
         return ExceptionDto.builder()
                 .message(messageSource.getMessage(DEFAULT_EXCEPTION_MESSAGE, null, LocaleContextHolder.getLocale()))
                 .build();

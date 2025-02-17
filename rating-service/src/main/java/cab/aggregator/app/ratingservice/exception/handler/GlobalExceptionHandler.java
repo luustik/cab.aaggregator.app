@@ -2,6 +2,7 @@ package cab.aggregator.app.ratingservice.exception.handler;
 
 import cab.aggregator.app.ratingservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.ratingservice.dto.exception.MultiException;
+import cab.aggregator.app.ratingservice.exception.AccessDeniedException;
 import cab.aggregator.app.ratingservice.exception.EmptyListException;
 import cab.aggregator.app.ratingservice.exception.ExternalClientException;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +31,14 @@ import static cab.aggregator.app.ratingservice.utility.Constants.VALIDATION_FAIL
 public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
+
+    @ExceptionHandler({AccessDeniedException.class, AuthorizationDeniedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionDto handleAccessDenied(RuntimeException e) {
+        return ExceptionDto.builder()
+                .message(e.getMessage())
+                .build();
+    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

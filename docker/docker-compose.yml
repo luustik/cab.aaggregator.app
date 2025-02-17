@@ -91,7 +91,13 @@ services:
       - KC_REALM=${KC_REALM}
       - EUREKA_URL=${EUREKA_URL}
     depends_on:
-      config-server:
+      driver-service:
+        condition: service_healthy
+      passenger-service:
+        condition: service_healthy
+      rating-service:
+        condition: service_healthy
+      ride-service:
         condition: service_healthy
     networks:
       - cab-aggregator-app
@@ -119,6 +125,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
       - KAFKA=${KAFKA}
       - ZIPKIN=${ZIPKIN}
+      - JWT_ISSUER_URL=${JWT_ISSUER_URL}
     depends_on:
       config-server:
         condition: service_healthy
@@ -148,6 +155,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
       - KAFKA=${KAFKA}
       - ZIPKIN=${ZIPKIN}
+      - JWT_ISSUER_URL=${JWT_ISSUER_URL}
     depends_on:
       config-server:
         condition: service_healthy
@@ -177,6 +185,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
       - KAFKA=${KAFKA}
       - ZIPKIN=${ZIPKIN}
+      - JWT_ISSUER_URL=${JWT_ISSUER_URL}
     depends_on:
       config-server:
         condition: service_healthy
@@ -205,6 +214,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
       - ZIPKIN=${ZIPKIN}
+      - JWT_ISSUER_URL=${JWT_ISSUER_URL}
     depends_on:
       config-server:
         condition: service_healthy
@@ -238,6 +248,8 @@ services:
       rating-service:
         condition: service_healthy
       ride-service:
+        condition: service_healthy
+      auth-service:
         condition: service_healthy
     networks:
       - cab-aggregator-app
@@ -396,9 +408,9 @@ services:
       - pg_keycloak:/var/lib/postgresql/data
     ports:
       - "5435:5432"
-#    depends_on:
-#      kibana:
-#        condition: service_healthy
+    depends_on:
+      kibana:
+        condition: service_healthy
     networks:
       - cab-aggregator-app
     healthcheck:

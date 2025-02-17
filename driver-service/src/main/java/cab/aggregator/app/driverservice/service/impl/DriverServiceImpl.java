@@ -5,6 +5,7 @@ import cab.aggregator.app.driverservice.dto.response.DriverContainerResponse;
 import cab.aggregator.app.driverservice.dto.response.DriverResponse;
 import cab.aggregator.app.driverservice.entity.Driver;
 import cab.aggregator.app.driverservice.entity.enums.Gender;
+import cab.aggregator.app.driverservice.exception.AccessDeniedException;
 import cab.aggregator.app.driverservice.exception.EntityNotFoundException;
 import cab.aggregator.app.driverservice.exception.ResourceAlreadyExistsException;
 import cab.aggregator.app.driverservice.mapper.DriverContainerResponseMapper;
@@ -13,7 +14,9 @@ import cab.aggregator.app.driverservice.repository.DriverRepository;
 import cab.aggregator.app.driverservice.service.DriverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +24,11 @@ import java.util.List;
 import java.util.Locale;
 
 import static cab.aggregator.app.driverservice.utility.Constants.DRIVER;
+import static cab.aggregator.app.driverservice.utility.Constants.EMAIL_CLAIM;
 import static cab.aggregator.app.driverservice.utility.Constants.ENTITY_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.driverservice.utility.Constants.RESOURCE_ALREADY_EXIST_MESSAGE;
+import static cab.aggregator.app.driverservice.utility.Constants.ROLE_ADMIN;
+import static cab.aggregator.app.driverservice.utility.Constants.ACCESS_DENIED_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -65,8 +71,9 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public void safeDeleteDriver(int driverId) {
+    public void safeDeleteDriver(int driverId, JwtAuthenticationToken token) {
         Driver driver = findDriverById(driverId);
+        validateAccessOrThrow(driver, token);
         driver.setDeleted(true);
         driverRepository.save(driver);
     }
@@ -74,7 +81,7 @@ public class DriverServiceImpl implements DriverService {
     @Override
     @Transactional
     public void deleteDriver(int driverId) {
-        Driver driver = findDriverById(driverId);
+        Driver driver = findDriverByIdForAdmin(driverId);
         driverRepository.delete(driver);
     }
 
@@ -95,7 +102,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public DriverResponse updateDriver(int id, DriverRequest driverRequestDto) {
+    public DriverResponse updateDriver(int id, DriverRequest driverRequestDto, JwtAuthenticationToken token) {
         Driver driver = findDriverById(id);
         if (!driverRequestDto.email().equals(driver.getEmail())) {
             checkIfEmailUnique(driverRequestDto);
@@ -104,8 +111,24 @@ public class DriverServiceImpl implements DriverService {
             checkIfPhoneNumberUnique(driverRequestDto);
         }
         driverMapper.updateDriverFromDto(driverRequestDto, driver);
+        validateAccessOrThrow(driver, token);
         driverRepository.save(driver);
         return driverMapper.toDto(driver);
+    }
+
+    private void validateAccessOrThrow(Driver driver, JwtAuthenticationToken token) {
+        if (token.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN))) {
+            return;
+        }
+
+        String userEmail = token.getToken().getClaims().get(EMAIL_CLAIM).toString();
+        if (!driver.getEmail().equals(userEmail)) {
+            throw new AccessDeniedException(
+                    messageSource.getMessage(ACCESS_DENIED_MESSAGE,
+                            new Object[]{}, LocaleContextHolder.getLocale())
+            );
+        }
     }
 
     private Driver checkIfDriverDelete(DriverRequest driverRequestDto) {
@@ -144,6 +167,13 @@ public class DriverServiceImpl implements DriverService {
 
     private Driver findDriverById(int driverId) {
         return driverRepository.findByIdAndDeletedFalse(driverId).orElseThrow(() ->
+                new EntityNotFoundException(messageSource.getMessage(ENTITY_NOT_FOUND_MESSAGE,
+                        new Object[]{DRIVER, driverId}, Locale.getDefault()))
+        );
+    }
+
+    private Driver findDriverByIdForAdmin(int driverId) {
+        return driverRepository.findById(driverId).orElseThrow(() ->
                 new EntityNotFoundException(messageSource.getMessage(ENTITY_NOT_FOUND_MESSAGE,
                         new Object[]{DRIVER, driverId}, Locale.getDefault()))
         );

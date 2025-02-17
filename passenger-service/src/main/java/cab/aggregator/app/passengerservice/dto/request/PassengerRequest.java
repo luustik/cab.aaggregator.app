@@ -2,6 +2,7 @@ package cab.aggregator.app.passengerservice.dto.request;
 
 import cab.aggregator.app.passengerservice.dto.validation.OnCreate;
 import cab.aggregator.app.passengerservice.dto.validation.OnUpdate;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -28,6 +29,7 @@ public record PassengerRequest(
         @NotNull(message = "{passengerPhone.notnull}", groups = {OnCreate.class, OnUpdate.class})
         @Length(max = 255, message = "{passengerPhone.length}", groups = {OnCreate.class, OnUpdate.class})
         @Pattern(regexp = PHONE_NUMBER_PATTERN, message = "{passengerPhone.pattern}")
+        @JsonAlias({"phone", "phoneNumber"})
         String phone
 
 ) {

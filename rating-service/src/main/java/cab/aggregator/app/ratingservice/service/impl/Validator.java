@@ -25,23 +25,23 @@ public class Validator {
     private final RatingRepository ratingRepository;
     private final MessageSource messageSource;
 
-    public void checkIfExistUser(Long userId, UserRole role) {
+    public void checkIfExistUser(Long userId, UserRole role, String authToken) {
         switch (role) {
-            case DRIVER -> checkIfExistDriver(userId);
-            case PASSENGER -> checkIfExistPassenger(userId);
+            case DRIVER -> checkIfExistDriver(userId, authToken);
+            case PASSENGER -> checkIfExistPassenger(userId, authToken);
         }
     }
 
-    public void checkIfExistRide(Long rideId) {
-        rideClientContainer.getById(rideId);
+    public void checkIfExistRide(Long rideId, String authToken) {
+        rideClientContainer.getById(rideId, authToken);
     }
 
-    private void checkIfExistPassenger(Long passengerId) {
-        passengerClientContainer.getById(passengerId.intValue());
+    private void checkIfExistPassenger(Long passengerId, String authToken) {
+        passengerClientContainer.getById(passengerId.intValue(), authToken);
     }
 
-    private void checkIfExistDriver(Long driverId) {
-        driverClientContainer.getById(driverId.intValue());
+    private void checkIfExistDriver(Long driverId, String authToken) {
+        driverClientContainer.getById(driverId.intValue(), authToken);
     }
 
     public void checkIfExistRatingByRideIdAndRole(Long rideId, UserRole role) {

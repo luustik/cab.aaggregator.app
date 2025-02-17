@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,12 +95,14 @@ public class RideControllerImpl implements RideController {
 
     @Override
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteRideById(@PathVariable Long id) {
         rideService.deleteRide(id);
     }
 
     @Override
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'PASSENGER')")
     public ResponseEntity<RideResponse> createRide(@Valid @Validated(OnCreate.class)
                                                    @RequestBody RideRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -109,6 +112,7 @@ public class RideControllerImpl implements RideController {
 
     @Override
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RideResponse updateRide(@PathVariable Long id,
                                    @Valid @Validated(OnUpdate.class) @RequestBody RideRequest request) {
         return rideService.updateRide(id, request);
@@ -116,6 +120,7 @@ public class RideControllerImpl implements RideController {
 
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER', 'PASSENGER')")
     public RideResponse updateRideStatus(@PathVariable Long id,
                                          @Valid @Validated(OnUpdate.class)
                                          @Pattern(regexp = REGEXP_STATUS, message = "{status.pattern}")

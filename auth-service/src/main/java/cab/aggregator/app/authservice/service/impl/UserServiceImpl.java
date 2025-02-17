@@ -3,8 +3,11 @@ package cab.aggregator.app.authservice.service.impl;
 import cab.aggregator.app.authservice.client.driver.DriverClientContainer;
 import cab.aggregator.app.authservice.client.passenger.PassengerClientContainer;
 import cab.aggregator.app.authservice.config.KeycloakProperties;
+import cab.aggregator.app.authservice.dto.request.RefreshTokenDto;
+import cab.aggregator.app.authservice.dto.request.SignInAdminDto;
 import cab.aggregator.app.authservice.dto.request.SignInDto;
 import cab.aggregator.app.authservice.dto.request.SignUpDto;
+import cab.aggregator.app.authservice.dto.response.AdminResponseTokenDto;
 import cab.aggregator.app.authservice.dto.response.UserResponseTokenDto;
 import cab.aggregator.app.authservice.exception.CreateUserException;
 import cab.aggregator.app.authservice.exception.KeycloakException;
@@ -26,7 +29,12 @@ import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -37,9 +45,26 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
-import static cab.aggregator.app.authservice.util.Constants.*;
+import static cab.aggregator.app.authservice.util.Constants.AUTH_TOKEN;
+import static cab.aggregator.app.authservice.util.Constants.CLIENT_ID_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.CLIENT_SECRET_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.DRIVER_ROLE;
+import static cab.aggregator.app.authservice.util.Constants.GENDER_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.GRANT_TYPE_CLIENT_CREDENTIALS_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.GRANT_TYPE_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.GRANT_TYPE_PASSWORD_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.PASSENGER_ROLE;
+import static cab.aggregator.app.authservice.util.Constants.PASSWORD_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.REFRESH_TOKEN_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.SERVICE_UNAVAILABLE_MESSAGE;
+import static cab.aggregator.app.authservice.util.Constants.USERNAME_FIELD;
+import static cab.aggregator.app.authservice.util.Constants.USER_CLIENT_ID;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +100,7 @@ public class UserServiceImpl implements UserService {
                 throw exception;
             }
         } else {
-            throw new CreateUserException(messageSource.getMessage(readResponseBody(response), new Object[]{}, LocaleContextHolder.getLocale()),
+            throw new CreateUserException(readResponseBody(response),
                     response.getStatus());
         }
         RolesResource rolesResource = realmResource.roles();
@@ -100,33 +125,71 @@ public class UserServiceImpl implements UserService {
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = getResponseWithToken(requestEntity);
+        ResponseEntity<String> response = getResponseFromKeycloak(requestEntity);
 
-        handleAnyStatusCodeExceptOk(response);
+        checkStatusCode(response);
 
         return objectMapper.readValue(response.getBody(),
                 UserResponseTokenDto.class);
     }
 
-    private void handleAnyStatusCodeExceptOk(ResponseEntity<String> response) {
+    @Override
+    @SneakyThrows
+    public AdminResponseTokenDto signInAsAdmin(SignInAdminDto signInAdminDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add(GRANT_TYPE_FIELD, GRANT_TYPE_CLIENT_CREDENTIALS_FIELD);
+        body.add(CLIENT_ID_FIELD, signInAdminDto.clientId());
+        body.add(CLIENT_SECRET_FIELD, signInAdminDto.clientSecret());
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = getResponseFromKeycloak(requestEntity);
+
+        checkStatusCode(response);
+
+        return objectMapper.readValue(getResponseFromKeycloak(requestEntity).getBody(),
+                AdminResponseTokenDto.class);
+    }
+
+    @Override
+    @SneakyThrows
+    public UserResponseTokenDto refreshToken(RefreshTokenDto refreshTokenDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add(GRANT_TYPE_FIELD, REFRESH_TOKEN_FIELD);
+        body.add(CLIENT_ID_FIELD, USER_CLIENT_ID);
+        body.add(REFRESH_TOKEN_FIELD, refreshTokenDto.refreshToken());
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = getResponseFromKeycloak(requestEntity);
+
+        checkStatusCode(response);
+
+        return objectMapper.readValue(getResponseFromKeycloak(requestEntity).getBody(),
+                UserResponseTokenDto.class);
+    }
+
+    private void checkStatusCode(ResponseEntity<String> response) {
         if (response.getStatusCode() != HttpStatus.OK) {
-            throw new KeycloakException(messageSource.getMessage(Objects.requireNonNull(response.getBody()), new Object[]{}, LocaleContextHolder.getLocale()),
-                    response.getStatusCode().value());
+            throw new KeycloakException(response.getBody(), response.getStatusCode().value());
         }
     }
 
-    private String getAuthUrl() {
-        return keycloakProperties.getUserManagement().getServerUrl() +
+    private ResponseEntity<String> getResponseFromKeycloak(HttpEntity<MultiValueMap<String, String>> requestEntity) {
+        ResponseEntity<String> response;
+        String url = keycloakProperties.getUserManagement().getServerUrl() +
                 "/realms/" + keycloakProperties.getRealm() +
                 "/protocol/openid-connect/token";
-    }
-
-    private ResponseEntity<String> getResponseWithToken(HttpEntity<MultiValueMap<String, String>> requestEntity) {
-        ResponseEntity<String> response;
         try {
-            response = restTemplate.exchange(getAuthUrl(), HttpMethod.POST, requestEntity, String.class);
+            response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
         } catch (HttpClientErrorException exception) {
-            throw new CreateUserException(messageSource.getMessage(exception.getMessage(), new Object[]{}, LocaleContextHolder.getLocale()),
+            throw new CreateUserException(exception.getMessage(),
                     exception.getStatusCode().value());
         }
         return response;

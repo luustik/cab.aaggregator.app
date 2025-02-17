@@ -26,4 +26,8 @@ public final class Constants {
     public static final String PASSWORD_FIELD = "password";
     public static final String CLIENT_ID_FIELD = "client_id";
     public static final String GRANT_TYPE_PASSWORD_FIELD = "password";
+    public static final String CLIENT_SECRET_FIELD = "client_secret";
+    public static final String GRANT_TYPE_CLIENT_CREDENTIALS_FIELD = "client_credentials";
+    public static final String REFRESH_TOKEN_FIELD = "refresh_token";
+    public static final String USER_CLIENT_ID = "cab-aggregator-app";
 }

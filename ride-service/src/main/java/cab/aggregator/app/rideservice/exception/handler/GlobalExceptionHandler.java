@@ -2,6 +2,7 @@ package cab.aggregator.app.rideservice.exception.handler;
 
 import cab.aggregator.app.rideservice.dto.exception.ExceptionDto;
 import cab.aggregator.app.rideservice.dto.exception.MultiException;
+import cab.aggregator.app.rideservice.exception.AccessDeniedException;
 import cab.aggregator.app.rideservice.exception.ExternalClientException;
 import cab.aggregator.app.rideservice.exception.EntityNotFoundException;
 import cab.aggregator.app.rideservice.exception.ImpossibleStatusException;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,6 +30,14 @@ import static cab.aggregator.app.rideservice.utility.Constants.VALIDATION_FAILED
 public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
+
+    @ExceptionHandler({AccessDeniedException.class, AuthorizationDeniedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionDto handleAccessDenied(RuntimeException e) {
+        return ExceptionDto.builder()
+                .message(e.getMessage())
+                .build();
+    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
