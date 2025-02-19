@@ -4,10 +4,8 @@ import cab.aggregator.app.authservice.client.driver.DriverClientContainer;
 import cab.aggregator.app.authservice.client.passenger.PassengerClientContainer;
 import cab.aggregator.app.authservice.config.KeycloakProperties;
 import cab.aggregator.app.authservice.dto.request.RefreshTokenDto;
-import cab.aggregator.app.authservice.dto.request.SignInAdminDto;
 import cab.aggregator.app.authservice.dto.request.SignInDto;
 import cab.aggregator.app.authservice.dto.request.SignUpDto;
-import cab.aggregator.app.authservice.dto.response.AdminResponseTokenDto;
 import cab.aggregator.app.authservice.dto.response.UserResponseTokenDto;
 import cab.aggregator.app.authservice.exception.CreateUserException;
 import cab.aggregator.app.authservice.exception.KeycloakException;
@@ -53,10 +51,8 @@ import java.util.Optional;
 
 import static cab.aggregator.app.authservice.util.Constants.AUTH_TOKEN;
 import static cab.aggregator.app.authservice.util.Constants.CLIENT_ID_FIELD;
-import static cab.aggregator.app.authservice.util.Constants.CLIENT_SECRET_FIELD;
 import static cab.aggregator.app.authservice.util.Constants.DRIVER_ROLE;
 import static cab.aggregator.app.authservice.util.Constants.GENDER_FIELD;
-import static cab.aggregator.app.authservice.util.Constants.GRANT_TYPE_CLIENT_CREDENTIALS_FIELD;
 import static cab.aggregator.app.authservice.util.Constants.GRANT_TYPE_FIELD;
 import static cab.aggregator.app.authservice.util.Constants.GRANT_TYPE_PASSWORD_FIELD;
 import static cab.aggregator.app.authservice.util.Constants.PASSENGER_ROLE;
@@ -131,27 +127,6 @@ public class UserServiceImpl implements UserService {
 
         return objectMapper.readValue(response.getBody(),
                 UserResponseTokenDto.class);
-    }
-
-    @Override
-    @SneakyThrows
-    public AdminResponseTokenDto signInAsAdmin(SignInAdminDto signInAdminDto) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add(GRANT_TYPE_FIELD, GRANT_TYPE_CLIENT_CREDENTIALS_FIELD);
-        body.add(CLIENT_ID_FIELD, signInAdminDto.clientId());
-        body.add(CLIENT_SECRET_FIELD, signInAdminDto.clientSecret());
-
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<String> response = getResponseFromKeycloak(requestEntity);
-
-        checkStatusCode(response);
-
-        return objectMapper.readValue(getResponseFromKeycloak(requestEntity).getBody(),
-                AdminResponseTokenDto.class);
     }
 
     @Override

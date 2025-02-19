@@ -2,10 +2,8 @@ package cab.aggregator.app.authservice.controller.impl;
 
 import cab.aggregator.app.authservice.controller.UserController;
 import cab.aggregator.app.authservice.dto.request.RefreshTokenDto;
-import cab.aggregator.app.authservice.dto.request.SignInAdminDto;
 import cab.aggregator.app.authservice.dto.request.SignInDto;
 import cab.aggregator.app.authservice.dto.request.SignUpDto;
-import cab.aggregator.app.authservice.dto.response.AdminResponseTokenDto;
 import cab.aggregator.app.authservice.dto.response.UserResponseTokenDto;
 import cab.aggregator.app.authservice.service.UserService;
 import jakarta.validation.Valid;
@@ -35,12 +33,6 @@ public class UserControllerImpl implements UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public void signUp(@Valid @RequestBody SignUpDto signUpDto) {
         userService.signUp(signUpDto);
-    }
-
-    @Override
-    @PostMapping("/admin/sign-in")
-    public AdminResponseTokenDto signInAsAdmin(@Valid @RequestBody SignInAdminDto signInAdminDto) {
-        return userService.signInAsAdmin(signInAdminDto);
     }
 
     @Override
