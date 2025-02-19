@@ -54,7 +54,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         SERVICE_NAME: config-server
-    ports:
+    expose:
       - "8000:8000"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_URL}
@@ -79,7 +79,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         SERVICE_NAME: auth-service
-    ports:
+    expose:
       - "8085:8085"
     environment:
       - CLIENT_ID=${CLIENT_ID}
@@ -116,7 +116,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         SERVICE_NAME: driver-service
-    ports:
+    expose:
       - "8082:8082"
     environment:
       - DB_URL=${DRIVER_DB_URL}
@@ -146,7 +146,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         SERVICE_NAME: passenger-service
-    ports:
+    expose:
       - "8081:8081"
     environment:
       - DB_URL=${PASSENGER_DB_URL}
@@ -176,7 +176,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         SERVICE_NAME: rating-service
-    ports:
+    expose:
       - "8084:8084"
     environment:
       - DB_URL=${RATING_DB_URL}
@@ -206,7 +206,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         SERVICE_NAME: ride-service
-    ports:
+    expose:
       - "8083:8083"
     environment:
       - DB_URL=${RIDE_DB_URL}
@@ -587,3 +587,4 @@ services:
 
 networks:
   cab-aggregator-app:
+    driver: bridge
