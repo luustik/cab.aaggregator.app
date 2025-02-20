@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 
 import static cab.aggregator.app.passengerservice.utility.Constants.EMAIL_PATTERN;
@@ -38,7 +39,7 @@ public interface PassengerAPI {
     PassengerResponse getPassengerByEmail(@Valid @Validated @Pattern(regexp = EMAIL_PATTERN, message = "{passengerEmail.pattern}") String email);
 
     @Operation(summary = "Soft delete passenger")
-    void softDeleteDriverById(int id);
+    void softDeleteDriverById(int id, JwtAuthenticationToken jwtAuthenticationToken);
 
     @Operation(summary = "Hard delete passenger")
     void hardDeleteDriverById(int id);
@@ -47,5 +48,5 @@ public interface PassengerAPI {
     ResponseEntity<PassengerResponse> createDriver(@Valid @Validated(OnCreate.class) PassengerRequest request);
 
     @Operation(summary = "Update passenger by Id")
-    PassengerResponse updateDriver(int id, @Valid @Validated(OnUpdate.class) PassengerRequest request);
+    PassengerResponse updateDriver(int id, @Valid @Validated(OnUpdate.class) PassengerRequest request, JwtAuthenticationToken jwtAuthenticationToken);
 }

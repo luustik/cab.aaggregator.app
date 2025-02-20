@@ -12,11 +12,11 @@ public class Validator {
     private final DriverClientContainer driverClientContainer;
     private final PassengerClientContainer passengerClientContainer;
 
-    public void checkIfExistPassenger(long passengerId) {
-        passengerClientContainer.getById((int) passengerId);
+    public void checkIfExistPassenger(long passengerId, String authToken) {
+        passengerClientContainer.getById((int) passengerId, authToken);
     }
 
-    public void checkIfExistDriver(long driverId) {
-        driverClientContainer.getById((int) driverId);
+    public void checkIfExistDriver(long driverId, String authToken) {
+        driverClientContainer.getById((int) driverId, authToken);
     }
 }

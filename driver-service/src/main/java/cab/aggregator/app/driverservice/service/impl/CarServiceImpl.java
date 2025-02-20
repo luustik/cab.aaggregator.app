@@ -5,6 +5,7 @@ import cab.aggregator.app.driverservice.dto.response.CarContainerResponse;
 import cab.aggregator.app.driverservice.dto.response.CarResponse;
 import cab.aggregator.app.driverservice.entity.Car;
 import cab.aggregator.app.driverservice.entity.Driver;
+import cab.aggregator.app.driverservice.exception.AccessDeniedException;
 import cab.aggregator.app.driverservice.exception.EntityNotFoundException;
 import cab.aggregator.app.driverservice.exception.ResourceAlreadyExistsException;
 import cab.aggregator.app.driverservice.mapper.CarContainerResponseMapper;
@@ -14,16 +15,21 @@ import cab.aggregator.app.driverservice.repository.DriverRepository;
 import cab.aggregator.app.driverservice.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 
+import static cab.aggregator.app.driverservice.utility.Constants.ACCESS_DENIED_MESSAGE;
 import static cab.aggregator.app.driverservice.utility.Constants.CAR;
 import static cab.aggregator.app.driverservice.utility.Constants.DRIVER;
+import static cab.aggregator.app.driverservice.utility.Constants.EMAIL_CLAIM;
 import static cab.aggregator.app.driverservice.utility.Constants.ENTITY_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.driverservice.utility.Constants.RESOURCE_ALREADY_EXIST_MESSAGE;
+import static cab.aggregator.app.driverservice.utility.Constants.ROLE_ADMIN;
 
 @Service
 @RequiredArgsConstructor
@@ -65,31 +71,50 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
-    public CarResponse createCar(CarRequest carRequestDto) {
+    public CarResponse createCar(CarRequest carRequestDto, JwtAuthenticationToken token) {
         checkIfCarUnique(carRequestDto);
         Car car = carMapper.toEntity(carRequestDto);
         car.setDriver(findDriverById(carRequestDto));
+        validateCarAccessOrThrow(car, token);
         return carMapper.toDto(carRepository.save(car));
     }
 
     @Override
     @Transactional
-    public CarResponse updateCar(int carId, CarRequest carRequestDto) {
+    public CarResponse updateCar(int carId, CarRequest carRequestDto, JwtAuthenticationToken token) {
         Car car = findCarById(carId);
         if (!car.getCarNumber().equals(carRequestDto.carNumber())) {
             checkIfCarUnique(carRequestDto);
         }
         carMapper.updateCarFromDto(carRequestDto, car);
         car.setDriver(findDriverById(carRequestDto));
+        validateCarAccessOrThrow(car, token);
         carRepository.save(car);
         return carMapper.toDto(car);
     }
 
     @Override
     @Transactional
-    public void deleteCar(int carId) {
+    public void deleteCar(int carId, JwtAuthenticationToken token) {
         Car car = findCarById(carId);
+        validateCarAccessOrThrow(car, token);
         carRepository.delete(car);
+    }
+
+    private void validateCarAccessOrThrow(Car car, JwtAuthenticationToken token) {
+
+        if (token.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN))) {
+            return;
+        }
+
+        String userEmail = token.getToken().getClaims().get(EMAIL_CLAIM).toString();
+        if (!car.getDriver().getEmail().equals(userEmail)) {
+            throw new AccessDeniedException(
+                    messageSource.getMessage(ACCESS_DENIED_MESSAGE,
+                            new Object[]{}, LocaleContextHolder.getLocale())
+            );
+        }
     }
 
     private void checkIfCarUnique(CarRequest carRequestDto) {

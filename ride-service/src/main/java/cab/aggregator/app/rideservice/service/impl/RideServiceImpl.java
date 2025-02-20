@@ -14,6 +14,9 @@ import cab.aggregator.app.rideservice.utility.Utilities;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +56,7 @@ public class RideServiceImpl implements RideService {
     @Override
     @Transactional(readOnly = true)
     public RideContainerResponse getAllRidesByDriverId(Long driverId, int offset, int limit) {
-        validator.checkIfExistDriver(driverId);
+        validator.checkIfExistDriver(driverId, getAuthToken());
         return rideContainerMapper
                 .toContainer(rideRepository
                         .findAllByDriverId(driverId, PageRequest.of(offset, limit))
@@ -72,7 +75,7 @@ public class RideServiceImpl implements RideService {
     @Override
     @Transactional(readOnly = true)
     public RideContainerResponse getAllRidesByPassengerId(Long passengerId, int offset, int limit) {
-        validator.checkIfExistPassenger(passengerId);
+        validator.checkIfExistPassenger(passengerId, getAuthToken());
         return rideContainerMapper
                 .toContainer(rideRepository
                         .findAllByPassengerId(passengerId, PageRequest.of(offset, limit))
@@ -111,8 +114,8 @@ public class RideServiceImpl implements RideService {
     @Transactional
     public RideResponse createRide(RideRequest rideRequest) {
         Ride ride = rideMapper.toEntity(rideRequest);
-        validator.checkIfExistDriver(ride.getDriverId());
-        validator.checkIfExistPassenger(ride.getPassengerId());
+        validator.checkIfExistDriver(ride.getDriverId(), getAuthToken());
+        validator.checkIfExistPassenger(ride.getPassengerId(), getAuthToken());
         ride.setOrderDateTime(LocalDateTime.now());
         ride.setCost(calculationCost.generatePrice());
         ride.setStatus(Status.CREATED);
@@ -124,11 +127,17 @@ public class RideServiceImpl implements RideService {
     @Transactional
     public RideResponse updateRide(Long id, RideRequest rideRequest) {
         Ride ride = findById(id);
-        validator.checkIfExistDriver(rideRequest.driverId());
-        validator.checkIfExistPassenger(rideRequest.passengerId());
+        validator.checkIfExistDriver(rideRequest.driverId(), getAuthToken());
+        validator.checkIfExistPassenger(rideRequest.passengerId(), getAuthToken());
         rideMapper.updateRideFromDto(rideRequest, ride);
         rideRepository.save(ride);
         return rideMapper.toDto(ride);
+    }
+
+    private String getAuthToken(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JwtAuthenticationToken token = (JwtAuthenticationToken) authentication;
+        return "Bearer " + token.getToken().getTokenValue();
     }
 
     private Ride findById(Long rideId) {

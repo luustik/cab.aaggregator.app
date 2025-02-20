@@ -7,7 +7,6 @@ import cab.aggregator.app.ratingservice.dto.response.RatingContainerResponse;
 import cab.aggregator.app.ratingservice.dto.response.RatingResponse;
 import cab.aggregator.app.ratingservice.entity.Rating;
 import cab.aggregator.app.ratingservice.entity.enums.UserRole;
-import cab.aggregator.app.ratingservice.exception.EmptyListException;
 import cab.aggregator.app.ratingservice.exception.EntityNotFoundException;
 import cab.aggregator.app.ratingservice.kafka.KafkaSender;
 import cab.aggregator.app.ratingservice.mapper.RatingContainerMapper;
@@ -18,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,6 @@ import java.util.List;
 
 import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_RESOURCE_NOT_FOUND_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.ENTITY_WITH_ID_NOT_FOUND_MESSAGE;
-import static cab.aggregator.app.ratingservice.utility.Constants.LIST_EMPTY_MESSAGE;
 import static cab.aggregator.app.ratingservice.utility.Constants.RATING;
 import static cab.aggregator.app.ratingservice.utility.Constants.RIDE;
 
@@ -50,7 +51,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional(readOnly = true)
     public RatingResponse getRatingByRideIdAndRole(Long rideId, String role) {
-        validator.checkIfExistRide(rideId);
+        validator.checkIfExistRide(rideId, getAuthToken());
         return ratingMapper
                 .toDto(findRatingByRideIdAndRole(rideId, role));
     }
@@ -67,7 +68,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional(readOnly = true)
     public RatingContainerResponse getAllByUserIdAndRole(Long userId, String role, int offset, int limit) {
-        validator.checkIfExistUser(userId, UserRole.valueOf(role.toUpperCase()));
+        validator.checkIfExistUser(userId, UserRole.valueOf(role.toUpperCase()), getAuthToken());
         return ratingContainerMapper
                 .toContainer(ratingRepository
                         .findAllByUserIdAndUserRole(userId, UserRole.valueOf(role.toUpperCase())
@@ -97,8 +98,8 @@ public class RatingServiceImpl implements RatingService {
     @Transactional
     public RatingResponse createRating(RatingRequest ratingRequest) {
         Rating rating = ratingMapper.toEntity(ratingRequest);
-        validator.checkIfExistUser(rating.getUserId(), rating.getUserRole());
-        validator.checkIfExistRide(rating.getRideId());
+        validator.checkIfExistUser(rating.getUserId(), rating.getUserRole(), getAuthToken());
+        validator.checkIfExistRide(rating.getRideId(), getAuthToken());
         validator.checkIfExistRatingByRideIdAndRole(rating.getRideId(), rating.getUserRole());
         ratingRepository.save(rating);
         AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(rating.getUserId(), rating.getUserRole());
@@ -122,18 +123,24 @@ public class RatingServiceImpl implements RatingService {
     @Transactional(readOnly = true)
     public AvgRatingUserResponse calculateRating(Long id, String userRole) {
         UserRole role = UserRole.valueOf(userRole.toUpperCase());
-        validator.checkIfExistUser(id, role);
+        validator.checkIfExistUser(id, role, getAuthToken());
         AvgRatingUserResponse avgRatingUserResponse = calculateAvgRating(id, role);
         sendUserAvgRating(avgRatingUserResponse, role);
         return avgRatingUserResponse;
     }
 
+    private String getAuthToken(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JwtAuthenticationToken token = (JwtAuthenticationToken) authentication;
+        return "Bearer " + token.getToken().getTokenValue();
+    }
+
     private AvgRatingUserResponse calculateAvgRating(Long id, UserRole userRole) {
         List<Rating> userRatings = ratingRepository.findAllByUserIdAndUserRole(id, userRole);
-        if (userRatings.isEmpty()) {
-            throw new EmptyListException(messageSource.getMessage(LIST_EMPTY_MESSAGE,
-                    new Object[]{RATING}, LocaleContextHolder.getLocale()));
-        }
+//        if (userRatings.isEmpty()) {
+//            throw new EmptyListException(messageSource.getMessage(LIST_EMPTY_MESSAGE,
+//                    new Object[]{RATING}, LocaleContextHolder.getLocale()));
+//        }
         double avgRating = userRatings.stream()
                 .mapToInt(Rating::getRating)
                 .average()

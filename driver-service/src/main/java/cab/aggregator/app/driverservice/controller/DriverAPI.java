@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 
 import static cab.aggregator.app.driverservice.utility.Constants.GENDER_PATTERN;
@@ -36,7 +37,7 @@ public interface DriverAPI {
                                                   @Min(1) @Max(100) int limit);
 
     @Operation(summary = "Safe delete driver by Id")
-    void safeDeleteDriverById(int id);
+    void safeDeleteDriverById(int id, JwtAuthenticationToken jwtAuthenticationToken);
 
     @Operation(summary = "Hard delete driver by Id")
     void deleteDriverById(int id);
@@ -45,5 +46,5 @@ public interface DriverAPI {
     ResponseEntity<DriverResponse> createDriver(@Valid @Validated(OnCreate.class) DriverRequest request);
 
     @Operation(summary = "Update driver by Id")
-    DriverResponse updateDriver(int id, @Valid @Validated(OnUpdate.class) DriverRequest request);
+    DriverResponse updateDriver(int id, @Valid @Validated(OnUpdate.class) DriverRequest request, JwtAuthenticationToken jwtAuthenticationToken);
 }
